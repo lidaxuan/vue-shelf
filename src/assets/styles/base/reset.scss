@@ -1,0 +1,54 @@
+/**
+ * @file 重置 element-ui 样式
+ * @author svon.me@gmail.com
+ */
+
+ ul, li, ol {
+  padding: 0;
+  margin: 0;
+  li {
+    list-style: none;
+  }
+}
+
+a {
+  color: $linkColor;
+  text-decoration: none;
+  outline: 0 none;
+
+  &:visited,
+  &:hover,
+  &:active {
+    text-decoration: none;
+    color: $linkHoverColor;
+  }
+}
+
+//没有href属性的锚点继承父级的样式
+a:not([href]) {
+  color: inherit;
+}
+
+.el-dialog {
+  .el-dialog__header {
+    padding-top: unit($number: 10);
+    border-bottom: 1px solid $border;
+  }
+  .el-dialog__body {
+    padding: unit($number: 20);
+  }
+  .el-dialog__footer {
+    padding: 0 unit($number: 20) unit($number: 20) unit($number: 20);
+  }
+}
+
+.error-space {
+  & + .el-form-item__error {
+    margin-top: 10px;
+  }
+}
+
+.el-popover {
+  min-width: 80px;
+}
+

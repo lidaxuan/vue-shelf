@@ -1,0 +1,33 @@
+/*
+ * @file flex
+ * @author svon.me@gmail.com
+ */
+
+.flex {
+  display: flex;
+}
+.flex-max {
+  flex: 1;
+}
+.flex-item {
+  flex: 1;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-aic {
+  align-items: center;
+}
+
+.flex-ccb {
+  justify-content: space-between;
+}
+.flex-end {
+  justify-content: flex-end;
+}
