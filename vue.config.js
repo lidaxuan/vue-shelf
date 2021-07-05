@@ -3,6 +3,17 @@
  */
 
 const path = require('path');
+const webpack = require('webpack');
+
+
+// =============================================================================
+const CopyWebpackPlugin = require('copy-webpack-plugin') // 这里引入`这个CopyWebpackPlugin`插件;
+
+
+// =============================================================================
+
+
+
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -35,7 +46,7 @@ module.exports = {
   runtimeCompiler: true,
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development',
+  lintOnSave: false,
   productionSourceMap: false,
   parallel: require('os').cpus().length > 1,
   devServer: {
@@ -48,18 +59,6 @@ module.exports = {
     hot: true,
     disableHostCheck: true,
   },
-  configureWebpack: (config) => {
-    // config.entry = {
-    //   decision: [
-    //     path.join(__dirname, 'src','application', 'decision.js')
-    //   ]
-    // };
-    config.externals = {
-      // "vue": "Vue",
-      // "lodash": "_",
-      // "axios": "axios"
-    };
-  },
   chainWebpack(config) {
     config.plugins.delete('preload'); // TODO: need test
     config.plugins.delete('prefetch'); // TODO: need test
@@ -68,10 +67,7 @@ module.exports = {
 
     config.module.rule('pug').use('pug-plain-loader').loader('pug-plain-loader').end();
 
-    config.module
-      .rule('svg')
-      .exclude.add(resolve('src/icons'))
-      .end();
+    config.module.rule('svg').exclude.add(resolve('src/icons')).end();
     config.module
       .rule('icons')
       .test(/\.svg$/)
@@ -101,6 +97,10 @@ module.exports = {
       .set('@', resolve('src'))
       .set('assets', resolve('src/assets'))
       .set('utils', resolve('src/utils'));
+    
+    config.plugin('provide').use(webpack.ProvidePlugin, [{
+      'window.Quill': 'quill'
+    }]);
   },
   css: {
     // 是否使用css分离插件 ExtractTextPlugin
@@ -114,5 +114,7 @@ module.exports = {
         prependData: getSassVar()
       }
     },
+    extract: false,
+    sourceMap: true
   },
 };

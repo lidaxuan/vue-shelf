@@ -3,7 +3,7 @@
  * @Description:
  * @Author: 李继玄（15201002062@163.com）
  * @Date: 2021-03-29 11:00:24
- * @FilePath: /vue-project1/src/router/index.js
+ * @FilePath: /vue-shelf/src/router/index.js
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -25,6 +25,12 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
+  },
+  {
+    path: "/ed",
+    name: "ed",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/ed.vue"),
   },
 ];
 console.log(process.env);

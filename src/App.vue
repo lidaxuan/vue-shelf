@@ -1,9 +1,11 @@
+<!--
+ * @Description: 
+ * @Author: 李继玄（15201002062@163.com）
+ * @Date: 2021-03-29 11:00:24
+ * @FilePath: /vue-shelf/src/App.vue
+-->
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view />
   </div>
 </template>
@@ -13,7 +15,6 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 

@@ -1,0 +1,15 @@
+/*
+ * @Description: 
+ * @Author: 李继玄（15201002062@163.com）
+ * @Date: 2021-05-19 14:16:42
+ * @FilePath: /vue-shelf/src/element-variables.scss
+ */
+/* 改变主题色变量 */
+
+$--color-primary: rgb(33, 177, 177);
+$--color-primary: pink ;
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+@import "~element-ui/packages/theme-chalk/src/common/var.scss";
+@import "~element-ui/packages/theme-chalk/src/index";
