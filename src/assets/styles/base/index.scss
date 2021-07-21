@@ -1,14 +1,13 @@
-/**
- * @file 公共样式
- * @author svon.me@gmail.com
- */
+@import "./function.scss";
 
 @import "./font.scss";
 @import "./margin.scss";
 @import "./padding.scss";
 @import "./radius.scss";
 @import "./flex.scss";
-@import "./reset.scss";
+@import "./width.scss";
+@import "./height.scss";
+
 
 .pointer {
   cursor: pointer;
@@ -44,13 +43,9 @@
   }
 }
 
-.common-header {
-  p {
-    line-height: 16px;
-    height: 16px;
-    padding-left: 10px;
-    border-left: 3px solid $baseColor;
-  }
+
+.overauto {
+  overflow: auto !important;
 }
 
 .dib {
@@ -65,6 +60,11 @@
 .none {
   display: none
 }
+
+.bold {
+  font-weight: bold;
+}
+
 
 .clearfix::after {
   content: '';
@@ -81,13 +81,10 @@
   overflow: hidden;
   word-wrap: normal;
 }
-
-.fl {
-  float: left;
-}
-
-.fr {
-  float: right;
+.text-over {
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 //ooclass
@@ -103,53 +100,11 @@
   text-align: right;
 }
 
-.pr {
-  position: relative;
-}
-
-.pr-2 {
-  position: relative;
-  z-index: 2
-}
-
-.pr-3 {
-  position: relative;
-  z-index: 3
-}
-
-.pr-4 {
-  position: relative;
-  z-index: 4
-}
-
-.pr-5 {
-  position: relative;
-  z-index: 5
-}
-
-.pct100 {
-  width: 100%;
-}
-
-.h100 {
-  height: 100%;
-}
 
 .hidden {
   overflow: hidden;
 }
 
-.color_red {
-  color: red;
-}
-
-.color_base {
-  color: #237AFF;
-}
-
-.pointer {
-  cursor: pointer;
-}
 
 .disabled {
   cursor: not-allowed !important;
@@ -174,4 +129,8 @@
 
 .hmax {
   height: 100%;
+}
+
+.shadow {
+  box-shadow:#ccc 0px 0px 6px;
 }

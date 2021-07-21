@@ -6,41 +6,32 @@
 -->
 <template>
   <div class="">
-    <div v-html="msg"></div>
-    <!-- <vue-ueditor-wrap v-model="msg" :config="config" @ready="ready"></vue-ueditor-wrap> -->
-    11
     <el-button @click="step = 2" class="w200 h40" type="primary">去开通</el-button>
     <el-button @click="play" class="w200 h40" type="primary">播放</el-button>
+
+    <el-button class="w200 h40" type="primary">
+      <router-link :to="{ path: '/optimization' }">/optimization</router-link>
+    </el-button>
+    <el-button class="w200 h40" type="primary">
+      <router-link :to="{ path: '/testSelect' }">/testSelect</router-link>
+    </el-button>
+    <el-button class="w200 h40" type="primary">
+      <router-link :to="{ path: '/deconstruction' }">/{ data = [] = await xxxxx() }}</router-link>
+    </el-button>
   </div>
 </template>
 
 <script>
 //例如：import 《组件名称》 from '《组件路径》';
-import VueUeditorWrap from 'vue-ueditor-wrap';
-import BenzAMRRecorder from 'benz-amr-recorder';
 export default {
   name: '', // Pascal命名
   mixins: [],
-  components: {
-    VueUeditorWrap,
-  },
+  components: {},
   props: {},
   //import引入的组件需要注入到对象中才能使用
   //这里存放数据
   data() {
-    return {
-      msg: '这是 vue-ueditor-wrap ！',
-      config: {
-        // 编辑器不自动被内容撑高
-        autoHeightEnabled: false,
-        // 初始容器高度
-        initialFrameHeight: 240,
-        // 初始容器宽度
-        initialFrameWidth: '100%',
-        serverUrl: '//ueditor.szcloudplus.com/cos',
-        UEDITOR_HOME_URL: '/ueditor/', // 需要令此处的URL等于对应 ueditor.config.js 中的配置。
-      },
-    };
+    return {};
   },
   //监听属性 类似于data概念
   computed: {},

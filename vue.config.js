@@ -7,7 +7,6 @@ const webpack = require('webpack');
 
 
 // =============================================================================
-const CopyWebpackPlugin = require('copy-webpack-plugin') // 这里引入`这个CopyWebpackPlugin`插件;
 
 
 // =============================================================================
@@ -27,7 +26,6 @@ function getSassVar() {
     text.push(`$domain: null;`);
   }
   text.push('@import "@/assets/styles/common.scss";');
-  // text.push('@import "@/assets/styles/change.scss";');
   const code = text.join('\n');
   return code;
 }
@@ -97,7 +95,7 @@ module.exports = {
       .set('@', resolve('src'))
       .set('assets', resolve('src/assets'))
       .set('utils', resolve('src/utils'));
-    
+
     config.plugin('provide').use(webpack.ProvidePlugin, [{
       'window.Quill': 'quill'
     }]);

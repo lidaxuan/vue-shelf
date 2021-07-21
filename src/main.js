@@ -8,9 +8,11 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
+
+import "./assets/styles/index.scss";
 import "./assets/styles/base/index.scss";
 Vue.config.productionTip = false;
-import elementUi, { Dialog } from 'element-ui';
+import elementUi from 'element-ui';
 
 import './element-variables.scss';
 

@@ -1,3 +1,9 @@
+<!--
+ * @Description: 
+ * @Author: 李大玄
+ * @Date: 2021-03-29 11:00:24
+ * @FilePath: /vue-shelf/src/views/About.vue
+-->
 <template lang="pug">
   <div class="about">
     <template>
@@ -24,7 +30,7 @@ export default {
       item + 1;
       // console.log(item);
     });
-    this.ad();
+    // this.ad();
   },
   methods: {
     gettime() {

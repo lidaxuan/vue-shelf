@@ -5,8 +5,9 @@
  * @FilePath: /vue-shelf/src/views/test/close.vue
 -->
 <template>
-  <div class="">
-    
+  <div class="close hmax">
+    11
+    <el-button>aasdasd</el-button>
   </div>
 </template>
 
@@ -26,30 +27,60 @@ export default {
   //监听属性 类似于data概念
   computed: {},
   //监控data中的数据变化
-  watch: {
-    // 对象写法
-    // temObj: {
-    //   handler(newVal, oldVal) {
-    //   },
-    //   deep: true, // 深度
-    //   immediate: true, // 立即执行
-    // },
-  },
+  watch: {},
   //生命周期 - 创建完成（可以访问当前this实例）
   beforeCreate() {}, //生命周期 - 创建之前
   created() {},
   //生命周期 - 挂载完成（可以访问DOM元素）
   beforeMount() {}, //生命周期 - 挂载之前
-  mounted() {},
+  mounted() {
+    window.addEventListener('beforeunload', (e) => this.beforeunloadHandler(e));
+    window.addEventListener('unload', (e) => this.unloadHandler(e));
+  },
   //方法集合
-  methods: {},
+  methods: {
+    beforeunloadHandler(event) {
+      // debugger
+      this._beforeUnload_time = new Date().getTime();
+      console.log('this._beforeUnload_time：', this._beforeUnload_time);
+      event = event || window.event;
+      console.log(event);
+      if (event) {
+        event.returnValue = '关闭提示';
+      }
+      // debugger
+      return '关闭提示';
+    },
+    unloadHandler() {
+      console.log('this._beforeUnload_time2：', this._beforeUnload_time);
+      this._gap_time = new Date().getTime() - this._beforeUnload_time;
+      // console.log('this._gap_time：', this._gap_time);
+      // 判断是窗口关闭还是刷新
+      // debugger; // 关闭能拦住 刷新拦不住
+      // todo
+      if (this._gap_time <= 5) {
+        // debugger;
+        // todo
+        $.ajax({});
+      } else {
+        $.ajax({}); // 关闭
+        // debugger;
+      }
+    },
+  },
   beforeUpdate() {}, //生命周期 - 更新之前
   updated() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
+  beforeDestroy() {
+    window.removeEventListener('beforeunload', (e) => this.beforeunloadHandler(e));
+    window.removeEventListener('unload', (e) => this.unloadHandler(e));
+  }, //生命周期 - 销毁之前
   destroyed() {}, //生命周期 - 销毁完成
   activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+.close {
+  background: pink;
+}
 </style>

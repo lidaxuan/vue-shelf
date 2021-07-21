@@ -15,7 +15,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: () => import(/* webpackChunkName: "about" */ "../views/show.vue"), // optimization // testSelect
   },
   {
     path: "/about",
@@ -31,6 +31,18 @@ const routes = [
     name: "ed",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/ed.vue"),
+  },
+  {
+    path: "/optimization",
+    component: () => import(/* webpackChunkName: "about" */ "../views/test/optimization"),
+  },
+  {
+    path: "/testSelect",
+    component: () => import(/* webpackChunkName: "about" */ "../views/test/testSelect"),
+  },
+  {
+    path: "/deconstruction",
+    component: () => import(/* webpackChunkName: "about" */ "../views/test/deconstruction"),
   },
 ];
 console.log(process.env);
