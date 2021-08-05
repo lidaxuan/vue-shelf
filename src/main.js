@@ -16,6 +16,9 @@ import elementUi from 'element-ui';
 
 import './element-variables.scss';
 
+import IconFont from './components/IconFont';
+Vue.use(IconFont);
+
 Vue.use(elementUi);
 new Vue({
   router,

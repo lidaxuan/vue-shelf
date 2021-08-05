@@ -15,7 +15,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import(/* webpackChunkName: "about" */ "../views/show.vue"), // optimization // testSelect
+    component: () => import(/* webpackChunkName: "about" */ "../views/icon.vue"), // optimization // testSelect
   },
   {
     path: "/about",
