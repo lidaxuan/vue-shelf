@@ -58,7 +58,7 @@ export default {
       if (/^http/.test(this.src)) {
         return this.src;
       }
-      return `${doMain || process.env.VUE_APP_API_Domain}${this.src}`;
+      return `${this.doMain || process.env.VUE_APP_API_Domain}${this.src}`;
     },
     humpToUnderline(str) {
       return str.replace(/([A-Z])/g, '-$1').toLowerCase();

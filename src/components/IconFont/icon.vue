@@ -8,11 +8,12 @@
   <div>
     <i class="icon-font" ref="IconFont" :style="`font-size:${size - 0}px`" @click="onClick">
       <template v-if="type">
-        <svg aria-hidden="true"  :fill="color" class="svg">
+        <svg aria-hidden="true" :fill="color" :alt="active" class="svg">
           <use :xlink:href="`#${type}`"></use>
         </svg>
       </template>
     </i>
+    <span :style="`font-size:${size - 0}px`" :class="type" class="icon-font iconfont icon-baojingliebiao classicon"></span>
   </div>
 </template>
 
@@ -44,11 +45,12 @@ export default {
     };
   },
   mounted() {
+    console.log(this.$refs.IconFont.parentNode);
     this.color = this.fill;
-    this.$refs.IconFont.onmouseover =  () => {
+    this.$refs.IconFont.parentNode.onmouseover = () => {
       this.color = this.active;
     };
-    this.$refs.IconFont.onmouseout =  () => {
+    this.$refs.IconFont.parentNode.onmouseout = () => {
       this.color = this.fill;
     };
   },
@@ -61,6 +63,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.iconfont {
+  width: 40px;
+  height: 40px;
+}
 .icon-font {
   display: inline-block;
   color: inherit;
@@ -76,10 +82,15 @@ export default {
     height: 1em;
     margin: 0;
     padding: 0;
-    fill: attr(data-fill) !important;
+    fill: attr(title) !important;
+    fill: attr(alt) !important;
+    stroke: red;
+    & > use {
+      stroke: red;
+    }
   }
-  // & > svg:hover {
-  //   fill: attr(data-hover-color) !important;
-  // }
+  & > svg:hover {
+    fill: attr(data-hover-color) !important;
+  }
 }
 </style>
