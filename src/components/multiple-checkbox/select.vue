@@ -40,7 +40,6 @@
         <div class="select-columns">
           <div class="select-column" v-for="(id, index) in showSelect" :key="index">
             <div class="column-main">
-              <!-- //- v-if="checkList[index]" -->
               <el-checkbox-group v-model="checkList[index]">
                 <div class="item-content" v-for="item in getColumnList(id)" :key="item[primaryKey]">
                   <el-checkbox
@@ -501,6 +500,7 @@ export default {
       indeterminate[data[this.primaryKey]] = false;
       // 设置子元素选中状态
       const childrenDeep = db.childrenDeep(this.getPrimaryKeyWhere(data[this.primaryKey]));
+      console.log(childrenDeep);
       _.each(childrenDeep, (item) => {
         const level = item.level;
         const value = item[this.primaryKey];
@@ -510,9 +510,11 @@ export default {
       // 判断是否为多选
       if (!this.readio) {
         // 选中
+        console.log(status);
         if (status) {
           _.each(this.checkList, (column, index) => {
             const arr = [].concat(column || [], checkList[index] || []);
+            console.log(arr);
             checkList[index] = _.compact(_.uniq(arr));
           });
         } else {
@@ -622,18 +624,9 @@ export default {
       try {
         const queyr = { id };
         // 获取数据
-        let arr = [];
-      for (let i = 0; i < 100; i++) {
-        arr.push({
-          pid: i,
-          id: `lidaxuan${i}`,
-          name: '李大玄',
-          isHaveSon: false,
-        });
-      }
-        const result = arr;
+        const result = await this.getColumnServer(queyr);
         // 整合数据格式
-        const db = new DB('column', [], this.primaryKey, this.foreignKey, this.topLevel);
+        const db = new DB([], this.primaryKey, this.foreignKey, this.topLevel);
         const list = db.flatten([].concat(result), this.childrenKey);
         // 处理数据
         if (id && id !== 0) {

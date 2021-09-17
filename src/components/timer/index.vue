@@ -1,6 +1,11 @@
+<!--
+ * @Description: 
+ * @Author: 李大玄
+ * @Date: 2021-08-06 09:47:12
+ * @FilePath: /vue-shelf/src/components/timer/index.vue
+-->
 <template>
   <div class="duration" v-cloak ref="duration">
-    <!-- <pre>{{time}}</pre> -->
     <div v-show="disabled" class="mark"></div>
     <table class="time-table" @mousedown="onMousedown" @mouseup="onMouseup" @mouseover="onMouseover">
       <colgroup>
@@ -111,7 +116,6 @@ export default {
   mounted() {},
   methods: {
     getbgColor(item) {
-      console.log(item);
       if (item.value === On) {
         return `background-color: ${this.color};`
       }

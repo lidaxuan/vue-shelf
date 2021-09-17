@@ -94,6 +94,7 @@ module.exports = {
     config.resolve.alias
       .set('@', resolve('src'))
       .set('assets', resolve('src/assets'))
+      .set('@lijixuan/gojs', resolve('src/components/go'))
       .set('utils', resolve('src/utils'));
 
     config.plugin('provide').use(webpack.ProvidePlugin, [{

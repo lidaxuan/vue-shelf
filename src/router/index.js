@@ -15,7 +15,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import(/* webpackChunkName: "about" */ "../views/icon.vue"), // optimization // testSelect
+    component: () => import(/* webpackChunkName: "about" */ "../views/entrypage.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/about",
@@ -45,7 +45,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ "../views/test/deconstruction"),
   },
 ];
-console.log(process.env);
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
