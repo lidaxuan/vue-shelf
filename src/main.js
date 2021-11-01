@@ -25,7 +25,7 @@ Vue.directive('draggable', draggable)
 import IconFont from './components/IconFont';
 Vue.use(IconFont);
 
-
+import './directives/waves.css'
 
 const link = document.createElement('link');
 link.rel = "stylesheet"

@@ -15,6 +15,7 @@ import draggable from './draggable';
 import Int from './int';
 import focus from './focus';
 import loadmore from './loadmore';
+import waves from './waves';
 
 const directives = {
   copy,
@@ -26,7 +27,8 @@ const directives = {
   draggable,
   Int,
   focus,
-  loadmore
+  loadmore,
+  waves
 };
 
 export default {

@@ -13,7 +13,7 @@
         </svg>
       </template>
     </i>
-    <span :style="`font-size:${size - 0}px`" :class="type" class="icon-font iconfont icon-baojingliebiao classicon"></span>
+    <!-- <span :style="`font-size:${size - 0}px`" :class="type" class="icon-font iconfont icon-baojingliebiao classicon"></span> -->
   </div>
 </template>
 
@@ -45,14 +45,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$refs.IconFont.parentNode);
-    this.color = this.fill;
-    this.$refs.IconFont.parentNode.onmouseover = () => {
-      this.color = this.active;
-    };
-    this.$refs.IconFont.parentNode.onmouseout = () => {
-      this.color = this.fill;
-    };
+    
   },
   methods: {
     onClick($event) {

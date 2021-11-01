@@ -15,7 +15,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import(/* webpackChunkName: "about" */ "../views/entrypage.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/testComp.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/about",

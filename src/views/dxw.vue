@@ -79,7 +79,7 @@ export default {
       },
       elConfig: {
         style: 'width: 950px',
-        maxHeight: '700',
+        maxHeight: '500',
         border: false,
         stripe: false,
       },
@@ -108,7 +108,7 @@ export default {
   },
   created() {
     this.dConfig.saveDATA = [];
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 50000; i++) {
       this.dConfig.saveDATA.push({
         date: i,
         name: '王小虎' + i,

@@ -24,14 +24,26 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <hr />
+
+    <!-- <Table class="myTable" ref="tableRef" :height="400" :data="tableData" :tableColumnData="tableColumnData">
+      <template #handle="scope">
+        <el-button type="text" @click="addAiUserTimeoutBtn(scope.row)">修改</el-button>
+        <el-button type="text" @click="delTableItemBtn(scope.row)">删除</el-button>
+      </template>
+    </Table> -->
   </div>
 </template>
 
 <script>
 import Column from './column.vue';
+
+import Table from '@/components/table';
+
 export default {
   name: 'DTable',
-  components: { Column },
+  components: { Column, Table },
   props: {
     dConfig: {
       type: Object,
@@ -74,6 +86,33 @@ export default {
       scrollTop: 0,
       num: 0,
       newHeadData: [],
+
+      tableColumnData: [
+        { width: '70px', label: '排序号', prop: 'date', type: 'index', fixed: 'left' },
+        { label: '动作', prop: 'name', width: '150' },
+        { label: 'ID', prop: 'name', showOverflowTooltip: true },
+        { width: '100', label: '操作', prop: 'desp', slotName: 'handle' },
+      ],
+      aaaa: [
+        { label: '编号', align: 'center', prop: 'date', minWidth: '90', fixed: 'left' },
+        {
+          label: '用户信息',
+          align: 'center',
+          children: [
+            {
+              label: '省市区',
+              align: 'center',
+              prop: 'address',
+              children: [
+                { label: '地址', align: 'center', prop: 'address', minWidth: '300' },
+                { label: '省份', align: 'center', prop: 'province', minWidth: '150' },
+                { label: '市区', align: 'center', prop: 'city', minWidth: '150' },
+              ],
+            },
+            { label: '名称', align: 'center', prop: 'name', minWidth: '180' },
+          ],
+        },
+      ],
     };
   },
   created() {
@@ -82,7 +121,10 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      // console.log(this.$refs.tableRef.$el.querySelector('.el-table__header-wrapper'));
+      console.log(this.$refs.tableRef);
       this.tableRef = this.$refs.tableRef.bodyWrapper;
+      // this.tableRef = this.$refs.tableRef.$el.querySelector('.el-table__header-wrapper');
       this.tableFixedLeft = document.querySelector('.el-table .el-table__fixed .el-table__fixed-body-wrapper');
       this.tableFixedRight = document.querySelector('.el-table .el-table__fixed-right .el-table__fixed-body-wrapper');
       /**
@@ -93,6 +135,7 @@ export default {
       divWarpPar.style.height = this.dConfig.saveDATA.length * this.dConfig.itemHeight + 'px';
       let divWarpChild = document.createElement('div');
       divWarpChild.className = 'fix-warp';
+      console.log(this.tableRef);
       divWarpChild.append(this.tableRef.children[0]);
       divWarpPar.append(divWarpChild);
       this.tableRef.append(divWarpPar);

@@ -7,11 +7,22 @@
  */
 
 function append(src) {
-  const script = document.createElement('script');
-  script.src = src;
-  script.setAttribute('data-namespace', src);
   const body = document.querySelector('body');
-  body.appendChild(script);
+  if (src.match('.js')) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.setAttribute('data-namespace', src);
+    body.appendChild(script);
+  } else if (src.match('.css')) {
+    const link = document.createElement('link');
+    link.href = src;
+    link.setAttribute('rel','stylesheet');
+    body.appendChild(link);
+  } else {
+    const styleTag = document.createElement('style');
+    styleTag.innerText = src;
+    body.appendChild(styleTag);
+  }
 }
 
 export default append;
