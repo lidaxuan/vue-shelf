@@ -25,7 +25,18 @@
       <template v-if="newTableColumnData2 && newTableColumnData2.length > 0">
         <template v-for="(item, index) in newTableColumnData2">
           <TableColumn :key="index" v-bind="item" v-if="item.display">
-            <Column v-if="item.children && item.children.length" :list="item.children"></Column>
+            <Column v-if="item.children && item.children.length" :list="item.children">
+              <template #default="scope" v-if="item.slotName">
+                {{ item }}
+                <slot :name="item.slotName" v-bind="scope" />
+              </template>
+              <template #default="scope" v-else-if="!['index', 'selection', 'expand'].includes(item.type)">
+                <span v-if="item.formatter">
+                  <span>{{ item.formatter(scope.row, scope.column, '', scope.$index) }}</span>
+                </span>
+                <span v-else>{{ scope.row }}</span>
+              </template>
+            </Column>
             <template #header="scope" v-if="item.operColumn">
               {{ item.label }}
               <!-- <span v-if="item.operColumn">
@@ -368,7 +379,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .flip-list-move {
   transition: transform 0.5s;
 }
@@ -388,4 +399,5 @@ export default {
 .el-table__list-group-item i {
   cursor: pointer;
 }
+
 </style>

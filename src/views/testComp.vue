@@ -5,68 +5,50 @@
  * @FilePath: /vue-shelf/src/views/testComp.vue
 -->
 <template>
-  <div class="">
-    {{arr}}
-    <div v-for="item in arr">
-      <Child :item="item"></Child>
+  <div class="" v-pin>
+    <div class="w200 h200" style="background: pink" v-waves="{ duration: 10000, type: 'hit | center' }" v-pin></div>
+    <el-button type="primary" @click="concatStr">新增</el-button>
+    <el-input v-model="ipt" id="ipt" v-emoji.int="callback"></el-input>
+
+    <div class="infinite-list h300 overauto" v-tableLoadmore="tableLoadmore">
+      <div v-for="(item, index) in 100">ada的发生的VBvSBUB看宝宝CB {{ index }}</div>
     </div>
   </div>
 </template>
 
 <script>
-//例如：import 《组件名称》 from '《组件路径》';
-import Child from '../components/testcomp/child.vue'
-
 export default {
-  name: '', // Pascal命名
-  mixins: [],
-  components: {
-    Child
-  },
-  props: {},
   data() {
     return {
-      arr: [
-        {
-          a: {
-            b: {
-              c: 1,
-            },
-          },
-          f: 1
-        },
-        {
-          a: {
-            b: {
-              c: 234,
-            },
-          },
-          f: 45
-        },
-      ],
+      ipt: '',
     };
   },
-  computed: {},
-  watch: {
-    // temObj: {
-    //   handler(newVal, oldVal) {
-    //   },
-    //   deep: true, // 深度
-    //   immediate: true, // 立即执行
-    // },
+  methods: {
+    callback(val) {
+      console.log(val);
+    },
+    tableLoadmore(val) {
+      console.log(val);
+    },
+    concatStr() {
+      this.insertInputTxt('ipt', '这是插入的内容');
+    },
+    // 插入字符串
+    insertInputTxt(id, insertTxt) {
+      var elInput = document.getElementById(id);
+      var startPos = elInput.selectionStart;
+      var endPos = elInput.selectionEnd;
+      if (startPos === undefined || endPos === undefined) return;
+      var txt = elInput.value;
+      var result = txt.substring(0, startPos) + insertTxt + txt.substring(endPos);
+      elInput.value = result;
+      this.ipt = result; // 赋值
+      elInput.focus();
+      this.$nextTick(() => {
+        elInput.selectionStart = startPos + insertTxt.length;
+        elInput.selectionEnd = startPos + insertTxt.length;
+      });
+    },
   },
-  beforeCreate() {},
-  created() {},
-  beforeMount() {},
-  mounted() {},
-  methods: {},
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
-  destroyed() {}, //生命周期 - 销毁完成
-  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
-<style lang='scss' scoped>
-//@import url(); 引入公共css类
-</style>

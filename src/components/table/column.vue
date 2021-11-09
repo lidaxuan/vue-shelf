@@ -7,7 +7,9 @@
 <template>
   <div>
     <el-table-column v-for="(item, index) in list" :key="index" v-bind="item">
-      <column v-if="item.children && item.children.length" :list="item.children"></column>
+      <column v-if="item.children && item.children.length" :list="item.children">
+        <slot/>
+      </column>
     </el-table-column>
   </div>
 </template>

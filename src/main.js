@@ -24,6 +24,8 @@ Vue.directive('draggable', draggable)
 
 import IconFont from './components/IconFont';
 Vue.use(IconFont);
+import pin from './directives/pin'
+Vue.use(pin)
 
 import './directives/waves.css'
 
