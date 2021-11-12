@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="" v-pin>
-    <div class="w200 h200" style="background: pink" v-waves="{ duration: 10000, type: 'hit | center' }" v-pin></div>
+    <div class="w200 h200" style="background: pink" v-waves="{ duration: 10000, type: 'hit | center' }" ></div>
     <el-button type="primary" @click="concatStr">新增</el-button>
     <el-input v-model="ipt" id="ipt" v-emoji.int="callback"></el-input>
 

@@ -14,8 +14,18 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
+    name: "showdigitroll",
+    component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
+  },
+  {
+    path: "/question",
     name: "Home",
-    component: () => import(/* webpackChunkName: "about" */ "../views/tableasd.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/question/index.vue"), // optimization // testSelect fontClass
+  },
+  {
+    path: "/testComp",
+    name: "testComp",
+    component: () => import(/* webpackChunkName: "about" */ "../views/testComp.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/about",
