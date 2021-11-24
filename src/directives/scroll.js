@@ -33,7 +33,6 @@ const scroll = {
     window.addEventListener('scroll', () => {
       let scroll = scrollTop - i;
       i = scrollTop;
-      console.log({scroll});
       if (scrollTop === 0) {
         return;
       }

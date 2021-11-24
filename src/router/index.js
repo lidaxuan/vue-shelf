@@ -14,6 +14,11 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
+    name: "",
+    component: () => import(/* webpackChunkName: "about" */ "../views/watchIpt.vue"), // optimization // testSelect fontClass
+  },
+  {
+    path: "/showdigitroll",
     name: "showdigitroll",
     component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
   },

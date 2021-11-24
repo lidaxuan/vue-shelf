@@ -148,7 +148,7 @@ const resize = {
     };
     // 鼠标抬起 移除事件
     function mouseupHanlder(e) {
-      console.log('抬起', e.target);
+      // console.log('抬起', e.target);
       document.body.removeEventListener('mousemove', mousemoveHandler);
       document.body.style.cursor = 'default';
     };
@@ -206,12 +206,10 @@ const resize = {
       },
       b: function (e, width, height) {
         if (e.y > currentEvent.y) {
-          console.log(currentEvent.y);
           const toTopHeight = height + (e.y - currentEvent.y) * opts.speed;
           el.style.height = opts.max.height ? `${Math.min(opts.max.height, toTopHeight)}px` : `${toTopHeight}px`;
         } else {
           const toBottomHeight = height - (currentEvent.y - e.y) * opts.speed;
-          console.log(height, currentEvent.y, e.y);
           el.style.height = opts.min.height ? `${Math.max(opts.min.height, toBottomHeight)}px` : `${toBottomHeight}px`;
         }
       },

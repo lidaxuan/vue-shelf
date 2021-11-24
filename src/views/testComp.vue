@@ -8,7 +8,8 @@
   <div class="" v-pin>
     <div class="w200 h200" style="background: pink" v-waves="{ duration: 10000, type: 'hit | center' }" ></div>
     <el-button type="primary" @click="concatStr">新增</el-button>
-    <el-input v-model="ipt" id="ipt" v-emoji.int="callback"></el-input>
+    
+    <el-input v-model="ipt" id="ipt" data-reg="/^((ht|f)tps?:\/\/)?[\w-]+(\.[\w-]+)+:\d{1,5}\/?$/" v-emoji.time="callback"></el-input>
 
     <div class="infinite-list h300 overauto" v-tableLoadmore="tableLoadmore">
       <div v-for="(item, index) in 100">ada的发生的VBvSBUB看宝宝CB {{ index }}</div>
@@ -27,7 +28,7 @@ export default {
     callback(val) {
       console.log(val);
     },
-    tableLoadmore(val) {
+  tableLoadmore(val) {
       console.log(val);
     },
     concatStr() {

@@ -50,7 +50,6 @@ files.keys().map(src => {
     }
   }
 });
-console.log(directives);
 
 export default {
   install(Vue) {

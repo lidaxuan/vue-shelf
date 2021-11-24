@@ -32,7 +32,7 @@ files.keys().map((src) => {
     }
   }
 });
-console.log(comMap);
+const keys = Object.keys(comMap);
 export default {
   name: '', // Pascal命名
   mixins: [],
@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       comMap,
-      active: 'One',
+      active: keys[0],
     };
   },
   computed: {},
