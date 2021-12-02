@@ -15,7 +15,7 @@ const routes = [
   {
     path: "/",
     name: "",
-    component: () => import(/* webpackChunkName: "about" */ "../views/watchIpt.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/countToDemo.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/showdigitroll",

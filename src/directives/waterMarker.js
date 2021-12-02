@@ -1,3 +1,10 @@
+/* jshint esversion: 6 */
+/*
+ * @Description: 
+ * @Author: 李大玄
+ * @Date: 2021-08-27 14:58:17
+ * @FilePath: /vue-shelf/src/directives/waterMarker.js
+ */
 function addWaterMarker(str, parentNode, font, textColor) {
   // 水印文字，父元素，字体，文字颜色
   var can = document.createElement('canvas')

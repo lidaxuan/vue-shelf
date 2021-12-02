@@ -8,8 +8,10 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import directives from "./directives";
-Vue.use(directives)
+// import directives from "./directives";
+// Vue.use(directives)
+import Directives from '@lijixuan/vue-customdirectives';
+Vue.use(Directives)
 
 import "./assets/styles/index.scss";
 import "./assets/styles/base/index.scss";
