@@ -8,10 +8,10 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-// import directives from "./directives";
-// Vue.use(directives)
-import Directives from '@lijixuan/vue-customdirectives';
-Vue.use(Directives)
+import directives from "./directives";
+Vue.use(directives)
+// import Directives from '@lijixuan/vue-customdirectives';
+// Vue.use(Directives)
 
 import "./assets/styles/index.scss";
 import "./assets/styles/base/index.scss";
@@ -30,6 +30,10 @@ import pin from './directives/pin'
 Vue.use(pin)
 
 import './directives/waves.css'
+
+import { eachbotFlowAdminWeb, robotServer } from './service';
+Vue.prototype.$HttpRobot = robotServer; //机器人serve
+Vue.prototype.$HttpFlowAdmin = eachbotFlowAdminWeb; //标签 serve
 
 const link = document.createElement('link');
 link.rel = "stylesheet"

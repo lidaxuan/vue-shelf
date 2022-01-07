@@ -54,6 +54,19 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    proxy: {
+      '/robot': {
+        // target: 'http://dev-prd19.easyliao.com', // 开发
+        // target: 'http://192.168.169.24:7101', // 开发
+        target: 'http://prd19.easyliao.com', // 开发
+        // target: 'http://192.168.169.36:7107', // 开发
+        // target: 'http://app.easyliao.com', // 测试
+        changeOrigin: true,
+        pathRewrite: {
+          '^/robot': '', //路径重写npm
+        },
+      }
+    },
     hot: true,
     disableHostCheck: true,
   },

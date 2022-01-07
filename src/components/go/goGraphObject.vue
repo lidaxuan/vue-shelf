@@ -4,8 +4,13 @@
  * @Date: 2021-08-17 14:46:17
  * @FilePath: /vue-shelf/src/components/go/goGraphObject.vue
 -->
+//  const companyInfo = {
+//         projectId: 196949374176133120,
+//         userId: 'renjingyang',
+//         companyId: 1,
+//       };
 <template>
-  <div class="">
+  <div class="hmax">
     组件
     <div id="diagram" class="bb-h100">
       <div id="chartDiagram" ref="efContainer" class="chart-diagram" />
@@ -16,6 +21,8 @@
 <script>
 //例如：import 《组件名称》 from '《组件路径》';
 import go from '@/assets/plugins/go';
+import { defineFigureGenerator, chartDiagram, linkTemplate } from './init';
+
 let $ = void 0;
 export default {
   name: '', // Pascal命名
@@ -27,6 +34,105 @@ export default {
   data() {
     return {
       diagram: '',
+      nodeTabSetting: {},
+      dataModel: {},
+      sideTabArr: [
+        { id: '1', name: '默认提问' }, // 机器人提问
+        { id: '2', name: '针对性提问' }, // 模块回复
+        { id: '3', name: '超时回复' },
+        { id: '4', name: '知识库' },
+        { id: '5', name: '意图优先级' },
+        { id: '7', name: '通用节点回复' },
+        { id: '6', name: '模块设置' },
+      ],
+      flowInfoQuery: {},
+      Driver: '',
+      imgx_r: require('@/assets/img/talk/x_r.png'),
+      emptyImg: require('@/assets/img/empty/7.png'),
+      emptyText: '拖动模块进入画布即可新增',
+      openImg: require('@/assets/img/talk/open.png'),
+      packUpImg: require('@/assets/img/talk/packUp.png'),
+      initImg: require('@/assets/img/talk/init.png'),
+      endImg: require('@/assets/img/talk/end.png'),
+      solicomSuccessImg: require('@/assets/img/talk/solicomSuccess.png'),
+      artificialImg: require('@/assets/img/talk/artificial.png'),
+      flowLoading: false,
+      asideCollapse: false,
+      animationTimer: null,
+      isCollapse: false,
+      filterModule: '',
+      filterName: '',
+      initModuleId: '', //初始化模块
+      customList: [],
+      isWidth: '210px',
+      delDialog: {
+        title: '',
+        delLoading: false,
+        isShow: false,
+        text: '',
+        lineObj: {},
+      },
+      trainingDialog: {
+        type: '1',
+        title: '试听提示',
+        model: '',
+        sendContent: '',
+        ishow: false,
+      },
+      preview: {
+        isShow: false,
+        url: '',
+      },
+
+      flexLinkArr: [],
+      flexNodeArr: [],
+      cellSide: 1,
+      replyDialog: {
+        title: '',
+        loading: false,
+        isShow: false,
+      },
+
+      optionsList: [],
+
+      // 画布
+      diagram: '',
+
+      objGo: '',
+
+      menuList: [],
+      // 所有数据
+      dataModel: {
+        modules: [],
+        sequenceFlows: [],
+      },
+      //  // 当前父节点获取对应模块及所有子模块
+      parentNode: {},
+      // 连线
+      parentNodeLine: {},
+      // 当前子节点
+      childNode: {},
+      nodeTabSetting: {
+        activeName: '1',
+        activeTabs: [],
+      },
+      zoom: 100,
+      restaurants: {
+        ntag: [],
+      },
+      checkedNodeArr: [],
+      checkedLineArr: [],
+      // 项目
+      project: {
+        flag: true,
+        list: [],
+        row: {},
+        loading: false,
+        selectItem: 0,
+        projectId: '',
+        pComponents: 'robotIndex',
+      },
+      speakContent: [],
     };
   },
   //监听属性 类似于data概念
@@ -43,195 +149,23 @@ export default {
     // 画布设置
     diagramInit() {
       $ = go.GraphObject.make;
+      // $ = go.GraphObject.make;
       // 圆角
-      go.Shape.defineFigureGenerator('RoundedAngle', function (shape, w, h) {
-        var p1 = 10;
-        if (shape !== null) {
-          var param1 = shape.parameter1;
-          if (!isNaN(param1) && param1 >= 0) p1 = param1; // can't be negative or NaN
-        }
-        p1 = Math.min(p1, w / 2);
-        p1 = Math.min(p1, h / 2);
-        var geo = new go.Geometry();
-        geo.add(
-          new go.PathFigure(0, p1)
-            .add(new go.PathSegment(go.PathSegment.Arc, 180, 90, p1, p1, p1, p1))
-            .add(new go.PathSegment(go.PathSegment.Line, w - p1, 0))
-            .add(new go.PathSegment(go.PathSegment.Arc, 270, 90, w - p1, p1, p1, p1))
-            .add(new go.PathSegment(go.PathSegment.Arc, 0, 90, w - p1, h - p1, p1, p1))
-            .add(new go.PathSegment(go.PathSegment.Arc, 90, 90, p1, h - p1, p1, p1).close())
-        );
-        // don't intersect with two top corners when used in an "Auto" Panel
-        geo.spot1 = new go.Spot(0, 0, 0.3 * p1, 0.3 * p1);
-        geo.spot2 = new go.Spot(1, 1, -0.3 * p1, 0);
-        return geo;
-      });
+      go.Shape.defineFigureGenerator('RoundedAngle', defineFigureGenerator);
       // 初始化流程
-      this.diagram = $(go.Diagram, 'chartDiagram', {
-        scale: 1.0,
-        // initialDocumentSpot: go.Spot.Center,
-        // initialViewportSpot: go.Spot.Center,
-        // allowZoom: !1,
-        // allowLink: !0,
-        'draggingTool.dragsLink': false, //拖动线
-        // initialContentAlignment: go.Spot.TopCenter, // 居中显示
-        // "undoManager.isEnabled": true, // 支持 Ctrl-Z 和 Ctrl-Y 操作
-        'toolManager.hoverDelay': 100, //tooltip提示显示延时
-        // "toolManager.toolTipDuration": 10000, //tooltip持续显示时间
-        // isReadOnly:true,//只读
-        // allowZoom: true,//画布是否可以缩放
-        'grid.visible': false, //显示网格
-        allowMove: true, //允许拖动
-        // allowDragOut:true,
-        allowDelete: true,
-        'animationManager.duration': 100, //画布刷新的加载速度
-        //允许使用delete键删除模块
-        'commandHandler.deletesTree': false,
-        // 复制
-        allowCopy: false,
-        // "animationManager.initialAnimationStyle":go.Animation.EaseOutExpo,
-        // "animationManager.initialAnimationStyle": go.Animation.EaseInOutQuad,
-        'animationManager.initialAnimationStyle': go.AnimationManager.None,
-        // "animationManager.initialAnimationStyle":go.AnimationManager.AnimateLocations,
-        hasHorizontalScrollbar: false, //去除水平滚动条
-        hasVerticalScrollbar: false, //去除竖直滚动条
-        // "canStart":false,
-        // allowClipboard: true,
-
-        ChangedSelection: this.changedSelection,
-        // "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom, //有鼠标滚轮事件放大和缩小，而不是向上和向下滚动
-        // layout: $(go.TreeLayout, {
-        //     treeStyle: go.TreeLayout.LayerUniform,
-        //     alignment: go.TreeLayout.AlignmentCenterChildren,
-        //     angle: 90,
-        //     layerSpacing: 80,
-        //     alternateAngle: 0,
-        //     alternateNodeIndent: 60,
-        //     alternateNodeIndentPastParent: 1,
-        //     alternateNodeSpacing: 60,
-        //     alternateLayerSpacing: 60,
-        //     alternateLayerSpacingParentOverlap: 1,
-        //     alternatePortSpot: new go.Spot(.001,1,20,0),
-        //     alternateChildPortSpot: go.Spot.Top
-        // }),
-        // layout:
-        //       $(go.TreeLayout,
-        //             {angle: 90, arrangement: go.TreeLayout.ArrangementHorizontal}),
-        // layout:
-        //       $(go.TreeLayout,
-        //             {angle: 90, arrangement: go.TreeLayout.ArrangementFixedRoots}),
-        // layout:
-        //       $(go.TreeLayout,
-        //             {	angle: 90,
-        //                 compaction:  go.TreeLayout.LayerUniform}),
-        // layout:
-        //       $(go.TreeLayout,
-        //             {	angle: 90,
-        //                 layerSpacing:80,
-        //                 isOngoing:false,
-        //                 compaction: go.TreeLayout.CompactionNone}),
-        layout: this.cancelAutoLayout(),
-        // "draggingTool.dragsTree": true,
+      chartDiagram.ChangedSelection = this.changedSelection;
+      chartDiagram.layout = $(go.LayeredDigraphLayout, {
+        isInitial: false,
+        isOngoing: false,
+        layerSpacing: 50,
       });
-      // // 放大
-      // $(go.Overview, "myOverviewDiv",
-      //       {observed: this.diagram, contentAlignment: go.Spot.Center});
+      this.diagram = $(go.Diagram, 'chartDiagram', chartDiagram);
+      // 放大
+      // $(go.Overview, "myOverviewDiv", {observed: this.diagram, contentAlignment: go.Spot.Center});
       // 箭头连线
-      this.diagram.linkTemplate = $(
-        go.Link,
-        {
-          corner: 15,
-          toShortLength: 4,
-          // curve: go.Link.JumpOver,
-          toEndSegmentLength: 15,
-          fromEndSegmentLength: 10,
-          cursor: 'pointer',
-        },
-        new go.Binding('fromSpot', 'fromSpot', go.Spot.parse),
-        new go.Binding('toSpot', 'toSpot', go.Spot.parse),
-        new go.Binding('routing', 'routing'),
-        {
-          selectionAdornmentTemplate: $(
-            go.Adornment,
-            $(go.Shape, { isPanelMain: true, stroke: '#fff', strokeWidth: 3 }),
-            $(go.Shape, { toArrow: 'Standard', fill: '#fff', stroke: null })
-          ),
-        },
-        $(
-          go.Shape,
-          'RoundedRectangle',
-          {
-            fill: '#fff',
-            stroke: '#fff',
-          },
-          new go.Binding('strokeDashArray', 'strokeDashArray'),
-          new go.Binding('name', 'animation'),
-          // #8445DE
-          new go.Binding('stroke', 'isHighlighted', (h) => {
-            return h ? '#fff' : '#555555';
-          }).ofObject(),
-          new go.Binding('strokeWidth', 'isHighlighted', (h) => {
-            return h ? 3 : 2.5;
-          }).ofObject()
-        ),
-        // this.selectModuleColor(),
-        $(
-          go.Shape,
-          { toArrow: 'Standard', strokeWidth: 0 },
-          new go.Binding('fill', 'isHighlighted', (h) => {
-            return h ? '#fff' : '#555555';
-          }).ofObject()
-        ),
-        {
-          contextMenu: this.linkType(),
-        },
-        {
-          click: (e, obj) => {
-            // 虚线点击
-            if (obj.part.data.animation == 'animation') {
-              this.asideCollapse = true;
-              this.$refs.sideSetting.intentionFlag = false;
+      this.diagram.linkTemplate = linkTemplate($, this.linkType, this.dashed, this.delLinkCom);
 
-              this.$nextTick(() => {
-                this.$refs.sideSetting.intentionFlag = true;
-              });
-              this.parentNode = obj.part.data;
-              this.nodeTabSetting.activeName = '1';
-              this.nodeTabSetting.activeTabs = [{ id: '1', name: '意图列表' }];
-            }
-          },
-        },
-        this.lineEnterAndLeave(),
-        $(
-          go.Picture,
-          {
-            cursor: 'pointer',
-            opacity: 0,
-            name: 'linkClose',
-            desiredSize: new go.Size(14, 14),
-            click: (e, obj) => {
-              this.delLinkCom(obj.part.data);
-            },
-          },
-          this.delEnterAndLeave(),
-          new go.Binding('source', 'close')
-        )
-      );
-      // this.projectListFun('', (res) => {
-      //   this.project.list = res.data;
-      //   this.project.projectId = this.project.list[0].id;
-      //   this.project.row = this.project.list[0];
-      //   this.userParam = {
-      //     projectId: this.project.projectId,
-      //     userId: this.textRobot.aiUserId,
-      //   };
-
-      //   this.textRobot.projectId = this.userParam.projectId;
-      //   this.textRobot.clickProjectId = this.userParam.projectId;
-      //   this.$store.dispatch('setTextRobot', {
-      //     ...this.textRobot,
-      //   });
-        this.settingInit(this.userParam);
+      this.settingInit(this.userParam);
       // });
       // 监听连线
       this.diagram.addDiagramListener('LinkDrawn', (e) => {
@@ -341,6 +275,712 @@ export default {
         // can.style.outlineColor = "#ff1a52";
       });
     },
+    // 虚线点击
+    dashed(e, obj) {
+      console.log(e, obj);
+      // 虚线点击
+      if (obj.part.data.animation == 'animation') {
+        this.asideCollapse = true;
+        this.$refs.sideSetting.intentionFlag = false;
+
+        this.$nextTick(() => {
+          this.$refs.sideSetting.intentionFlag = true;
+        });
+        this.parentNode = obj.part.data;
+        this.nodeTabSetting.activeName = '1';
+        this.nodeTabSetting.activeTabs = [{ id: '1', name: '意图列表' }];
+      }
+    },
+    // 操作设置
+    settingInit(userParam) {
+      this.nodeTabSetting.activeName = '1';
+      this.dataModel.sequenceFlows = []; //初始化
+      this.dataModel.modules = []; //初始化
+      this.flowLoading = true;
+      this.allFlowFun(userParam);
+    },
+    // 初始化全量接口
+    async allFlowFun(userParam = this.userParam) {
+      // const companyInfo = this.$store.getters.companyInfo || {};
+      const companyInfo = {
+        projectId: 196949374176133120,
+        userId: 'renjingyang',
+        companyId: 1,
+      };
+      let query = Object.assign({}, userParam, { ...companyInfo });
+      this.asideCollapse = false;
+      await this.$HttpFlowAdmin
+        .getFlow(query)
+        .then((res) => {
+          this.dataModel.modules = res.data.modules != null && res.data.modules != '' ? res.data.modules : [];
+          this.dataModel.sequenceFlows = res.data.sequenceFlows != null && res.data.sequenceFlows != '' ? res.data.sequenceFlows : [];
+          if (this.dataModel.modules != null && this.dataModel.modules != '') {
+            this.initModuleId = res.data.initModuleId;
+            this.dataModel.modules = this.nodeArrFun(this.dataModel.modules, this.initModuleId); //处理拼装数据 意图
+            this.dataModel.sequenceFlows = this.linkArrFun(this.dataModel.modules, this.dataModel.sequenceFlows); //所有的线
+            // 所有模块
+            Promise.all([
+              this.moduleReset(), //画出来所有模块。
+              this.getModuleList(), //左侧模板
+              this.filterSequenceFlows(this.dataModel.sequenceFlows), //过滤模块连线类型
+              this.dataModelFun(this.dataModel.modules, this.dataModel.sequenceFlows), //画布更新
+            ]);
+          }
+        })
+        .finally(() => {
+          this.flowLoading = false;
+        });
+    },
+    // 获取所有模板
+    getModuleList(search) {
+      const query = {
+        projectId: 196949374176133120,
+        userId: 'renjingyang',
+        companyId: 1,
+      };
+      this.$HttpRobot.ai6AiBaseModuleList({ ...this.userParam, search: search, ...query }).then((res) => {
+        this.menuList = res.data;
+        if (this.menuList != null && this.menuList != '') {
+          var data = [],
+            flag = 0,
+            list = this.menuList.map((item) => {
+              if (item.moduleUiProperties == null) {
+                item.moduleUiProperties = {};
+                item.moduleUiProperties.categoryName = '未知模块';
+                item.moduleUiProperties.icon = '#iconheibanjiqixunlian_jieshumokuai-19';
+                item.moduleUiProperties.img = '';
+              }
+              return item;
+            });
+          // 所有数据归类计算
+          var moduleUiPropertiesObj = {};
+          for (var i = 0; i < list.length; i++) {
+            var z = '';
+            for (var j = 0; j < data.length; j++) {
+              if (data[j].name == list[i].moduleUiProperties.categoryName) {
+                flag = 1;
+                z = j;
+                break; //调出循环在list循环中添加对应数据
+              }
+            }
+            if (flag == 1) {
+              data[z].arr.push(list[i]);
+              flag = 0;
+            } else if (flag == 0) {
+              moduleUiPropertiesObj = {};
+              moduleUiPropertiesObj.name = list[i].moduleUiProperties.categoryName;
+              moduleUiPropertiesObj.arr = new Array();
+              moduleUiPropertiesObj.arr.push(list[i]);
+              data.push(moduleUiPropertiesObj);
+            }
+          }
+          // 整合数据
+          data.map((item, index) => {
+            item.arr.map((model) => {
+              if (model.moduleUiProperties != null) {
+                // 问需阶段
+                if (model.moduleUiProperties.categoryName == '问需阶段') {
+                  let icon = '#iconheibanjiqixunlian_liuchengmokuaisekuai';
+                  model.moduleUiProperties.icon = icon;
+                  item.sort = 1;
+                } else if (model.moduleUiProperties.categoryName == 'AI无应答') {
+                  let icon = '#iconheibanjiqixunlian_liuchengmokuaisekuai';
+                  model.moduleUiProperties.icon = icon;
+                  item.sort = 2;
+                } else if (model.moduleUiProperties.categoryName == '索联阶段') {
+                  let icon = '#iconheibanjiqixunlian_suolianmokuaisekuai';
+                  model.moduleUiProperties.icon = icon;
+                  item.sort = 3;
+                } else if (model.moduleUiProperties.categoryName == '索联成功') {
+                  let icon = '#iconheibanjiqixunlian_suolianchenggongmokuai';
+                  model.moduleUiProperties.icon = icon;
+                  item.sort = 4;
+                } else if (model.moduleUiProperties.categoryName == '转接人工') {
+                  let icon = '#iconheibanjiqixunlian_jiqirenzhuanrengongmokuai';
+                  model.moduleUiProperties.icon = icon;
+                  item.sort = 5;
+                } else if (model.moduleUiProperties.categoryName == '对话结束') {
+                  let icon = '#iconheibanjiqixunlian_jieshumokuai-xiao';
+                  model.moduleUiProperties.icon = icon;
+                  item.sort = 6;
+                }
+              } else {
+                let icon = '#iconheibanjiqixunlian_jieshumokuai-19';
+                model.moduleUiProperties.icon = icon;
+                item.sort = index + 7;
+              }
+            });
+            return item;
+          });
+          // 排序归类
+          this.menuList = data.sort(this.compare('sort'));
+        }
+      });
+    },
+    // 根据数组对象某个num字段排序
+    compare(property) {
+      return function (a, b) {
+        var value1 = a[property];
+        var value2 = b[property];
+        return value1 - value2;
+      };
+    },
+    // 连线管理
+    linkArrFun(node, link) {
+      let ret = node.find((v) => {
+        return v.key == this.initModuleId && v.moduleUiProperties != undefined;
+      });
+      let copyLink = [].concat(link);
+      // 父子线
+      let arr = [];
+      for (var i = 0; i < node.length; i++) {
+        var obj = {};
+        if (node[i].fatherId != undefined) {
+          obj.from = node[i].fatherId;
+          obj.fromId = node[i].fatherId;
+          obj.fatherId = node[i].fatherId;
+          obj.to = node[i].key;
+          obj.toId = node[i].key;
+          arr.push(obj);
+        }
+      }
+      let same = JSON.parse(JSON.stringify(this.same)).map((s) => {
+        return s.id;
+      });
+      // 判断与pointId 相同线
+      let linkY = copyLink
+        .filter((item) => same.indexOf(item.pointId) > -1)
+        .map((l) => {
+          l.pid = l.fromId;
+          l.pointId = l.pointId + 'r'; //相同id加标识
+          l.fatherId = l.pid;
+          l.from = l.pointId;
+          l.fromId = l.pointId;
+          l.flag = '0'; //区分子节点连线标识
+          return l;
+        });
+      // 判断与pointId不相同线 // 开放版 other: 176735642498172423 // 非开放版 176735642498172416
+      let linkN = copyLink
+        .filter((item) => !(same.indexOf(item.pointId) > -1))
+        .map((l) => {
+          l.fatherId = l.fromId;
+          l.from = l.pointId;
+          l.fromId = l.pointId;
+          l.flag = '0'; //区分子节点连线标识
+          return l;
+        })
+        .filter((j) => {
+          return j.fromId != j.toId;
+        })
+        .map((q) => {
+          // 判断非开放版
+          if (ret.id == q.fatherId && ret.moduleUiProperties.id == '176735642498172416') {
+            q.from = q.fatherId;
+            q.fromId = q.fatherId;
+            q.flag = '0'; //区分子节点连线标识
+          }
+          return q;
+        });
+      let linkArr = [...linkY, ...linkN, ...arr].filter((item) => {
+        return item.toId != '0';
+      });
+      return linkArr;
+    },
+
+    // 所有模块生成
+    moduleReset() {
+      this.dataModel.modules.forEach((modules) => {
+        if (modules.uiCategory == 'customize' + modules.templateId) {
+          this.modulePublic('customize' + modules.templateId, modules.moduleUiProperties);
+        } else if (modules.uiCategory == 'solicomSuccess' + modules.templateId) {
+          this.modulePublic('solicomSuccess' + modules.templateId, 'solicomSuccess');
+        } else if (modules.uiCategory == 'customize' + modules.key) {
+          this.ntentionModulePublic('customize' + modules.key);
+        } else if (modules.uiCategory == 'initModule' + modules.templateId) {
+          this.initModuleFun('initModule' + modules.templateId, modules.moduleUiProperties);
+        } else if (modules.uiCategory == 'end' + modules.templateId) {
+          this.modulePublic('end' + modules.templateId, 'end');
+        }
+        return modules;
+      });
+      this.initModuleFun('initModule');
+    },
+
+    // 模块公共方法  意图
+    ntentionModulePublic(type) {
+      return this.diagram.nodeTemplateMap.add(
+        type,
+        $(
+          go.Node,
+          'Table',
+          new go.Binding('location', 'upperLeft', this.gridPointParse).makeTwoWay(go.Point.stringify),
+          { locationSpot: go.Spot.Center, portId: 'NODE', copyable: true, deletable: false },
+          // this.toolTipFun(true),
+          this.selectionFun('ntention'),
+          this.isHighlightedClick('ntention'),
+          this.selectModuleColor(),
+          {
+            contextMenu: this.partContextMenu('rule'),
+          },
+          this.enterAndLeave(),
+          $(
+            go.Panel,
+            'Auto',
+            this.isHighlightedFun('ntention'),
+            $(
+              go.Panel,
+              'Horizontal',
+              {
+                margin: new go.Margin(5),
+              },
+              // this.toolTipFun(true),
+              $(
+                go.TextBlock,
+                {
+                  stroke: '#fff',
+                },
+                {
+                  alignment: go.Spot.Center,
+                  editable: false,
+                  cursor: 'pointer',
+                  font: '14px Microsoft YaHei',
+                },
+                new go.Binding('text', 'name'),
+                new go.Binding('stroke', 'stroke'),
+                new go.Binding('background', 'background')
+              )
+            )
+          ),
+          this.makePort('B', go.Spot.Bottom, go.Spot.BottomCenter, true, false, 1, 1),
+          new go.Binding('maxLines', 1)
+        )
+      );
+    },
+
+    // 转人工和结束模块
+    initModuleFun(type, moduleUiProperties) {
+      return this.diagram.nodeTemplateMap.add(
+        type,
+        $(
+          go.Node,
+          'Vertical',
+          { selectionObjectName: 'BODY' },
+          new go.Binding('location', 'upperLeft', this.gridPointParse).makeTwoWay(go.Point.stringify),
+          { locationSpot: go.Spot.Center, portId: 'NODE', copyable: true, deletable: false },
+          this.selectionFun(),
+          this.isHighlightedClick(),
+          this.selectModuleColor(),
+          // type == 'initModule' ?this.selectModuleColor('initModule'):this.selectModuleColor(),
+          type == 'initModule'
+            ? ''
+            : {
+                contextMenu: this.partContextMenu(type),
+              },
+          $(
+            go.Panel,
+            'Auto',
+            { name: 'BODY' },
+            // this.enterAndLeave(),
+            // this.isHighlightedFun(),
+            type == 'initModule' ? this.isHighlightedFun('initModule') : this.isHighlightedFun(),
+            type == 'initModule' ? '' : this.toolTipFun(true),
+            $(
+              go.Panel,
+              'Horizontal',
+              type == 'initModule'
+                ? {
+                    margin: new go.Margin(-4, -2, 3, -2),
+                  }
+                : {
+                    margin: new go.Margin(5, 8),
+                  },
+              type == 'initModule'
+                ? $(
+                    go.Picture,
+                    {
+                      desiredSize: new go.Size(33, 33),
+                    },
+                    new go.Binding('source', 'initImg')
+                  )
+                : moduleUiProperties.categoryName == '转接人工'
+                ? $(
+                    go.Picture,
+                    {
+                      desiredSize: new go.Size(33, 33),
+                    },
+                    new go.Binding('source', 'artificialImg')
+                  )
+                : $(
+                    go.Picture,
+                    {
+                      desiredSize: new go.Size(33, 33),
+                    },
+                    new go.Binding('source', 'endImg')
+                  ),
+              $(
+                go.TextBlock,
+                {
+                  margin: new go.Margin(0, 0, 0, 8),
+                  stroke: '#fff',
+                },
+                {
+                  alignment: go.Spot.Left,
+                  editable: false,
+                  cursor: 'pointer',
+                  font: '14px Microsoft YaHei',
+                },
+                new go.Binding('text', 'name'),
+                new go.Binding('stroke', 'stroke'),
+                new go.Binding('background', 'background')
+              )
+            ),
+            type == 'initModule' ? '' : this.makePort('T', go.Spot.Top, go.Spot.TopCenter, false, true)
+          )
+        )
+      );
+    },
+    // 主模块公共方法 和欢迎语开放版 开放版 other: 176735642498172423 非开放版 176735642498172416
+    modulePublic(type, end) {
+      return this.diagram.nodeTemplateMap.add(
+        type,
+        $(
+          go.Node,
+          'Vertical',
+          {
+            selectionObjectName: 'BODY',
+          },
+          new go.Binding('location', 'upperLeft', this.gridPointParse).makeTwoWay(go.Point.stringify),
+          { locationSpot: go.Spot.Center, copyable: true, deletable: false },
+          this.selectionFun(),
+          this.isHighlightedClick(),
+          this.selectModuleColor(),
+          end.id == '176735642498172423'
+            ? ''
+            : {
+                contextMenu: this.partContextMenu(type),
+              },
+          $(
+            go.Panel,
+            'Auto',
+            { name: 'BODY' },
+            // this.enterAndLeave(),
+            end.id != '176735642498172423' ? this.toolTipFun(true) : '',
+            // this.isHighlightedFun(),
+            end.id == '176735642498172423' ? this.isHighlightedFun('initModule') : this.isHighlightedFun(),
+            $(
+              go.Panel,
+              'Horizontal',
+              end != 'end' && end != 'solicomSuccess' && end.id != '176735642498172423'
+                ? {
+                    margin: new go.Margin(10, 8),
+                  }
+                : end.id == '176735642498172423'
+                ? {
+                    margin: new go.Margin(-4, -2, 3, -2),
+                  }
+                : {
+                    margin: new go.Margin(4, 8),
+                  },
+              end == 'solicomSuccess' || end.id == '176735642498172423'
+                ? $(
+                    go.Picture,
+                    {
+                      desiredSize: new go.Size(32, 32),
+                      margin: new go.Margin(0, 8, 0, 0),
+                    },
+                    new go.Binding('source', 'solicomSuccessImg'),
+                    new go.Binding('source', 'initImg')
+                  )
+                : '',
+              end != 'end'
+                ? $(
+                    go.TextBlock,
+                    {
+                      stroke: '#fff',
+                    },
+                    {
+                      alignment: go.Spot.Center,
+                      editable: false,
+                      cursor: 'pointer',
+                      font: '14px Microsoft YaHei',
+                    },
+                    new go.Binding('text', 'name'),
+                    new go.Binding('stroke', 'stroke'),
+                    new go.Binding('background', 'background')
+                  )
+                : $(
+                    go.Picture,
+                    {
+                      desiredSize: new go.Size(32, 32),
+                    },
+                    new go.Binding('source', 'endImg'),
+                    new go.Binding('source', 'addImg')
+                  ),
+              end != 'end'
+                ? $(
+                    go.Picture,
+                    {
+                      toolTip: $(go.HTMLInfo, {
+                        show: this.showToolTip,
+                        hide: this.hideToolTip,
+                      }),
+                    },
+                    {
+                      alignment: go.Spot.Right,
+                      width: 18,
+                      height: 18,
+                      cursor: 'pointer',
+                      margin: new go.Margin(0, 0, 0, 10),
+                      click: (e, obj) => {
+                        this.labelList(); //标签接口
+                        this.placeholderFun(); //名片动作
+                        this.parentNode = obj.part.data;
+
+                        this.asideCollapse = false;
+                        // this.replyDialog.isShow = true;
+                        this.intentionType = '新增';
+                        this.currentNodeInfo = Object.assign({}, obj.part.data);
+                        this.replyDialogIsShow = true; //------------------------------------------------------
+                        this.replyDialog.title = '新增意图';
+                        this.replyForm.type = 0;
+                        if (this.replyForm.type == 0) {
+                          this.$nextTick(() => {
+                            this.resetModify(this.$refs.replyForm);
+                          });
+                        }
+                        this.replyForm.custom.baseKeys = [
+                          {
+                            name: '',
+                          },
+                        ];
+                        this.replyForm.updateActions.ntag.tagName = '';
+                        this.replyForm.custom.ntag.tagName = '';
+                        this.replyForm.custom.logical = 'OR';
+                        this.replyForm.custom.keywords = [''];
+                        this.replyForm.custom.actions = [];
+                        this.replyForm.visitorColSelves = [
+                          {
+                            value: '',
+                            name: '',
+                            id: '',
+                          },
+                        ];
+                        this.ruleList(obj.part.data);
+                      },
+                    },
+                    new go.Binding('source', 'addImg')
+                  )
+                : $(
+                    go.TextBlock,
+                    {
+                      margin: new go.Margin(0, 0, 0, 8),
+                      stroke: '#fff',
+                    },
+                    {
+                      alignment: go.Spot.Left,
+                      editable: false,
+                      cursor: 'pointer',
+                      font: '14px Microsoft YaHei',
+                    },
+                    new go.Binding('text', 'name'),
+                    new go.Binding('stroke', 'stroke'),
+                    new go.Binding('background', 'background')
+                  )
+            ),
+            end != 'end' ? this.makePort('T', go.Spot.Top, go.Spot.TopCenter, true, true) : this.makePort('T', go.Spot.Top, go.Spot.TopCenter, false, true)
+          ),
+          end != 'end'
+            ? $(
+                go.Picture,
+                {
+                  desiredSize: new go.Size(23, 23),
+                  cursor: 'pointer',
+                },
+                new go.Binding('source', 'openImg'),
+                {
+                  click: (e, t) => {
+                    this.asideCollapse = false;
+                    this.flexLinkArr = [];
+                    if (t.source == this.openImg) {
+                      t.source = this.packUpImg;
+                      this.dataModel.modules = this.dataModel.modules.filter((item) => {
+                        if (t.part.data.key == item.key) {
+                          item.openImg = this.packUpImg;
+                          this.flexNodeArr.push(...item.rules);
+                        }
+                        return t.part.data.key != item.fatherId;
+                      });
+                      this.dataModel.sequenceFlows.map((link) => {
+                        if (t.part.data.key == link.fatherId || t.part.data.key == link.pid) {
+                          this.flexLinkArr.push(link);
+                          link.from = t.part.data.key;
+                          link.close = '';
+                        }
+                        t.part.data.rules.map((rules) => {
+                          if (link.from == rules.key) {
+                            this.flexLinkArr.push(link);
+                          }
+                        });
+                        return link;
+                      });
+                      this.dataModelFun(this.dataModel.modules, this.dataModel.sequenceFlows);
+                    } else {
+                      t.source = this.openImg;
+                      this.openRulesFun(t.part.data);
+                    }
+                  },
+                  doubleClick: () => {
+                    this.asideCollapse = false;
+                  },
+                }
+              )
+            : ''
+        )
+      );
+    },
+
+    // 单击和双击模块
+    isHighlightedClick(ntention) {
+      return {
+        doubleClick: (e, node) => {
+          this.diagram.requestUpdate();
+          if (ntention === 'ntention') {
+            this.replyFormUpdate.actions = [];
+            this.replyFormUpdate.ntag.tagName = '';
+            this.replyFormUpdate.ntag.tagId = '';
+            this.asideCollapse = false;
+            this.replyFormUpdate.type = '';
+            this.rlueClick(node);
+            // this.replyDialogUpdate.loading = true;
+            // this.replyDialogUpdate.title = '意图';
+            // this.replyDialogUpdate.isShow = true;
+            this.currentNodeInfo = Object.assign({}, node.data);
+            this.replyDialogIsShow = true; // -----------------------------------------
+            this.intentionType = '编辑';
+            this.labelList(); //标签接口
+            this.placeholderFun(); //名片动作
+            this.ruleList(node.data);
+          } else {
+            this.replyForm.custom.actions = [];
+            this.replyForm.updateActions.actions = [];
+            this.asideCollapse = false;
+            this.$nextTick(() => {
+              this.asideCollapse = true;
+              this.sideSettingKey = uuid();
+              this.nodeTabSetting.activeName = '1';
+            });
+            // 单击防止请求多次接口
+            this.v_Result = true;
+            if (this.v_Result) {
+              this.loadEle(node);
+            }
+          }
+        },
+        click: (e, node) => {
+          this.highlightFun(node);
+          this.diagram.requestUpdate();
+          if (ntention === 'ntention') {
+            this.asideCollapse = false;
+          } else {
+            if (this.asideCollapse == true) {
+              this.asideCollapse = true;
+              console.log(2222);
+            } else {
+              this.asideCollapse = false;
+            }
+            // 单击防止请求多次接口
+            this.v_Result = false;
+            clearTimeout(this.clicktimer);
+            this.clicktimer = setTimeout(() => {
+              if (this.v_Result != false) return;
+              this.loadEle(node);
+            }, 500);
+          }
+        },
+      };
+    },
+
+    // 右点击每个模块
+    partContextMenu(normal) {
+      return $(
+        'ContextMenu',
+        this.makeButton(
+          '删 除',
+          () => {
+            if (normal != 'rule') {
+              this.delModule();
+            } else {
+              this.delDialog.title = '意图';
+              this.delDialog.startFlag = true;
+              this.asideCollapse = false;
+              this.delDialog.isShow = true;
+              this.delDialog.text = '此操作将删除当前意图,删除后不可恢复, 是否继续?';
+            }
+          },
+          (o) => {
+            return o.diagram.commandHandler.canDeleteSelection();
+          }
+        )
+      );
+    },
+    nodeArrFun(nodeArr, initModuleId) {
+      // 复制原始数据
+      this.copyNodeArr = [].concat(nodeArr);
+      let arr = [];
+      this.copyNodeArr.map((n) => {
+        //模块样式
+        this.nodeCom(n, n.templateId, initModuleId);
+        // 判断意图是否为空
+        if (n.rules != '' && n.rules != undefined) {
+          n.rules.map((r, i) => {
+            r.fatherId = n.id;
+            r.fatherName = n.name;
+            r.name = r.ruleName;
+            r.templateId = n.templateId;
+            r.id = r.ruleId;
+            r.key = r.ruleId;
+            r.uiCategory = 'customize' + r.key; //后台返回类型
+            r.category = 'customize' + r.key; //前端用的类型
+            if (r.bound != undefined && r.bound != null && r.bound.upperLeft != null) {
+              r.upperLeft = r.bound.upperLeft;
+            } else {
+              var x = Number(i + '00') + 355;
+              var y = Number(445);
+              r.upperLeft = x + ' ' + y;
+            }
+            return r;
+          });
+          // 非开放版 176735642498172416
+          // 开放版 other: 176735642498172423
+          if (initModuleId != n.id || (initModuleId == n.id && n.moduleUiProperties.id == '176735642498172423')) {
+            arr.push(...n.rules);
+          }
+        }
+        n.key = n.id;
+        n.category = n.uiCategory;
+        return n;
+      });
+      // 复制原始数据处理id数组
+      let tempArray = JSON.parse(JSON.stringify(this.copyNodeArr)).map((item) => {
+        return item.id;
+      });
+      // 不相同意图
+      this.nosame = arr.filter((item) => !(tempArray.indexOf(item.id) > -1));
+      // 相同意图
+      this.same = arr
+        .filter((item) => tempArray.indexOf(item.id) > -1)
+        .map((r) => {
+          r.key = r.id + 'r';
+          r.flag = '0';
+          r.ruleId = r.id;
+          r.uiCategory = 'customize' + r.key; //后台返回类型
+          r.category = 'customize' + r.key; //前端用的类型
+          return r;
+        });
+      // 合并三个数组
+      let nodeList = [...this.copyNodeArr, ...this.nosame, ...this.same];
+      return nodeList;
+    },
     // 右点击线
     linkType() {
       return $(
@@ -359,6 +999,18 @@ export default {
           }
         )
       );
+    },
+
+    // 删除连线
+    delLinkCom(data) {
+      this.delDialog.lineObj = data;
+      this.asideCollapse = false;
+      if (this.delDialog.lineObj.pointId != undefined && this.delDialog.lineObj.close != '') {
+        this.delDialog.title = '连线';
+        this.delDialog.isShow = true;
+        this.delDialog.startFlag = true;
+        this.delDialog.text = '此操作将删除当前模块,删除后不可恢复, 是否继续?';
+      }
     },
     // 线的类型  绕线  曲线
     linkFun(line, routing) {
@@ -542,13 +1194,7 @@ export default {
     // 悬浮展示删除模块按钮
     toolTipFun(flag) {
       return {
-        toolTip: $(
-          go.Adornment,
-          'Spot',
-          { background: 'transparent' },
-          $(go.Placeholder, flag ? { padding: 10 } : { padding: 8 }),
-          this.moduleClose(flag)
-        ),
+        toolTip: $(go.Adornment, 'Spot', { background: 'transparent' }, $(go.Placeholder, flag ? { padding: 10 } : { padding: 8 }), this.moduleClose(flag)),
       };
     },
     // 定位点
@@ -705,6 +1351,69 @@ export default {
             }
       );
     },
+
+    // 判断节点字段是否为空 为空就增加默认值
+    nodeCom(item, id, initModuleId) {
+      if (item.id == initModuleId) {
+        item.fill = '#3B3B3B';
+        item.initImg = item.moduleUiProperties.img == '' ? this.initImg : item.moduleUiProperties.img;
+        if (item.moduleUiProperties.id == '176735642498172423') {
+          if (item.rules != '') {
+            item.openImg = this.openImg;
+          } else {
+            item.openImg = '';
+          }
+          item.addImg = this.addImg;
+          item.uiCategory = 'customize' + id;
+          item.tabUiProperties != '' && item.tabUiProperties != null ? item.tabUiProperties : (item.tabUiProperties = this.sideTabArr);
+        } else {
+          item.openImg = '';
+          item.uiCategory = 'initModule';
+          item.tabUiProperties != '' && item.tabUiProperties != null
+            ? item.tabUiProperties
+            : (item.tabUiProperties = this.sideTabArr.filter((item) => {
+                return item.id == '1' || item.id == '3';
+              }));
+        }
+      } else {
+        // if (item.moduleUiProperties != null && (item.moduleUiProperties.categoryName == '转接人工' || item.moduleUiProperties.categoryName == '对话结束')) {
+        if (item.moduleUiProperties != null && (item.moduleUiProperties.categoryName == '转接人工' || item.moduleUiProperties.categoryName == '对话结束')) {
+          if (item.moduleUiProperties.categoryName == '转接人工') {
+            item.artificialImg = item.moduleUiProperties.img == '' ? this.artificialImg : item.moduleUiProperties.img;
+            item.uiCategory = 'initModule' + id;
+            item.tabUiProperties != '' && item.tabUiProperties != null
+              ? item.tabUiProperties
+              : (item.tabUiProperties = [{ id: '1', name: '转接人工客服分组' }]);
+          } else {
+            item.endImg = item.moduleUiProperties.img == '' ? this.endImg : item.moduleUiProperties.img;
+            item.uiCategory = 'end' + id;
+            item.tabUiProperties = item.tabUiProperties ? item.tabUiProperties : this.sideTabArr;
+          }
+          item.fill = '#3B3B3B';
+        } else {
+          if (item.rules != '') {
+            item.openImg = this.openImg;
+          } else {
+            item.openImg = '';
+          }
+          if (item.moduleUiProperties != null && item.moduleUiProperties.categoryName == '索联成功') {
+            item.solicomSuccessImg = item.moduleUiProperties.img == '' ? this.solicomSuccessImg : item.moduleUiProperties.img;
+            item.uiCategory = 'solicomSuccess' + id;
+          } else {
+            item.uiCategory = 'customize' + id;
+          }
+          item.addImg = this.addImg;
+          item.fill = item.moduleUiProperties != null ? item.moduleUiProperties.color : '';
+          item.tabUiProperties != '' && item.tabUiProperties != null ? item.tabUiProperties : (item.tabUiProperties = this.sideTabArr);
+        }
+      }
+      if (item.bound != null && item.bound.upperLeft != null) {
+        item.upperLeft = item.bound.upperLeft;
+      } else {
+        item.upperLeft = '550 50';
+      }
+      return item;
+    },
   },
 
   beforeUpdate() {}, //生命周期 - 更新之前
@@ -716,4 +1425,24 @@ export default {
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
+#diagram {
+  width: 100%;
+  height: 100%;
+}
+
+.chart-diagram,
+#chartDiagram {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  //background-color: #000000;
+  //border: solid 1px #000000;
+  border-radius: 4px;
+}
+
+::v-deep canvas {
+  outline-color: #000;
+  background: #000;
+  height: 100%;
+}
 </style>

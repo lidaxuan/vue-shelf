@@ -5,7 +5,7 @@
  * @FilePath: /vue-shelf/src/views/entry.vue
 -->
 <template>
-  <div class="">
+  <div class="hmax">
     lq
     <GoGraphObject></GoGraphObject>
   </div>

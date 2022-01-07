@@ -12,6 +12,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@antv/g6": "^4.5.0",
     "@lijixuan/dblist": "^1.0.2",
     "@lijixuan/safe-get": "^1.0.2",
     "@lijixuan/safe-set": "^1.0.1",

@@ -1,0 +1,38 @@
+<!--
+ * @Description: 
+ * @Author: 李大玄
+ * @Date: 2021-12-06 14:04:04
+ * @FilePath: /vue-shelf/Users/lidaxuan/Downloads/index(1).html
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title th:text="${projectTitle}">AI6运营维护后台</title>
+  <link rel="icon" th:href="@{${host} + ${env} + '/' + ${contextPath} + '/' + ${version} + '/favicon.ico'}">
+  <link href="https://statics.easyliao.com/vue/element-ui/2.13.1/theme-chalk/index.css" rel="external nofollow stylesheet">
+
+
+  <link th:href="@{${host} + ${env} + '/' + ${contextPath} + '/' + ${version} + '/css/chunk-vendors.css'}" rel="stylesheet">
+  <link th:href="@{${host} + ${env} + '/' + ${contextPath} + '/' + ${version} + '/css/app.css'}" rel="stylesheet">
+</head>
+
+<body>
+  <div id="app"></div>
+  <script src="//statics.easyliao.com/web/vue/vue/2.6.11/vue.min.js"></script>
+  <script src="//statics.easyliao.com/web/vue/element-ui/2.13.1/index.js"></script>
+  <script src="//statics.easyliao.com/web/vue/vue-router/3.1.5/vue-router.min.js"></script>
+  <script src="//statics.easyliao.com/web/vue/vuex/3.1.2/vuex.min.js"></script>
+  <script src="//statics.easyliao.com/web/public/js/go.js"></script>
+
+
+  <script th:src="@{${host} + ${env} + '/' + ${contextPath} + '/' + ${version} + '/js/chunk-vendors.js'}"></script>
+  <script th:src="@{${host} + ${env} + '/' + ${contextPath} + '/' + ${version} + '/js/app.js'}"></script>
+  <script th:src="@{${host} + ${env} + '/' + ${contextPath} + '/' + ${version} + '/js/main.js'}"></script>
+</body>
+
+</html>
