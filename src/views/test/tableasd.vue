@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: 李大玄
  * @Date: 2021-09-17 14:45:00
- * @FilePath: /vue-shelf/src/views/tableasd.vue
+ * @FilePath: /vue-shelf/src/views/test/tableasd.vue
 -->
 <template>
   <div class="p20">
@@ -11,12 +11,12 @@
       <svg t="1636452182629" class="icon item1" viewBox="0 0 1083 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8840" width="150" height="150"><path d="M81.014154 1024H342.843077a81.014154 81.014154 0 0 0 61.400615-28.16l75.303385-87.473231a81.014154 81.014154 0 0 1 61.400615-28.16h461.13477A81.014154 81.014154 0 0 0 1083.076923 799.172923V81.014154A81.014154 81.014154 0 0 0 1002.062769 0H81.014154A81.014154 81.014154 0 0 0 0 81.014154v861.971692A81.014154 81.014154 0 0 0 81.014154 1024z" :fill="fill" p-id="8841"></path></svg>
       <svg t="1636452153989" class="icon item2" viewBox="0 0 1289 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8698" width="200" height="200"><path d="M104.030815 0h306.024296c27.154963 0 53.210074 10.619259 72.647111 29.582222l86.755556 84.650667c19.437037 18.962963 45.511111 29.582222 72.647111 29.582222h543.345778A104.030815 104.030815 0 0 1 1289.481481 247.808v672.142222A104.030815 104.030815 0 0 1 1185.450667 1024H104.030815A104.030815 104.030815 0 0 1 0 919.969185V104.030815A104.030815 104.030815 0 0 1 104.030815 0z" :fill="fill" p-id="8699"></path></svg>
     </div>
-    <!-- <Table class="tableComStyle" key="1" :tableConfig="tableConfig" :lazy="true" :height="300" :data="list" :tableColumnData="tableColumnData" ref="table">
+    <Table class="tableComStyle" key="1" :tableConfig="tableConfig" :lazy="true" :height="300" :data="list" :tableColumnData="tableColumnData" ref="table">
       <template #handle="scope">
         <el-button type="text" @click="addAiUserTimeoutBtn(scope.row)">修改</el-button>
         <el-button type="text" @click="delTableItemBtn(scope.row)">删除</el-button>
       </template>
-    </Table> -->
+    </Table>
   <!-- {{selectList}}
     <Table
       class="tableComStyle"

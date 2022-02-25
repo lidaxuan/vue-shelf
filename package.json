@@ -16,7 +16,7 @@
     "@lijixuan/dblist": "^1.0.2",
     "@lijixuan/safe-get": "^1.0.2",
     "@lijixuan/safe-set": "^1.0.1",
-    "@lijixuan/vue-customdirectives": "^1.7.0",
+    "@lijixuan/vue-customdirectives": "^2.0.0",
     "axios": "^0.21.1",
     "benz-amr-recorder": "^1.1.3",
     "copy-webpack-plugin": "^6.4.1",
@@ -32,6 +32,7 @@
     "quill-image-drop-module": "^1.0.3",
     "quill-image-resize-module": "^3.0.0",
     "vue": "^2.6.11",
+    "vue-pannellum": "^0.5.3",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.2.0",
     "vue-ueditor-wrap": "^2.5.3"

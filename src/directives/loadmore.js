@@ -27,22 +27,13 @@ Vue.directive('loadmore', {
       }
       t = p;
       selectWrap.querySelector('table').style.height = 500 + 'px'
-      // const arr = selectWrap.querySelector('table').querySelectorAll('tr')
-      // arr.forEach(ele => {
-      //   ele.querySelectorAll('td').forEach(item => {
-      //     item.style.height = '100%'
-      //   })
-      //   ele.style.height = '50px'
-      // });
+  
       binding.value(this.scrollHeight, this.scrollTop, this.clientHeight, el);
       //判断是否到底
       const sign = 0;
       const scrollDistance = this.scrollHeight - this.scrollTop - this.clientHeight;
-      // if (scrollDistance <= sign && down) {
-      //   binding.value();
-      // }
+     
     });
     // selectWrap.style.scrollTop = 200
-    // console.log(selectWrap.style);
   }
 });
