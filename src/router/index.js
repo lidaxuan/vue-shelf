@@ -14,7 +14,7 @@ const routes = [
   {
     path: "/",
     name: "",
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/cascader.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/ImplementationComponent"), // optimization // testSelect fontClass
   },
   {
     path: "/showdigitroll",

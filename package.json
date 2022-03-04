@@ -53,6 +53,7 @@
     "pug-loader": "^2.4.0",
     "quill-image-extend-module": "^1.1.2",
     "sass-loader": "^8.0.2",
+    "swiper": "^3.4.2",
     "vue-template-compiler": "^2.6.11",
     "vue-ueditor": "^0.1.3"
   },
