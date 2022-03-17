@@ -6,15 +6,22 @@
 -->
 
 <template>
-  <div class=""> 
-    <viewComp ref="viewComp" :search="search" :config="config"></viewComp>
+  <div class="p20">
+    <viewComp ref="viewComp" :search="search" :config="config">
+      <template #handleBox>
+        <el-button type="primary"> 新增</el-button>
+        <el-button type="primary"> 新增</el-button>
+        <el-button type="primary"> 新增</el-button>
+      </template>
+    </viewComp>
   </div>
 </template>
 
 <script>
 //例如：import 《组件名称》 from '《组件路径》';
-import viewComp from '@/components/viewComp.vue';
+import viewComp from './viewComp/viewComp.vue';
 import config from './config';
+
 export default {
   name: '', // Pascal命名
   mixins: [],
@@ -23,7 +30,8 @@ export default {
   data() {
     return {
       config: config,
-      search: {}
+      search: {},
+     
     };
   },
   computed: {},

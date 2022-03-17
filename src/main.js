@@ -22,7 +22,7 @@ import IconFont from './components/IconFont';
 import Directives from '@lijixuan/vue-customdirectives';
 Vue.use(pin);
 Vue.use(IconFont);
-Vue.use(elementUi);
+Vue.use(elementUi,{size: 'small'});
 Vue.use(Directives);
 
 

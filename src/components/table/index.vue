@@ -10,7 +10,6 @@
 <template>
   <!-- :style="`width: 100%; ${ backgroundBlack ? '' : ''}`" -->
   <div :style="{ height }" class="flex flex-column flex-ccb">
-    {{ newTableColumnData2 }}
     <!-- :height="isPage ? tableHeight - 54 : tableHeight - 1" -->
     <Table
       v-if="display"
@@ -20,6 +19,7 @@
       ref="table"
       size="medium"
       :border="border"
+      style="margin-bottom: 15px"
     >
       <template v-if="newTableColumnData2 && newTableColumnData2.length > 0">
         <template v-for="(item, index) in newTableColumnData2">
@@ -70,7 +70,7 @@
             <template #default="scope" v-if="item.slotName">
               <template v-if="slotArr[item.slotName]">
                 <template v-for="btn in slotArr[item.slotName]">
-                  <el-button :type="btn.type || 'primary'" @click="handle(scope.row, btn)">{{ btn.name }}</el-button>
+                  <el-button :type="btn.type || 'primary'" @click="handle(scope.row, btn)">{{ btn.text }}</el-button>
                 </template>
               </template>
               <slot v-else-if="!slotArr[item.slotName]" :name="item.slotName" v-bind="scope" />
@@ -107,35 +107,11 @@
       :total="parseInt(totalNumber)"
       :pager-count="pagerCount"
     />
-
-    <component
-      v-if="dialogData.showType"
-      :visible.sync="config[dialogData.key].visible"
-      :is="`el-${dialogData.showType}`"
-      :closeOnClickModal="true"
-      v-bind="getAttr(config[dialogData.key])"
-    >
-      <template v-if="dialogData.showType">
-        <pre>{{}}</pre>
-        <span v-if="config[dialogData.key].msg">{{ config[dialogData.key].msg }}</span>
-        <template v-else>
-          <template v-for="item in config[dialogData.key].formOptions">
-            <div :is="`el-${item.compName}`" v-model="config[dialogData.key].form[item.model]" style="width: 300px" v-bind="item"></div>
-            <br />
-          </template>
-        </template>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="config[dialogData.key].visible = false">取 消</el-button>
-          <el-button type="primary" @click="config[dialogData.key].visible = false">确 定</el-button>
-        </span>
-      </template>
-    </component>
   </div>
 </template>
 
 <script>
 import { Table, TableColumn, Popover, Tooltip, Pagination } from 'element-ui';
-import Template from '../../Template.vue';
 // import draggable from "vuedraggable";
 
 const formatMethods = function () {
@@ -200,7 +176,6 @@ export default {
       default: 7
     },
     slotArr: Object,
-    config: Object
   },
   components: {
     Table,
@@ -208,8 +183,7 @@ export default {
     Popover,
     // draggable,
     Tooltip,
-    Pagination,
-    Template
+    Pagination
   },
   data() {
     return {
@@ -217,9 +191,7 @@ export default {
       newTableColumnData2: [],
       display: true,
       columnOper: false,
-      tableHeight: 250,
-      rowData: {},
-      dialogData: {}
+      tableHeight: 250
     };
   },
   computed: {
@@ -244,18 +216,8 @@ export default {
     this.setColumnData();
   },
   methods: {
-    asdasd() {
-      console.log(1);
-    },
-    getAttr(defaultConfig) {
-      return Object.assign({}, this.$attrs, defaultConfig);
-    },
     handle(row, btn) {
-      console.log(row, btn);
-      this.rowData = Object.assign({}, row);
-      this.dialogData = Object.assign({}, btn);
-      console.log(this.dialogData);
-      this.config[btn.key].visible = true;
+      this.$emit('tableHandle', row, btn);
     },
     ...formatMethods(),
     setColumnData() {

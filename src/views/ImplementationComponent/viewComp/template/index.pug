@@ -1,0 +1,49 @@
+<div class="">
+  <pre v-draggable class="prebox">{{ createMap }}-{{pageUrl}}</pre>
+  //- pre(class="prebox") {{tableColumnData}}
+  //- <pre v-draggable class="prebox">{{ queryFormOptions }}</pre>
+  div
+    el-form(:model="defaultConfig.struct.viewTemplate.search.defaultValue" :inline="true" ref="searchForm"  class="demo-ruleForm")
+      include ./search.pug
+      +formItem('searchMap')
+
+      template(v-if="buttonDisplayType(defaultConfig.struct.viewTemplate.handleBox)")
+        el-form-item(label="")
+          el-button(type="primary" @click="searchBtn") 查询
+          el-button(@click="resetBtn") 重置
+          slot(name="handleBox")
+      template(v-else)
+        slot(name="handleBox")
+    <button v-if="getComponentType({}) == 'select'" @click="$emit('asdasd', '内部事件')">新增</button>
+
+  <div class="p40"  style="text-align: right">
+    template(v-if="defaultConfig.struct.viewTemplate.tableTopHandleBox && defaultConfig.struct.viewTemplate.tableTopHandleBox.length") 
+      <template v-for="btn in defaultConfig.struct.viewTemplate.tableTopHandleBox">
+        <el-button :type="btn.type || 'primary'" @click="handle(scope.row, btn)">{{ btn.text }}</el-button>
+      </template>
+    
+    Table( v-bind="getAttr()" :data="tableData" :tableColumnData="tableColumnData"  @pageSizeChange="pageSizeChange" @pageNumberChange="pageNumberChange" @tableHandle="tableHandle" @selection-change="handleSelectionChange")
+      <template #name="scope">
+        span {{ scope.row.name }}1
+      </template>
+  </div>
+
+  <component v-if="dialogData.showType" :visible.sync="visible" :is="`${dialogData.showType}`" :closeOnClickModal="true" v-bind="dialogData">
+    <template v-if="dialogData.showType">
+      <template >
+        el-form(:model="defaultConfig.struct.viewTemplate.search.defaultValue" :inline="false" ref="hanleForm"  class="")
+          //-       <template v-for="item in config[dialogData.key].formOptions">
+          //-         <div :is="`el-${item.compName}`" v-model="config[dialogData.key].form[item.model]" style="width: 300px" v-bind="item"></div>
+          //-         <br />
+          //-       </template>
+
+          include ./search.pug
+          +formItem('createMap')
+      </template>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="visible = false">取 消</el-button>
+        <el-button type="primary" @click="visible = false">确 定</el-button>
+      </span>
+    </template>
+  </component>
+</div>

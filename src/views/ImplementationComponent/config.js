@@ -1,157 +1,216 @@
-/* jshint esversion: 6 */
-/*
- * @Description: 
- * @Author: 李大玄
- * @Date: 2022-03-02 15:46:42
- * @FilePath: /vue-shelf/src/views/ImplementationComponent/config.js
- */
-
-import uuid from 'uuid';
-let arr = []
-for (let i = 0; i < 3; i++) {
-  arr.push({
-    id: uuid(),
-    name: `李大玄${i}`
-  })
-}
 export default {
-  version: '1.1.1',
-  // 顶部搜索部分数据结构
-  queryform: {
-    search: {
-      name: '11',
-      time: []
-    },
-    form: [
-      {
-        compName: 'input',
-        placeholder: '这是输入框',
-        model: 'name',
-        clearable: true || false,
-        require: true || false,
+  struct: {
+    id: 6,
+    companyId: 0,
+    name: '工单配置6',
+    desp: null,
+    parentId: 0,
+    showDetailTab: 1,
+    mappingClass: 'com.easyliao.struct.client.demo.resource.StructDto',
+    migrationStrategy: 0,
+    assignTableName: null,
+    deleteFlag: 0,
+    viewTemplate: JSON.stringify({
+      pageUrl: {
+        list: {
+          url: '/a/b/list',
+          method: 'get',
+          params: {}
+        },
+        create: {
+          url: '/a/b/creat',
+          method: 'post'
+        },
+        delete: {
+          url: '/a/b/delete',
+          method: 'delete'
+        },
+        upd: {
+          url: '/a/b/upd',
+          method: 'post'
+        },
       },
-      {
-        compName: 'select',
-        placeholder: '这是下拉框',
-        model: 'name',
-        clearable: true || false,
+      rules: [],
+      required: ['name'],
+      searchsort: [],
+      labelWidth: '200px',
+      itemWidth: '100px',
+      defaultSearchData: { id: '', name: '' },
+      pageSize: 10,
+      pageNum: 1,
+      isPage: true,
+      tableHandleBtns: [{ text: '删除', showtype: 'conrm', msg: '是否删除', uri: '' }, { text: '修改' }],
+      tableTopHandleBox: [{ text: '批量删除' }, { text: '新增', showType: 'drawer' }],
+      handleBox: {
+        type: 1, // 1:默认且追加  2:覆盖
+      },
+      // showInAdd: ['name', 'age', 'sex', '省', '市', '区'],
+      // showInEdit: [{ key: 'name' }, { key: 'sex' }],
+      // 搜索场景
+      search: {
+        pageSize: 10,
+        pageNum: 1,
+        isPage: true,
+        sort: [
+          { mappingClassField: 'sex', placeholder: 'xxxx' },
+          'name', 'age', 'address'
+        ],
+        rules: [],
+        labelWidth: '',
+        defaultValue: {
+          sex: 1,
+          name: '李大玄',
+          age: ''
+        }
+      },
+      tableConfigSlot: {
+        handle: [
+          { text: '删除', showType: 'confirm', message: '', title: '' },
+          { text: '修改', showType: 'el-dialog', title: '修改', width: '40%' }
+        ]
+      },
+      create: {
+        sort: [
+          { mappingClassField: 'sex', placeholder: 'xxxx', "required": true, },
+          { mappingClassField: 'name', placeholder: 'xxxx', width: '200px', "required": false, },
+          'age', 'address'
+        ],
+        rules: [],
+        labelWidth: '',
+        defaultValue: {
+          sex: 2,
+          name: '李小玄',
+          age: ''
+        }
+      },
+      edit: {
+        sort: [
+          { mappingClassField: 'sex', placeholder: 'xxxx' },
+          'name', 'age', 'address'
+        ],
+        rules: [],
+        labelWidth: '',
+        disabled: []
+      },
+      migrationStrategy: 0,
+      assignTableName: ''
+    }),
+  },
+  attributes: [{
+      id: 1,
+      structId: 1,
+      mappingClassField: 'id',
+      columnLabel: '标识',
+      columnUiPlugin: '',
+      validatedPlugin: '',
+      columnUiCss: '',
+      sortIndex: 1,
+      showInList: 1,
+      showInQuery: 1,
+      desp: '',
+      deleteFlag: 0
+    },
+    {
+      id: 2,
+      structId: 1,
+      mappingClassField: 'name',
+      columnLabel: '姓名',
+      columnUiPlugin: JSON.stringify({
+        "compName": "input",
+        "clearable": true,
+        "required": true,
+        "itemWidth": "200px",
+        "placeholder": "请输入姓名",
+        "model": "name",
+        "label": "姓名",
+        "labelWidth": "100px",
+        "requiredMessage": "姓名不能为空",
+        tableColumnConfig: { width: '150px', align: 'center', }, // slotName: 'name' 
+      }),
+      columnUiCss: '',
+      validatedPlugin: 'input',
+      sortIndex: 2,
+      showInList: 1,
+      showInQuery: 1,
+      desp: '',
+      deleteFlag: 0
+    },
+    {
+      id: 3,
+      structId: 1,
+      mappingClassField: 'sex',
+      columnLabel: '性别',
+      columnUiPlugin: JSON.stringify({ "compName": "select", "clearable": true, "model": "sex", "label": "性别", options: [{ name: "男", id: 1 }, { name: "女", id: 2 }] }),
+      columnUiCss: '',
+      validatedPlugin: '',
+      sortIndex: 3,
+      showInList: 1,
+      showInQuery: 1,
+      desp: '',
+      deleteFlag: 0
+    },
+    {
+      id: 4,
+      structId: 1,
+      mappingClassField: 'age',
+      columnLabel: '年龄',
+      columnUiPlugin: JSON.stringify({
+        "compName": "input",
+        "clearable": true,
+        "model": "age",
+        "label": "年龄",
+        tableWidth: '50px'
+      }),
+      columnUiCss: '',
+      validatedPlugin: '',
+      sortIndex: 3,
+      showInList: 1,
+      showInQuery: 1,
+      desp: '',
+      deleteFlag: 0
+    },
+    {
+      id: 5,
+      structId: 1,
+      mappingClassField: 'address',
+      columnLabel: '地址',
+      columnUiPlugin: JSON.stringify({
+        "compName": "select",
+        "clearable": true,
+        "model": "address",
+        "label": "地址",
         options: [],
-        optionsLabel: 'name',
-        optionsValue: 'id',
-      },
-      {
-        compName: 'date-picker',
-        placeholder: '这是日期时间选择',
-        model: 'time',
-        clearable: true || false,
-        type: "datetimerange", // 日期时间
-        'range-separator': "至",
-        "start-placeholder": "开始日期",
-        'end-placeholder': "结束日期",
-      },
-    ],
-    rules: {
-      name: []
-    }
-  },
-  // 默认已存在: 查询与重置按钮, (query查询条件length>=1)
-  handleBox: {
-    type: '追加按钮' || '覆盖默认按钮',
-    arr: [
-      {
-        type: 'button-primary',
-        text: '新增'
-      }
-    ]
-  },
-  // 表格展现 数据结构
-  tableConfig: {
-    loading: false,
-    tableColumnData: [
-      /**
-       * @description: 
-       * @param {type} 遵循elementui
-       * @param {slotName} 表格插槽实现 
-       */
-      { width: "80px", label: "排序号", prop: "", type: "index" /** || selection */ },
-      { label: "id", prop: "id",  },
-      { label: "姓名", prop: "name", slotName:'name' },
-      { label: "姓名", prop: "name", afterConcat: " afterConcat", beforeConcat: 'beforeConcat ', defaultVal: '-', showOverflowTooltip: true },
-      { label: "操作", prop: "", slotName: "handleSlot" }
-    ],
-    /** 
-     * 表格插槽
-     * tableColumnData 存在的 slotName 按 slotArr 中定义的实现,slotArr中不存在的,外部自己实现
-     */
-    slotArr: {
-      handleSlot: [
-        /**
-         * @description: 
-         * @param {*} showType 展示类型 弹窗 抽屉 盖板 
-         * @param {*} key 对应展示弹层表单数据结构
-         * @param {*} visible 是否展示
-         * @param {*} funName 按钮方法 实现逻辑在外部使用者中实现
-         * @param {*} authcode: 权限编码
-         */
-        //                         弹窗      抽屉     盖板 
-        { name: '修改', showType: 'drawer', type: 'text', key: "editForm", funName: 'edit', authcode: 'xxxx' },
-        { name: '删除', showType: 'dialog', key:'del' },
-      ],
+        url: {
+          url: '/a/b/c',
+          method: 'get'
+        },
+        tableColumnConfig: { width: '50px', type: 'index', align: 'center' },
+      }),
+      columnUiCss: '',
+      validatedPlugin: '',
+      sortIndex: 3,
+      showInList: 1,
+      showInQuery: 1,
+      desp: '',
+      deleteFlag: 0
     },
-    tableData: arr,  // 表格list
-    total: 100,
-    page: 1,
-    size: 10,
-    isPage: true || false, // 是否展示分页
-  },
-  // * @param {*} key 对应展示弹层表单数据结构
-  del: {
-    visible: false,
-    // footer: false || true,
-    // footerSlot: 'footer',
-    title:'删除',
-    msg:'此操作将永久删除该文件, 是否继续?',
-    'close-on-click-modal': true,
-    'close-on-press-escape': true,
-  },
-  editForm: {
-    modal: true,
-    visible: false,
-    title: '修改',
-    // footer: false || true,
-    // footerSlot: 'footer',
-    // 
-    form: {
-      name: '李大玄'
+    {
+      id: 6,
+      structId: 1,
+      mappingClassField: 'handle',
+      columnLabel: '操作',
+      columnUiPlugin: JSON.stringify({
+        tableColumnConfig: {
+          slotName: 'handle'
+        }
+      }),
+      columnUiCss: '',
+      validatedPlugin: '',
+      sortIndex: 3,
+      showInList: 1,
+      showInQuery: 1,
+      desp: '',
+      deleteFlag: 0
     },
-    formOptions: [
-      {
-        compName: 'input',
-        placeholder: '这是输入框',
-        model: 'name',
-        clearable: true || false,
-        require: true || false,
-      },
-      {
-        compName: 'select',
-        placeholder: '这是下拉框',
-        model: 'name',
-        clearable: true || false,
-        options: [],
-        optionsLabel: 'name',
-        optionsValue: 'id',
-      },
-      {
-        compName: 'date-picker',
-        placeholder: '这是日期时间选择',
-        model: 'time',
-        clearable: true || false,
-        type: "datetimerange", // 日期时间
-        'range-separator': "至",
-        "start-placeholder": "开始日期",
-        'end-placeholder': "结束日期",
-      },
-    ]
-  },
-  
+  ]
 }
