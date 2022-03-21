@@ -17,70 +17,70 @@ export default {
           method: 'get',
           params: {}
         },
-        create: {
-          url: '/a/b/creat',
-          method: 'post'
-        },
-        delete: {
-          url: '/a/b/delete',
-          method: 'delete'
-        },
-        upd: {
-          url: '/a/b/upd',
-          method: 'post'
-        },
       },
       rules: [],
-      required: ['name'],
+      required: [],
       searchsort: [],
       labelWidth: '200px',
       itemWidth: '100px',
-      defaultSearchData: { id: '', name: '' },
-      pageSize: 10,
-      pageNum: 1,
-      isPage: true,
-      tableHandleBtns: [{ text: '删除', showtype: 'conrm', msg: '是否删除', uri: '' }, { text: '修改' }],
-      tableTopHandleBox: [{ text: '批量删除' }, { text: '新增', showType: 'drawer' }],
+      tableTopHandleBox: [
+        { text: '批量删除', showType: 'confirm', multipleSelection: true, multipleSelectionKey: 'id', message: '确认批量 删除?', title: '删除', url: '/del/id' },
+        { text: '批量复制', showType: 'confirm', multipleSelection: true, multipleSelectionKey: '', message: '确认批量 复制?', title: '复制', url: '/del/id' },
+        { text: '批量应用', showType: 'confirm', multipleSelection: true, multipleSelectionKey: 'all', message: '确认批量 应用?', title: '应用', url: '/del/id' },
+        { text: '新增 ||  添加', showType: 'el-drawer', sceneKey: 'create', url: '/a/b/creat', method: 'post' }
+      ],
       handleBox: {
         type: 1, // 1:默认且追加  2:覆盖
       },
+      pageSize: 10,
+      pageNum: 1,
+      isPage: true,
       // showInAdd: ['name', 'age', 'sex', '省', '市', '区'],
       // showInEdit: [{ key: 'name' }, { key: 'sex' }],
       // 搜索场景
       search: {
-        pageSize: 10,
-        pageNum: 1,
-        isPage: true,
         sort: [
           { mappingClassField: 'sex', placeholder: 'xxxx' },
-          'name', 'age', 'address'
+          { mappingClassField: 'name', placeholder: 'xxxx', width: '250px' },
+           'age', 'address'
         ],
         rules: [],
         labelWidth: '',
         defaultValue: {
           sex: 1,
-          name: '李大玄',
+          name: '',
           age: ''
         }
       },
       tableConfigSlot: {
         handle: [
-          { text: '删除', showType: 'confirm', message: '', title: '' },
-          { text: '修改', showType: 'el-dialog', title: '修改', width: '40%' }
+          { text: '删除', showType: 'confirm', message: '', title: '', url: '/asd/asd' },
+          {
+            text: '修改',
+            showType: 'el-dialog',
+            title: '修改',
+            width: '40%',
+            sceneKey: 'edit',
+            url: '/a/b/upd',
+            method: 'post'
+          }
         ]
       },
       create: {
         sort: [
+          { mappingClassField: 'id', width: "200px" },
           { mappingClassField: 'sex', placeholder: 'xxxx', "required": true, },
-          { mappingClassField: 'name', placeholder: 'xxxx', width: '200px', "required": false, },
+          { mappingClassField: 'name', placeholder: 'xxxx', width: '220px', "required": false, },
           'age', 'address'
         ],
         rules: [],
         labelWidth: '',
         defaultValue: {
+          id: '',
           sex: 2,
           name: '李小玄',
-          age: ''
+          age: '',
+          address: ''
         }
       },
       edit: {
@@ -97,11 +97,55 @@ export default {
     }),
   },
   attributes: [{
+      id: 11,
+      structId: 1,
+      mappingClassField: '',
+      columnLabel: '多选',
+      columnUiPlugin: JSON.stringify({
+        tableColumnConfig: { type: 'selection', width: '150px', align: 'center', }, // slotName: 'name' 
+      }),
+      validatedPlugin: '',
+      columnUiCss: '',
+      sortIndex: 1,
+      showInList: 1,
+      showInQuery: 0,
+      desp: '',
+      deleteFlag: 0
+    },
+    {
+      id: 12,
+      structId: 1,
+      mappingClassField: 'index',
+      columnLabel: '序号',
+      columnUiPlugin: JSON.stringify({
+        width: '50px',
+        tableColumnConfig: { type: 'index', align: 'center', }, // slotName: 'name' 
+      }),
+      validatedPlugin: '',
+      columnUiCss: '',
+      sortIndex: 1,
+      showInList: 1,
+      showInQuery: 0,
+      desp: '',
+      deleteFlag: 0
+    },
+    {
       id: 1,
       structId: 1,
       mappingClassField: 'id',
       columnLabel: '标识',
-      columnUiPlugin: '',
+      columnUiPlugin: JSON.stringify({
+        "compName": "input",
+        "clearable": true,
+        "required": true,
+        "width": "200px",
+        "placeholder": "请输入id",
+        "model": "id",
+        "label": "id",
+        "labelWidth": "100px",
+        "requiredMessage": "id不能为空",
+        tableColumnConfig: { type: 'index', width: '150px', align: 'center', }, // slotName: 'name' 
+      }),
       validatedPlugin: '',
       columnUiCss: '',
       sortIndex: 1,
@@ -119,7 +163,7 @@ export default {
         "compName": "input",
         "clearable": true,
         "required": true,
-        "itemWidth": "200px",
+        "width": "220px",
         "placeholder": "请输入姓名",
         "model": "name",
         "label": "姓名",

@@ -7,11 +7,12 @@
 
 <template>
   <div class="p20">
+    <!-- <div class="w100 h100" style="background-color: pink;border:20px solid #000"></div> -->
     <viewComp ref="viewComp" :search="search" :config="config">
       <template #handleBox>
+        <!-- <el-button type="primary"> 新增</el-button>
         <el-button type="primary"> 新增</el-button>
-        <el-button type="primary"> 新增</el-button>
-        <el-button type="primary"> 新增</el-button>
+        <el-button type="primary"> 新增</el-button> -->
       </template>
     </viewComp>
   </div>

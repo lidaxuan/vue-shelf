@@ -33,10 +33,11 @@ export function getSceneData(config, scene) {
   const sceneMap = config.struct.viewTemplate;
   let finalMap = {
     sceneOptions: [],
-    defaultValue: sceneMap[scene].defaultValue,
+    defaultValue: sceneMap[scene] ? sceneMap[scene].defaultValue : {},
     ...sceneMap[scene]
   };
-  const sceneCompList = [].concat(sceneMap[scene].sort);
+  // 不同 场景 不同 表单 
+  const sceneCompList = [].concat(sceneMap[scene] ? sceneMap[scene].sort : []);
   let flag = false;
   for (let i = 0, len = sceneCompList.length; i < len; i++) {
     let where = {},
@@ -50,11 +51,8 @@ export function getSceneData(config, scene) {
       where = { mappingClassField: `${sceneCompList[i]}` };
     }
     let formItem = formIteams.selectOne(where) || {};
-    // if (formItem.columnUiPlugin && typeof formItem.columnUiPlugin == 'string') {
-    //   formItem.columnUiPlugin = JSON.parse(formItem.columnUiPlugin);
-    // }
-
-    formItem.columnUiPlugin = _.cloneDeep(_.assign({}, compMap[formItem.columnUiPlugin.compName], formItem.columnUiPlugin,flag ? sceneCompList[i] : {} ));
+    //                                                组件库                                             当前页面公共表单配置    
+    formItem.columnUiPlugin = _.cloneDeep(_.assign({}, compMap[formItem.columnUiPlugin.compName] || {}, formItem.columnUiPlugin, item));
     finalMap.sceneOptions.push(Object.assign({}, item, formItem));
   }
   return finalMap || {};

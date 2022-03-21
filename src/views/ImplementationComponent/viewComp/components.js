@@ -3,7 +3,7 @@
  * @Description: 
  * @Author: 李大玄
  * @Date: 2022-03-17 13:54:52
- * @FilePath: /vue-shelf/src/views/ImplementationComponent/components.js
+ * @FilePath: /vue-shelf/src/views/ImplementationComponent/viewComp/components.js
  */
 export default {
   input: {
@@ -12,6 +12,7 @@ export default {
     model: 'name',
     clearable: true,
     require: false,
+    width: '200px'
   },
   select: {
     compName: '',
