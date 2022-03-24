@@ -8,6 +8,8 @@
 <template>
   <div class="p20">
     <el-button type="primary" class="mr20" @click="structCreate">创建页面</el-button>
+    <el-button type="primary" class="mr20" @click="structUpdate">修改页面</el-button>
+    <el-button type="primary" class="mr20" @click="structDelete">删除页面</el-button>
     <el-button type="primary" class="mr20" @click="formatData">添加数据</el-button>
     <el-button type="primary" class="mr20" @click="dataQuery">删除数据</el-button>
     <hr />
@@ -35,7 +37,7 @@ export default {
   props: {},
   data() {
     return {
-      structId: 18
+      structId: 20
     };
   },
   computed: {},
@@ -51,27 +53,51 @@ export default {
   beforeMount() {},
   mounted() {},
   methods: {
-    formatData() {
-      const data = {
+    async formatData() {
+      const item = {
         structId: this.structId,
         attributes: []
-      }
+      };
+      const attributes = this.$refs.viewComp.defaultConfig.attributes;
       for (let i = 0; i < data.length; i++) {
-        let arr = [];
-        for (const key in data[i]) {
-          const obj = {
-            structId: this.structId,
-            mappingClassField: key,
-            fieldValue: JSON.stringify(data[i][key])
-          };
-          arr.push(obj);
+        const defaultValue = _.assign({}, data[i]);
+        console.log(defaultValue);
+        for (let j = 0; j < attributes.length; j++) {
+          attributes[j].fieldValue = defaultValue[attributes[j].mappingClassField];
+          attributes[j].columnUiPlugin = JSON.stringify(attributes[j].columnUiPlugin);
         }
-        this.dataInsert(arr);
+        item.attributes = attributes;
+        await this.dataInsert(item);
       }
     },
-    async structDelete() {
-      const res = await this.$structDemoClient.structDelete('', false, 11);
+    async dataInsert(data) {
+      // console.log(JSON.stringify(data, null, 2));
+      const res = await this.$structDemoClient.dataInsert(data);
+      this.$message.success(`${res}`);
+    },
+    // 页面更新
+    async structUpdate() {
+      const attributes = this.$refs.viewComp.defaultConfig.attributes;
+      for (let i = 0; i < config.attributes.length; i++) {
+        for (let j = 0; j < attributes.length; j++) {
+          if (config.attributes[i].mappingClassField == attributes[j].mappingClassField) {
+            config.attributes[i] = Object.assign({}, attributes[j], config.attributes[i]);
+          }
+        }
+      }
+      const obj = {
+        id: this.structId,
+        viewTemplate: config.viewTemplate,
+        name: config.name,
+        attributes: config.attributes
+      };
+      const res = await this.$structDemoClient.structUpdate(obj);
       console.log(res);
+    },
+    async structDelete() {
+      const res = await this.$structDemoClient.structDelete('', false, this.structId);
+      console.log(res);
+      this.$message.success(res);
     },
     async getConfig() {
       const res = await this.$structDemoClient.structGet({ structId: 11 });
@@ -89,10 +115,6 @@ export default {
       for (let i = 0; i < res.length; i++) {
         this.dataDelete(res[i].id);
       }
-    },
-    async dataInsert(attributesDtos) {
-      const res = await this.$structDemoClient.dataInsert({ attributesDtos });
-      console.log(res);
     },
     async dataDelete(id) {
       const res = await this.$structDemoClient.dataDelete('', false, `${this.structId}/${id}`);

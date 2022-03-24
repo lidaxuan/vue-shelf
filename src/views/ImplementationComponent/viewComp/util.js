@@ -12,16 +12,18 @@ import compMap from './components';
 export function required(item) {
   return {
     trigger: ['change', 'blur'],
-    validator(rule, value, callback) {
-      if (_.isArray(value) && value.length) {
-        callback();
-      } else if (!_.isArray(value) && value) {
-        callback();
-      } else {
-        callback(item.columnUiPlugin.requiredMessage);
-      }
-    },
-    required: item.columnUiPlugin.required || false
+    required: item.columnUiPlugin.required || false,
+    message: item.columnUiPlugin.requiredMessage || 'adsasd'
+      // validator(rule, value, callback) {
+      //   if (_.isArray(value) && value.length) {
+      //     callback();
+      //   } else if (!_.isArray(value) && value) {
+      //     callback();
+      //   } else {
+      //     callback(item.columnUiPlugin.requiredMessage || 'adsasd');
+      //   }
+      // },
+
   };
 }
 
@@ -55,7 +57,6 @@ export function getSceneData(config, scene) {
     formItem.columnUiPlugin = _.cloneDeep(_.assign({}, compMap[formItem.columnUiPlugin ? formItem.columnUiPlugin.compName : ''] || {}, formItem.columnUiPlugin || {}, item));
     finalMap.sceneOptions.push(Object.assign({}, item, formItem));
   }
-  console.log(finalMap);
   return finalMap || {};
 };
 

@@ -1,7 +1,8 @@
 <div class="">
   //- <pre v-draggable class="prebox">{{ defaultConfig.attributes }}</pre>
   //- pre(class="prebox") {{tableColumnData}}
-  //- pre {{createMap}}
+  //- pre {{searchMap}}
+  //- pre(class="prebox" v-draggable style="font-size: 12px") {{searchMap}}
   //- <pre v-draggable class="prebox">{{ queryFormOptions }}</pre>
   div
     el-form(:model="searchMap.defaultValue" :inline="true" ref="searchForm" class="")

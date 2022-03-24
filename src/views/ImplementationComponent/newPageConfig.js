@@ -6,110 +6,108 @@
  * @FilePath: /vue-shelf/src/views/ImplementationComponent/newPageConfig.js
  */
 export default {
-  // struct: {
-    // id: 6,
-    companyId: 0,
-    name: "工单配置6",
-    desp: null,
-    parentId: 0,
-    showDetailTab: 1,
-    mappingClass: "com.easyliao.struct.client.demo.resource.StructDto",
-    migrationStrategy: 0,
-    assignTableName: null,
-    deleteFlag: 0,
-    viewTemplate: JSON.stringify({
-      // pageUrl: {
-      //   list: {
-      //     url: "/a/b/list",
-      //     method: "get",
-      //     params: {}
-      //   }
-      // },
-      rules: [],
-      required: [],
-      labelWidth: "200px",
-      itemWidth: "100px",
-      tableTopHandleBox: [
-        // { text: "批量删除", showType: "confirm", multipleSelection: true, multipleSelectionKey: "id", message: "确认批量 删除?", title: "删除", url: "/del/id" },
-        // { text: "批量复制", showType: "confirm", multipleSelection: true, multipleSelectionKey: "", message: "确认批量 复制?", title: "复制", url: "/del/id" },
-        // { text: "批量应用", showType: "confirm", multipleSelection: true, multipleSelectionKey: "all", message: "确认批量 应用?", title: "应用", url: "/del/id" },
-        // { text: "新增 ||  添加", showType: "el-drawer", sceneKey: "create", url: "/a/b/creat", method: "post" }
-        { text: "创建团队标签", showType: "el-drawer", sceneKey: "create", url: "/a/b/creat", method: "post" }
+  struct: {
+  // id: 6,
+  companyId: 0,
+  name: "工单配置6",
+  desp: null,
+  parentId: 0,
+  showDetailTab: 1,
+  mappingClass: "com.easyliao.struct.client.demo.resource.StructDto",
+  migrationStrategy: 0,
+  assignTableName: null,
+  deleteFlag: 0,
+  viewTemplate: JSON.stringify({
+    // pageUrl: {
+    //   list: {
+    //     url: "/a/b/list",
+    //     method: "get",
+    //     params: {}
+    //   }
+    // },
+    rules: [],
+    required: [],
+    labelWidth: "200px",
+    itemWidth: "100px",
+    tableTopHandleBox: [
+      // { text: "批量删除", showType: "confirm", multipleSelection: true, multipleSelectionKey: "id", message: "确认批量 删除?", title: "删除", url: "/del/id" },
+      // { text: "批量复制", showType: "confirm", multipleSelection: true, multipleSelectionKey: "", message: "确认批量 复制?", title: "复制", url: "/del/id" },
+      // { text: "批量应用", showType: "confirm", multipleSelection: true, multipleSelectionKey: "all", message: "确认批量 应用?", title: "应用", url: "/del/id" },
+      // { text: "新增 ||  添加", showType: "el-drawer", sceneKey: "create", url: "/a/b/creat", method: "post" }
+      { text: "创建团队标签", showType: "el-drawer", sceneKey: "create", url: "/a/b/creat", method: "post" }
+    ],
+    handleBox: {
+      type: 1 // 1:默认且追加  2:覆盖
+    },
+    // 搜索场景
+    pageSize: 10,
+    pageNum: 1,
+    isPage: true,
+    search: {
+      sort: [
+        { mappingClassField: "id", placeholder: "id", "required": false },
+        { mappingClassField: "userSize", placeholder: "团队成员", width: "220px", "required": false, label: "团队成员" },
+        { mappingClassField: "name", placeholder: "团队标签名称", width: "250px", "required": false, label: "团队标签名称" },
       ],
-      handleBox: {
-        type: 1 // 1:默认且追加  2:覆盖
-      },
-      // showInAdd: ['name', 'age', 'sex', '省', '市', '区'],
-      // showInEdit: [{ key: 'name' }, { key: 'sex' }],
-      // 搜索场景
-      pageSize: 10,
-      pageNum: 1,
-      isPage: true,
-      search: {
-        sort: [
-          { mappingClassField: "id", placeholder: "id" },
-          { mappingClassField: "name", placeholder: "团队标签名称", width: "250px" },
-          { mappingClassField: "userSize", placeholder: "团队成员", width: "220px", "required": false, label: "团队成员" },
-        ],
-        rules: [],
-        labelWidth: "",
-        defaultValue: {
-          sex: 1,
-          name: "",
-          age: ""
-        }
-      },
-      create: {
-        sort: [
-          // { mappingClassField: "id", width: "200px" },
-          { mappingClassField: "name", placeholder: "请输入团队标签名称", label: "团队标签名称" },
-          { mappingClassField: "principal", placeholder: "请输入负责人", width: "220px", label: "负责人" },
-          { mappingClassField: "userSize", placeholder: "请输入团队成员", width: "220px", label: "团队成员" },
-          { mappingClassField: "status", placeholder: "请输入状态", width: "220px", label: "状态" },
-          { mappingClassField: "creator", placeholder: "请输入创建人", width: "220px", label: "创建人" },
-        ],
-        rules: [],
-        labelWidth: "",
-        defaultValue: {
-          name: null,
-          principal: null,
-          userSize: null,
-          status: '',
-          creator: '',
-        }
-      },
-      edit: {
-        sort: [
-          { mappingClassField: "name", placeholder: "请输入团队标签名称", label: "团队标签名称" },
-          { mappingClassField: "principal", placeholder: "请输入负责人", width: "220px", label: "负责人" },
-          { mappingClassField: "userSize", placeholder: "请输入团队成员", width: "220px", label: "团队成员" },
-          { mappingClassField: "status", placeholder: "请输入状态", width: "220px", label: "状态" },
-          { mappingClassField: "creator", placeholder: "请输入创建人", width: "220px", label: "创建人" },
-        ],
-        rules: [],
-        labelWidth: "",
-        disabled: []
-      },
-      tableConfigSlot: {
-        handle: [
-          // { text: "启用", showType: "confirm", message: "", title: "", url: "/asd/asd" },
-          // { text: "停用", showType: "confirm", message: "", title: "", url: "/asd/asd" },
-          {
-            text: "编辑",
-            showType: "el-dialog",
-            title: "修改",
-            width: "40%",
-            sceneKey: "edit",
-            url: "/a/b/upd",
-            method: "post"
-          },
-          { text: "删除", showType: "confirm", message: "", title: "", url: "/asd/asd" }
-        ]
-      },
-      migrationStrategy: 0,
-      assignTableName: ""
-    }),
-  // },
+      rules: [],
+      labelWidth: "",
+      defaultValue: {
+        id: '',
+        name: "",
+        userSize: ""
+      }
+    },
+    create: {
+      sort: [
+        // { mappingClassField: "id", width: "200px" },
+        { mappingClassField: "name", placeholder: "请输入团队标签名称", label: "团队标签名称" },
+        { mappingClassField: "principal", placeholder: "请输入负责人", width: "220px", label: "负责人" },
+        { mappingClassField: "userSize", placeholder: "请输入团队成员", width: "220px", label: "团队成员" },
+        { mappingClassField: "status", placeholder: "请输入状态", width: "220px", label: "状态" },
+        { mappingClassField: "creator", placeholder: "请输入创建人", width: "220px", label: "创建人" },
+      ],
+      rules: [],
+      labelWidth: "",
+      defaultValue: {
+        name: null,
+        principal: null,
+        userSize: null,
+        status: '',
+        creator: '',
+      }
+    },
+    edit: {
+      sort: [
+        { mappingClassField: "name", placeholder: "请输入团队标签名称", label: "团队标签名称" },
+        { mappingClassField: "principal", placeholder: "请输入负责人", width: "220px", label: "负责人" },
+        { mappingClassField: "userSize", placeholder: "请输入团队成员", width: "220px", label: "团队成员" },
+        { mappingClassField: "status", placeholder: "请输入状态", width: "220px", label: "状态" },
+        { mappingClassField: "creator", placeholder: "请输入创建人", width: "220px", label: "创建人" },
+      ],
+      rules: [],
+      labelWidth: "",
+      disabled: []
+    },
+    tableConfigSlot: {
+      handle: [
+        // { text: "启用", showType: "confirm", message: "", title: "", url: "/asd/asd" },
+        // { text: "停用", showType: "confirm", message: "", title: "", url: "/asd/asd" },
+        {
+          text: "编辑",
+          showType: "el-dialog",
+          title: "修改",
+          width: "40%",
+          sceneKey: "edit",
+          url: "/a/b/upd",
+          method: "post"
+        },
+        { text: "删除", showType: "confirm", message: "", title: "", url: "/asd/asd" }
+      ]
+    },
+    migrationStrategy: 0,
+    assignTableName: ""
+  }),
+  },
   attributes: [
     // {
     //   id: 11,
@@ -148,13 +146,13 @@ export default {
       columnUiPlugin: JSON.stringify({
         "compName": "input",
         "clearable": true,
-        "required": false,
+
         "width": "200px",
         "placeholder": "请输入团队标签ID",
         "model": "id",
         "label": "",
         "labelWidth": "100px",
-        "requiredMessage": "id不能为空",
+        // "requiredMessage": "id不能为空",
         tableColumnConfig: { width: "150px", align: "center", "label": "团队标签ID" } // slotName: 'name'
       }),
       validatedPlugin: "",
@@ -171,13 +169,13 @@ export default {
       columnUiPlugin: JSON.stringify({
         "compName": "input",
         "clearable": true,
-        "required": false,
+
         "width": "220px",
         "placeholder": "请输入团队标签名称",
         "model": "name",
         "label": "",
         "labelWidth": "100px",
-        "requiredMessage": "姓名不能为空",
+        // "requiredMessage": "姓名不能为空",
         tableColumnConfig: { width: "150px", align: "center", "label": "团队标签名称" } // slotName: 'name'
       }),
       columnUiCss: "",

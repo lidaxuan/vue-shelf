@@ -11,7 +11,7 @@ export default {
     placeholder: '这是输入框',
     model: 'name',
     clearable: true,
-    require: false,
+    required: false,
     width: '200px'
   },
   select: {

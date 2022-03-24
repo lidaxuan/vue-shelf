@@ -70,7 +70,7 @@ export default {
     async getConfig() {
       const res = await this.$structDemoClient.structGet({ structId: this.structId });
       this.defaultConfig = _.cloneDeep(Object.assign({}, res || {}));
-      this.forMatConfig();
+      await this.forMatConfig();
       this.fetchData();
     },
     async forMatConfig() {
@@ -100,7 +100,7 @@ export default {
     },
     // 获取规则
     getItemRule(item) {
-      return [required(item)];
+      return required(item);
     },
     // 获取显示组件类型
     getComponentType(item) {
@@ -154,8 +154,8 @@ export default {
           return;
         }
         this.pageNumber = 1;
+        this.fetchData();
       });
-      this.fetchData();
     },
     // 重置
     resetBtn() {
@@ -190,17 +190,25 @@ export default {
         });
     },
     // --------------------------
+    // 查询数据
     async fetchData() {
       const query = {
         pageNo: this.pageNumber,
         pageSize: this.pageSize,
-        ...this.defaultValue,
         structId: this.structId
       };
+      let params = { ...this.searchMap.defaultValue };
+      for (const key in params) {
+        if (!params[key]) {
+          delete params[key];
+        }
+      }
+      if (_.compact(Object.values(params)).length) {
+        query.params = JSON.stringify(params);
+      }
       const funName = this.isPage ? 'dataPageQuery' : 'dataQuery';
       const res = await this.$structDemoClient[funName](query);
       this.tableData = formatResponseData(res.rows);
-      // this.tableData = res.rows;
       this.totalNumber = res.total;
     },
     pageSizeChange(val) {
@@ -239,7 +247,6 @@ export default {
       // 新增的时候 回复初始
       const data = this.$options.data();
       this[`${this.handleBtnInfo.sceneKey}Map`].defaultValue = data[`${this.handleBtnInfo.sceneKey}Map`].defaultValue;
-      console.log();
     },
     // 不同场景设置默认值
     setDefaultValue(btn) {
@@ -278,7 +285,6 @@ export default {
                 });
               }
             }
-            console.log(1, this.handleBtnInfo, query);
             this.multipleSelection = [];
             const res = await this.$structDemoClient.dataDelete('', false, `${this.structId}/${query.id}`);
             this.$message({ type: 'success', message: `${this.handleBtnInfo.title || '操作'}成功!` });
@@ -298,25 +304,19 @@ export default {
     // 提交   只有是弹窗出现 就会有场景
     async handleSubmit() {
       const defaultValue = _.assign({}, this[`${this.handleBtnInfo.sceneKey}Map`].defaultValue);
+      const attributes = [].concat(this.defaultConfig.attributes || []);
       const obj = {
         structId: this.structId,
         attributes: [],
-        // id: '316604701904732160'
         id: defaultValue.id
       };
-      const attributes = [].concat(this.defaultConfig.attributes || []);
-      let omitArr = [];
       for (let i = 0; i < attributes.length; i++) {
         attributes[i].fieldValue = defaultValue[attributes[i].mappingClassField];
         if (this.handleBtnInfo.sceneKey == 'create') {
-          omitArr = ['id', 'structId'];
-        } else {
-          // attributes[i].id = '316604701904732160';
+          attributes[i] = _.omit(attributes[i], ['id', 'structId']);
         }
-        attributes[i] = _.omit(attributes[i], omitArr);
         attributes[i].columnUiPlugin = JSON.stringify(attributes[i].columnUiPlugin);
       }
-      console.log(attributes);
       obj.attributes = attributes;
       if (this.handleBtnInfo.sceneKey == 'edit') {
         await this.dataUpdate(obj);
