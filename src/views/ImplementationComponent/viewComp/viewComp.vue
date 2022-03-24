@@ -4,21 +4,22 @@
  * @Date: 2022-03-02 15:44:53
  * @FilePath: /vue-shelf/src/views/ImplementationComponent/viewComp/viewComp.vue
 -->
-<template lang="pug" src="./template/index.pug"></template>
+<template lang="pug" src="./template/index.pug">
+</template>
 
 <script>
 //例如：import 《组件名称》 from '《组件路径》';
 import _ from 'lodash';
-import { required, getSceneData } from './util';
-
 import uuid from 'uuid';
+import { required, getSceneData, formatResponseData } from './util';
+import newPageConfig from '../newPageConfig';
 export default {
   name: '', // Pascal命名
   mixins: [],
   components: {},
   props: {
-    config: Object,
-    search: Object
+    // config: Object,
+    structId: [Number, String]
   },
   data() {
     return {
@@ -33,7 +34,11 @@ export default {
       pageSize: 10,
       isPage: false,
       multipleSelection: [], // 表格多选
-      defaultConfig: {},
+      defaultConfig: {
+        struct: {
+          viewTemplate: {}
+        }
+      },
       tableColumnData: [],
       searchMap: {
         sceneOptions: [],
@@ -53,23 +58,21 @@ export default {
     };
   },
   computed: {},
-  watch: {
-    config: {
-      handler(newVal, oldVal) {
-        this.defaultConfig = _.cloneDeep(Object.assign({}, newVal));
-        this.forMatConfig();
-      },
-      deep: true, // 深度
-      immediate: true // 立即执行
-    }
-  },
+  watch: {},
   beforeCreate() {},
   created() {
-    // this.fetchData();
+    this.getConfig();
   },
   beforeMount() {},
   mounted() {},
   methods: {
+    // 获取页面配置
+    async getConfig() {
+      const res = await this.$structDemoClient.structGet({ structId: this.structId });
+      this.defaultConfig = _.cloneDeep(Object.assign({}, res || {}));
+      this.forMatConfig();
+      this.fetchData();
+    },
     async forMatConfig() {
       this.defaultConfig.struct.viewTemplate = JSON.parse(this.defaultConfig.struct.viewTemplate);
       for (let i = 0, len = this.defaultConfig.attributes.length; i < len; i++) {
@@ -82,6 +85,7 @@ export default {
           viewTemplate: { pageSize, pageNum, isPage, pageUrl, tableTopHandleBox }
         }
       } = this.defaultConfig;
+
       this.pageUrl = pageUrl || {};
       this.pageNumber = pageNum || 1;
       this.pageSize = pageSize || 10;
@@ -93,7 +97,6 @@ export default {
       this.createMap = getSceneData(this.defaultConfig, 'create');
       this.editMap = getSceneData(this.defaultConfig, 'edit');
       this.getTableColumnData();
-      this.fetchData();
     },
     // 获取规则
     getItemRule(item) {
@@ -151,8 +154,8 @@ export default {
           return;
         }
         this.pageNumber = 1;
-        this.fetchData();
       });
+      this.fetchData();
     },
     // 重置
     resetBtn() {
@@ -187,28 +190,18 @@ export default {
         });
     },
     // --------------------------
-    fetchData() {
-      // const {
-      //   struct: {
-      //     viewTemplate
-      //   }
-      // } = this.defaultConfig;
+    async fetchData() {
       const query = {
-        pageNo: this.pageNum,
+        pageNo: this.pageNumber,
         pageSize: this.pageSize,
-        ...this.defaultValue
+        ...this.defaultValue,
+        structId: this.structId
       };
-      let arr = [];
-      for (let i = 0; i < 7; i++) {
-        arr.push({
-          id: uuid(),
-          name: `李大玄${i}`,
-          sex: Math.floor(Math.random() * 2 + 1),
-          age: i
-        });
-      }
-      this.tableData = arr;
-      this.totalNumber = 200;
+      const funName = this.isPage ? 'dataPageQuery' : 'dataQuery';
+      const res = await this.$structDemoClient[funName](query);
+      this.tableData = formatResponseData(res.rows);
+      // this.tableData = res.rows;
+      this.totalNumber = res.total;
     },
     pageSizeChange(val) {
       this.pageNumber = 1;
@@ -222,7 +215,7 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = [].concat(val || []);
     },
-    // 表格内部按钮
+    // 表格内部按钮  修改 删除
     tableHandle(row, btn) {
       this.handleBtnInfo = Object.assign({}, btn);
       // 有场景的 confirm没有场景
@@ -234,7 +227,7 @@ export default {
       }
       this.setDefaultValue(btn);
     },
-    // 表格顶部按钮操作
+    // 表格顶部按钮操作  新增展示
     tableTopHandleBtn(btn) {
       // multipleSelection 多选配置
       if (btn.multipleSelection && !this.multipleSelection.length) {
@@ -243,6 +236,10 @@ export default {
       }
       this.handleBtnInfo = Object.assign({}, btn);
       this.setDefaultValue(btn);
+      // 新增的时候 回复初始
+      const data = this.$options.data();
+      this[`${this.handleBtnInfo.sceneKey}Map`].defaultValue = data[`${this.handleBtnInfo.sceneKey}Map`].defaultValue;
+      console.log();
     },
     // 不同场景设置默认值
     setDefaultValue(btn) {
@@ -268,11 +265,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       })
-        .then(() => {
+        .then(async () => {
           try {
-            let query = {};
             // 不论是 表格中 还是表格外 confirm 都没有场景 只有 当前操作的数据
-            query = Object.assign(query, this.rowData);
+            let query = Object.assign({}, this.rowData);
             if (this.handleBtnInfo.multipleSelection && this.multipleSelection.length) {
               if (this.handleBtnInfo.multipleSelectionKey == 'all') {
                 query.ids = this.multipleSelection;
@@ -282,10 +278,11 @@ export default {
                 });
               }
             }
-            console.log(this.handleBtnInfo, query);
+            console.log(1, this.handleBtnInfo, query);
             this.multipleSelection = [];
-            this.fetchData();
+            const res = await this.$structDemoClient.dataDelete('', false, `${this.structId}/${query.id}`);
             this.$message({ type: 'success', message: `${this.handleBtnInfo.title || '操作'}成功!` });
+            this.fetchData();
           } catch (error) {
             console.log(error);
           }
@@ -299,9 +296,44 @@ export default {
       return this[`${this.handleBtnInfo.sceneKey}Map`].defaultValue;
     },
     // 提交   只有是弹窗出现 就会有场景
-    handleSubmit() {
-      console.log(this[`${this.handleBtnInfo.sceneKey}Map`].defaultValue);
-      console.log(this.handleBtnInfo);
+    async handleSubmit() {
+      const defaultValue = _.assign({}, this[`${this.handleBtnInfo.sceneKey}Map`].defaultValue);
+      const obj = {
+        structId: this.structId,
+        attributes: [],
+        // id: '316604701904732160'
+        id: defaultValue.id
+      };
+      const attributes = [].concat(this.defaultConfig.attributes || []);
+      let omitArr = [];
+      for (let i = 0; i < attributes.length; i++) {
+        attributes[i].fieldValue = defaultValue[attributes[i].mappingClassField];
+        if (this.handleBtnInfo.sceneKey == 'create') {
+          omitArr = ['id', 'structId'];
+        } else {
+          // attributes[i].id = '316604701904732160';
+        }
+        attributes[i] = _.omit(attributes[i], omitArr);
+        attributes[i].columnUiPlugin = JSON.stringify(attributes[i].columnUiPlugin);
+      }
+      console.log(attributes);
+      obj.attributes = attributes;
+      if (this.handleBtnInfo.sceneKey == 'edit') {
+        await this.dataUpdate(obj);
+      } else if (this.handleBtnInfo.sceneKey == 'create') {
+        await this.dataInsert(obj);
+      }
+      this.visible = false;
+    },
+    async dataInsert(data) {
+      const res = await this.$structDemoClient.dataInsert(data);
+      this.$message.success(`${res}`);
+      this.fetchData();
+    },
+    async dataUpdate(data) {
+      const res = await this.$structDemoClient.dataUpdate(data);
+      this.$message.success(`${res}`);
+      this.fetchData();
     }
   },
   beforeUpdate() {}, //生命周期 - 更新之前

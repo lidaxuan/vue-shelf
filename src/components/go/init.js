@@ -98,7 +98,6 @@ export const chartDiagram = {
 };
 
 export const linkTemplate = function (name, linkType, dashed, delLinkCom) {
-  // console.log(name, linkType, dashed, delLinkCom);
   const $ = name;
   return $(
     go.Link,

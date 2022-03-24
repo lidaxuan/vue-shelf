@@ -91,7 +91,6 @@ export default {
   beforeMount() {},
   mounted() {
     // this.$nextTick(() => {
-    //   console.log(this.$refs.drawer);
     //   // const width = document.getElementsByClassName('el-drawer')[0].style.width;
     //   if (this.direction == 'rtl') {
     //     this.$refs.close.style.left = '-30px';

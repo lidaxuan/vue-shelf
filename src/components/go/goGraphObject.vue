@@ -270,14 +270,13 @@ export default {
       });
       // // 移动事件
       this.diagram.addDiagramListener('SelectionMoved', (e) => {
-        console.log(e.diagram.lastInput.documentPoint);
+        // console.log(e.diagram.lastInput.documentPoint);
         // var can = document.querySelector("canvas")
         // can.style.outlineColor = "#ff1a52";
       });
     },
     // 虚线点击
     dashed(e, obj) {
-      console.log(e, obj);
       // 虚线点击
       if (obj.part.data.animation == 'animation') {
         this.asideCollapse = true;
@@ -884,7 +883,6 @@ export default {
           } else {
             if (this.asideCollapse == true) {
               this.asideCollapse = true;
-              console.log(2222);
             } else {
               this.asideCollapse = false;
             }

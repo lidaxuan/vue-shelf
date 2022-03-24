@@ -42,14 +42,14 @@ export default {
         sort: [
           { mappingClassField: 'sex', placeholder: 'xxxx' },
           { mappingClassField: 'name', placeholder: 'xxxx', width: '250px' },
-           'age', 'address'
+          'age', 'address'
         ],
         rules: [],
         labelWidth: '',
         defaultValue: {
           sex: 1,
           name: '',
-          age: ''
+          age: '',
         }
       },
       tableConfigSlot: {
@@ -61,8 +61,6 @@ export default {
             title: '修改',
             width: '40%',
             sceneKey: 'edit',
-            url: '/a/b/upd',
-            method: 'post'
           }
         ]
       },
@@ -96,7 +94,8 @@ export default {
       assignTableName: ''
     }),
   },
-  attributes: [{
+  attributes: [
+    {
       id: 11,
       structId: 1,
       mappingClassField: '',
@@ -107,6 +106,7 @@ export default {
       validatedPlugin: '',
       columnUiCss: '',
       sortIndex: 1,
+      fieldValue:  '',
       showInList: 1,
       showInQuery: 0,
       desp: '',
@@ -124,6 +124,7 @@ export default {
       validatedPlugin: '',
       columnUiCss: '',
       sortIndex: 1,
+      fieldValue:  '',
       showInList: 1,
       showInQuery: 0,
       desp: '',
@@ -150,6 +151,7 @@ export default {
       columnUiCss: '',
       sortIndex: 1,
       showInList: 1,
+      fieldValue:  '',
       showInQuery: 1,
       desp: '',
       deleteFlag: 0
@@ -175,6 +177,7 @@ export default {
       validatedPlugin: 'input',
       sortIndex: 2,
       showInList: 1,
+      fieldValue:  '',
       showInQuery: 1,
       desp: '',
       deleteFlag: 0
@@ -190,6 +193,7 @@ export default {
       sortIndex: 3,
       showInList: 1,
       showInQuery: 1,
+      fieldValue:  '',
       desp: '',
       deleteFlag: 0
     },
@@ -209,6 +213,7 @@ export default {
       validatedPlugin: '',
       sortIndex: 3,
       showInList: 1,
+      fieldValue:  '',
       showInQuery: 1,
       desp: '',
       deleteFlag: 0
@@ -234,6 +239,7 @@ export default {
       validatedPlugin: '',
       sortIndex: 3,
       showInList: 1,
+      fieldValue:  '',
       showInQuery: 1,
       desp: '',
       deleteFlag: 0
@@ -252,6 +258,7 @@ export default {
       validatedPlugin: '',
       sortIndex: 3,
       showInList: 1,
+      fieldValue:  '',
       showInQuery: 1,
       desp: '',
       deleteFlag: 0

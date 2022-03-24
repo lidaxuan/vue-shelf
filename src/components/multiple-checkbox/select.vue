@@ -500,7 +500,6 @@ export default {
       indeterminate[data[this.primaryKey]] = false;
       // 设置子元素选中状态
       const childrenDeep = db.childrenDeep(this.getPrimaryKeyWhere(data[this.primaryKey]));
-      console.log(childrenDeep);
       _.each(childrenDeep, (item) => {
         const level = item.level;
         const value = item[this.primaryKey];
@@ -510,11 +509,9 @@ export default {
       // 判断是否为多选
       if (!this.readio) {
         // 选中
-        console.log(status);
         if (status) {
           _.each(this.checkList, (column, index) => {
             const arr = [].concat(column || [], checkList[index] || []);
-            console.log(arr);
             checkList[index] = _.compact(_.uniq(arr));
           });
         } else {

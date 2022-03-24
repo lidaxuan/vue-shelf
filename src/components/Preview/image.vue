@@ -82,10 +82,8 @@ export default {
         style.push(`${name}: ${value};`);
       }
     });
-    console.log(this.size === Size[2]);
     // 图片自适应
     if (this.size === Size[2]) {
-      console.log(this.radius-0);
       let radius = this.radius-0;
       return createElement('img', {
         attrs: {

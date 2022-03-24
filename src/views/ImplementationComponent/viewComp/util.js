@@ -29,7 +29,7 @@ export function getSceneData(config, scene) {
   if (!config) {
     throw "object config: where cannot be undefined";
   }
-  const formIteams = new DB([].concat(config.attributes), 'id');
+  const attributes = new DB([].concat(config.attributes), 'id');
   const sceneMap = config.struct.viewTemplate;
   let finalMap = {
     sceneOptions: [],
@@ -38,26 +38,40 @@ export function getSceneData(config, scene) {
   };
   // 不同 场景 不同 表单 
   const sceneCompList = [].concat(sceneMap[scene] ? sceneMap[scene].sort : []);
-  let flag = false;
   for (let i = 0, len = sceneCompList.length; i < len; i++) {
     let where = {},
       item = {} // sceneMap[scene].sort 可能是对象 可能是字符串
     if (typeof sceneCompList[i] == 'object') {
-      flag = true;
       where = { mappingClassField: sceneCompList[i]['mappingClassField'] };
       item = Object.assign({}, sceneCompList[i]);
     } else if (typeof sceneCompList[i] == 'string') {
-      flag = false;
       where = { mappingClassField: `${sceneCompList[i]}` };
     }
-    let formItem = formIteams.selectOne(where) || {};
+    let formItem = attributes.selectOne(where) || {};
+    if (!Object.keys(formItem).length) {
+      continue;
+    }
     //                                                组件库                                             当前页面公共表单配置    
-    formItem.columnUiPlugin = _.cloneDeep(_.assign({}, compMap[formItem.columnUiPlugin.compName] || {}, formItem.columnUiPlugin, item));
+    formItem.columnUiPlugin = _.cloneDeep(_.assign({}, compMap[formItem.columnUiPlugin ? formItem.columnUiPlugin.compName : ''] || {}, formItem.columnUiPlugin || {}, item));
     finalMap.sceneOptions.push(Object.assign({}, item, formItem));
   }
+  console.log(finalMap);
   return finalMap || {};
 };
 
-export function getTableColumns() {
-
+export function formatResponseData(list) {
+  let array = [];
+  for (let i = 0; i < list.length; i++) {
+    const attributes = [].concat(list[i].attributes || [])
+    if (!attributes.length) {
+      continue;
+    }
+    let item = {}
+    for (let j = 0; j < attributes.length; j++) {
+      item[attributes[j].mappingClassField] = attributes[j].fieldValue
+      item.id = list[i].id
+    }
+    array.push(item)
+  }
+  return array;
 }

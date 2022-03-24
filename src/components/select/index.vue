@@ -2,20 +2,23 @@
  * @Description: 
  * @Author: 李大玄
  * @Date: 2022-03-22 17:27:53
- * @FilePath: /vue-shelf/src/views/test/dropdownDemo.vue
+ * @FilePath: /vue-shelf/src/components/select/index.vue
 -->
 
 <template>
-  <div class="flex flex-aic flex-ccc hmax">
-    {{ value }}
-    <el-select v-model="value" v-el-select-loadmore:rangeNumber="loadMore()">
-      <el-option v-for="item in getList" :key="item.id" :label="item.name" :value="item.id"></el-option>
-    </el-select>
+  <div>
+    {{getList()}}
+    <Select :value="value" @change="selectChange" @input="onChange" v-bind="$attrs" v-el-select-loadmore:rangeNumber="loadMore()">
+      <template v-for="(item, index) in getList()">
+        <slot v-bind="item" name="option"></slot>
+      </template>
+    </Select>
   </div>
 </template>
  
 <script>
 import Vue from 'vue';
+import { Select } from 'element-ui';
 Vue.directive('el-select-loadmore', {
   bind(el, binding) {
     // 获取element-ui定义好的scroll盒子
@@ -34,44 +37,44 @@ Vue.directive('el-select-loadmore', {
   }
 });
 export default {
-  name: '',
-  props: {},
+  name: 'ElSelect',
+  props: {
+    value: {
+      type: [String, Number, Array]
+    },
+    list: Array
+  },
   data() {
     return {
-      rangeNumber: 10,
-      value: 3000,
-      optionList: []
+      rangeNumber: 10
     };
   },
-  components: {},
-  computed: {
-    getList() {
-      if (this.value) {
-        const index = this.optionList.findIndex((item) => {
-          return item.id == this.value;
-        });
-        console.log(this.rangeNumber , index);
-        if (this.rangeNumber < index) {
-          this.rangeNumber = index + 10;
-        }``
-      }
-      console.log(this.rangeNumber);
-      return this.optionList.slice(0, this.rangeNumber);
-    }
+  components: {
+    Select
   },
   created() {},
   mounted() {
-    let arr = [];
-    for (let i = 0; i < 5002; i++) {
-      arr.push({ name: '李大玄' + i, id: i });
-    }
-    this.optionList = arr;
+    this.$nextTick(() => {
+      console.log(this.$scopedSlots.option());
+    });
   },
   methods: {
+    getList() {
+      return this.list.slice(0, this.rangeNumber);
+    },
     loadMore() {
       //n是默认初始展示的条数会在渲染的时候就可以获取,具体可以打log查看
       //if(n < 8) this.rangeNumber = 10 //elementui下拉超过7条才会出滚动条,如果初始不出滚动条无法触发loadMore方法
       return () => (this.rangeNumber += 5); //每次滚动到底部可以新增条数  可自定义
+    },
+    onChange(val) {
+      // if (_.isArray(val) && !val.length) {
+      //   val = '';
+      // }
+      this.$emit('input', val);
+    },
+    selectChange(val) {
+      this.$emit('change', val);
     }
   }
 };

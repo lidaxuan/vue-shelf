@@ -121,8 +121,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      // console.log(this.$refs.tableRef.$el.querySelector('.el-table__header-wrapper'));
-      console.log(this.$refs.tableRef);
       this.tableRef = this.$refs.tableRef.bodyWrapper;
       // this.tableRef = this.$refs.tableRef.$el.querySelector('.el-table__header-wrapper');
       this.tableFixedLeft = document.querySelector('.el-table .el-table__fixed .el-table__fixed-body-wrapper');
@@ -135,7 +133,6 @@ export default {
       divWarpPar.style.height = this.dConfig.saveDATA.length * this.dConfig.itemHeight + 'px';
       let divWarpChild = document.createElement('div');
       divWarpChild.className = 'fix-warp';
-      console.log(this.tableRef);
       divWarpChild.append(this.tableRef.children[0]);
       divWarpPar.append(divWarpChild);
       this.tableRef.append(divWarpPar);

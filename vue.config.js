@@ -17,7 +17,6 @@ const webpack = require('webpack');
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
-// console.log(process.env);
 function getSassVar() {
   const text = [];
   if (process.env.VUE_APP_OS_domain) {
@@ -58,13 +57,24 @@ module.exports = {
       '/robot': {
         // target: 'http://dev-prd19.easyliao.com', // 开发
         // target: 'http://192.168.169.24:7101', // 开发
-        target: 'http://prd19.easyliao.com', // 开发
+        target: 'http://192.168.169.217:7200', // 开发
         // target: 'http://192.168.169.36:7107', // 开发
         // target: 'http://app.easyliao.com', // 测试
         changeOrigin: true,
         pathRewrite: {
           '^/robot': '', //路径重写npm
         },
+      },
+      '/struct-demo-client': {
+        // target: 'http://dev-prd19.easyliao.com', // 开发
+        // target: 'http://192.168.169.24:7101', // 开发
+        target: 'http://192.168.169.217:7200', // 开发
+        // target: 'http://192.168.169.36:7107', // 开发
+        // target: 'http://app.easyliao.com', // 测试
+        changeOrigin: true,
+        // pathRewrite: {
+        //   '^/robot': '', //路径重写npm
+        // },
       }
     },
     hot: true,
@@ -102,7 +112,7 @@ module.exports = {
       .end();
 
     config
-      // https://webpack.js.org/configuration/devtool/#development
+    // https://webpack.js.org/configuration/devtool/#development
       .when(process.env.NODE_ENV === 'development', conf => conf.devtool('cheap-source-map'));
     config.resolve.alias
       .set('@', resolve('src'))

@@ -3,14 +3,13 @@
  * @Description: 
  * @Author: 李继玄（15201002062@163.com）
  * @Date: 2021-03-29 18:14:02
- * @FilePath: /vue-project1/src/dao/axios/server.js
+ * @FilePath: /vue-shelf/src/dao/axios/server.js
  */
 import axios from 'axios';
 import process from '@/env/index';
 
 const timeout = 5000 * 100;
 
-// console.log(process.env);
 const server = axios.create({
   timeout,
   headers: {

@@ -17,12 +17,11 @@ import "./assets/styles/base/index.scss";
 Vue.config.productionTip = false;
 
 import elementUi from 'element-ui';
-import pin from './directives/pin';
 import IconFont from './components/IconFont';
 import Directives from '@lijixuan/vue-customdirectives';
-Vue.use(pin);
+
 Vue.use(IconFont);
-Vue.use(elementUi,{size: 'small'});
+Vue.use(elementUi, { size: 'small' });
 Vue.use(Directives);
 
 
@@ -34,9 +33,13 @@ import draggable from './utils/a';
 Vue.directive('draggable', draggable)
 
 
+
 import { robotServer, eachbotFlowAdminWeb } from './service';
+
 Vue.prototype.$HttpRobot = robotServer; //机器人serve
 Vue.prototype.$HttpFlowAdmin = eachbotFlowAdminWeb; //标签 serve
+import structDemoClient from './dao/axios/structDemoClient';
+Vue.prototype.$structDemoClient = structDemoClient; //标签 serve
 
 // const link = document.createElement('link');
 // link.rel = "stylesheet"

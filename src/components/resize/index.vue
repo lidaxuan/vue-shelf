@@ -161,7 +161,6 @@ export default {
     r({ event, width }) {
       // 向右
       if (event.x > this.event.x) {
-        console.log(this.event.x);
         const toRightWidth = width + (event.x - this.event.x) * this.speed;
         this.$el.style.width = this.max.width ? `${Math.min(this.max.width, toRightWidth)}px` : `${toRightWidth}px`;
       } else {
