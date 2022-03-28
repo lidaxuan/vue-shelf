@@ -37,7 +37,7 @@ export default {
   props: {},
   data() {
     return {
-      structId: 20
+      structId: 22
     };
   },
   computed: {},

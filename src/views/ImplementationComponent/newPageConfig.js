@@ -6,7 +6,7 @@
  * @FilePath: /vue-shelf/src/views/ImplementationComponent/newPageConfig.js
  */
 export default {
-  struct: {
+  // struct: {
   // id: 6,
   companyId: 0,
   name: "工单配置6",
@@ -18,13 +18,6 @@ export default {
   assignTableName: null,
   deleteFlag: 0,
   viewTemplate: JSON.stringify({
-    // pageUrl: {
-    //   list: {
-    //     url: "/a/b/list",
-    //     method: "get",
-    //     params: {}
-    //   }
-    // },
     rules: [],
     required: [],
     labelWidth: "200px",
@@ -48,6 +41,7 @@ export default {
         { mappingClassField: "id", placeholder: "id", "required": false },
         { mappingClassField: "userSize", placeholder: "团队成员", width: "220px", "required": false, label: "团队成员" },
         { mappingClassField: "name", placeholder: "团队标签名称", width: "250px", "required": false, label: "团队标签名称" },
+        'name'
       ],
       rules: [],
       labelWidth: "",
@@ -59,7 +53,7 @@ export default {
     },
     create: {
       sort: [
-        // { mappingClassField: "id", width: "200px" },
+        { mappingClassField: "id", width: "200px" },
         { mappingClassField: "name", placeholder: "请输入团队标签名称", label: "团队标签名称" },
         { mappingClassField: "principal", placeholder: "请输入负责人", width: "220px", label: "负责人" },
         { mappingClassField: "userSize", placeholder: "请输入团队成员", width: "220px", label: "团队成员" },
@@ -107,53 +101,52 @@ export default {
     migrationStrategy: 0,
     assignTableName: ""
   }),
-  },
+  // },
   attributes: [
-    // {
-    //   id: 11,
-    //   mappingClassField: '',
-    //   columnLabel: '多选',
-    //   columnUiPlugin: JSON.stringify({
-    //     tableColumnConfig: { type: 'selection', width: '150px', align: 'center', }, // slotName: 'name'
-    //   }),
-    //   validatedPlugin: '',
-    //   columnUiCss: '',
-    //   sortIndex: 1,
-    //   showInList: 1,
-    //   showInQuery: 0,
-    //   desp: '',
-    //   deleteFlag: 0
-    // },
-    // {
-    //   id: 12,
-    //   mappingClassField: 'index',
-    //   columnLabel: '序号',
-    //   columnUiPlugin: JSON.stringify({
-    //     width: '50px',
-    //     tableColumnConfig: { type: 'index',  align: 'center', }, // slotName: 'name'
-    //   }),
-    //   validatedPlugin: '',
-    //   columnUiCss: '',
-    //   sortIndex: 1,
-    //   showInList: 1,
-    //   showInQuery: 0,
-    //   desp: '',
-    //   deleteFlag: 0
-    // },
+    /* {
+      id: 11,
+      mappingClassField: '',
+      columnLabel: '多选',
+      columnUiPlugin: JSON.stringify({
+        tableColumnConfig: { type: 'selection', width: '150px', align: 'center', }, // slotName: 'name'
+      }),
+      validatedPlugin: '',
+      columnUiCss: '',
+      sortIndex: 1,
+      showInList: 1,
+      showInQuery: 0,
+      desp: '',
+      deleteFlag: 0
+    },*/
+    /*  {
+      id: 12,
+      mappingClassField: 'index',
+      columnLabel: '序号',
+      columnUiPlugin: JSON.stringify({
+        width: '50px',
+        tableColumnConfig: { type: 'index',  align: 'center', }, // slotName: 'name'
+      }),
+      validatedPlugin: '',
+      columnUiCss: '',
+      sortIndex: 1,
+      showInList: 1,
+      showInQuery: 0,
+      desp: '',
+      deleteFlag: 0
+    }, */
     {
       mappingClassField: "id",
       columnLabel: "团队标签ID",
       columnUiPlugin: JSON.stringify({
         "compName": "input",
         "clearable": true,
-
         "width": "200px",
         "placeholder": "请输入团队标签ID",
         "model": "id",
         "label": "",
         "labelWidth": "100px",
         // "requiredMessage": "id不能为空",
-        tableColumnConfig: { width: "150px", align: "center", "label": "团队标签ID" } // slotName: 'name'
+        tableColumnConfig: { width: "150px", align: "center", "label": "团队标签ID" }, // slotName: 'name'
       }),
       validatedPlugin: "",
       columnUiCss: "",
@@ -169,7 +162,6 @@ export default {
       columnUiPlugin: JSON.stringify({
         "compName": "input",
         "clearable": true,
-
         "width": "220px",
         "placeholder": "请输入团队标签名称",
         "model": "name",
@@ -194,6 +186,29 @@ export default {
         "clearable": true,
         "model": "principal",
         "label": "",
+        searchwidth: '200px',
+        createwidth:'300px', 
+        // options: [{ name: "男", id: 1 }, { name: "女", id: 2 }],
+        tableColumnConfig: { width: "150px", align: "center", "label": "负责人" }
+      }),
+      columnUiCss: "",
+      validatedPlugin: "",
+      sortIndex: 3,
+      showInList: 1,
+      showInQuery: 1,
+      desp: "",
+      deleteFlag: 0
+    },
+    {
+      mappingClassField: "asdasd",
+      columnLabel: "负责人",
+      columnUiPlugin: JSON.stringify({
+        "compName": "input",
+        "clearable": true,
+        "model": "asdasd",
+        "label": "",
+        searchwidth: '200px',
+        createwidth:'300px', 
         // options: [{ name: "男", id: 1 }, { name: "女", id: 2 }],
         tableColumnConfig: { width: "150px", align: "center", "label": "负责人" }
       }),
