@@ -7,4 +7,3 @@ mixin formItem(sceneName)
       template(v-else-if="getComponentType(item) == 'select'")  
         el-select(v-model=sceneName + ".defaultValue[item.columnUiPlugin.model]" :style="{ ...item.columnUiPlugin }" v-bind="item.columnUiPlugin")
           el-option(v-for="(opt, opti) in item.columnUiPlugin.options" :key="opti" :label="opt[item.columnUiPlugin.optionsLabel]" :value="opt[item.columnUiPlugin.optionsValue]")
-

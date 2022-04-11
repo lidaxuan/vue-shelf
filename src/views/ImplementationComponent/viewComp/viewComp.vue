@@ -1,5 +1,5 @@
 <!--
- * @Description:  
+ * @Description:  A模板
  * @Author: 李大玄
  * @Date: 2022-03-02 15:44:53
  * @FilePath: /vue-shelf/src/views/ImplementationComponent/viewComp/viewComp.vue
@@ -13,6 +13,8 @@ import _ from 'lodash';
 import uuid from 'uuid';
 import { required, getSceneData, formatResponseData } from './util';
 import newPageConfig from '../newPageConfig';
+import json from '../json';
+
 export default {
   name: '', // Pascal命名
   mixins: [],
@@ -23,23 +25,27 @@ export default {
   },
   data() {
     return {
-      selectKey: uuid(),
       tableData: [],
       rowData: {},
       handleBtnInfo: {},
-      loading: false,
+      pageLoading: false, // table searchBtn
+      createBtnLoading: false,
       // 接口请求来的config
       totalNumber: 0,
       pageNumber: 1,
       pageSize: 10,
       isPage: false,
       multipleSelection: [], // 表格多选
+      handleBox: {
+        type: 1
+      },
       defaultConfig: {
         struct: {
           viewTemplate: {}
         }
       },
-      tableColumnData: [],
+
+      tableColumnData: [], // align: 'center',
       searchMap: {
         sceneOptions: [],
         defaultValue: {}
@@ -52,20 +58,43 @@ export default {
         sceneOptions: [],
         defaultValue: {}
       },
-      pageUrl: {}, //  url
       visible: false,
-      tableTopHandleBox: [] // 表格顶部按钮盒子
+      tableTopHandleBox: [], // 表格顶部按钮盒子
+      // 表格操作 slot 名称
+      tableConfigSlot: {
+        handle: []
+      }
     };
   },
   computed: {},
   watch: {},
   beforeCreate() {},
   created() {
-    this.getConfig();
+    // this.getConfig();
+    this.formatJson();
   },
   beforeMount() {},
   mounted() {},
   methods: {
+    async formatJson() {
+      this.pageLoading = true;
+      const pageConfig = await this.$structDemoClient.structGetPage({ structId: this.structId });
+      console.log(pageConfig);
+      this.pageLoading = false;
+      this.isPage = pageConfig.isPage || false;
+      this.pageNumber = pageConfig.pageNum || 1;
+      this.pageSize = pageConfig.pageSize || 10;
+      this.tableColumnData = [].concat(pageConfig.tableColumnData || []);
+      this.tableConfigSlot = Object.assign({}, pageConfig.tableConfigSlot || {});
+      this.searchMap = Object.assign({}, pageConfig.search || {});
+      return;
+      this.tableTopHandleBox = [].concat(pageConfig.tableTopHandleBox || []);
+      this.handleBox = Object.assign({}, pageConfig.handleBox || {});
+      this.createMap = Object.assign({}, pageConfig.createMap || {});
+      this.editMap = Object.assign({}, pageConfig.editMap || {});
+      this.fetchData();
+    },
+    // ---------------------------------------------------------------------------------
     // 获取页面配置
     async getConfig() {
       const res = await this.$structDemoClient.structGet({ structId: this.structId });
@@ -82,11 +111,10 @@ export default {
       }
       const {
         struct: {
-          viewTemplate: { pageSize, pageNum, isPage, pageUrl, tableTopHandleBox }
+          viewTemplate: { pageSize, pageNum, isPage, tableTopHandleBox }
         }
       } = this.defaultConfig;
 
-      this.pageUrl = pageUrl || {};
       this.pageNumber = pageNum || 1;
       this.pageSize = pageSize || 10;
       this.isPage = isPage || false;
@@ -141,8 +169,8 @@ export default {
      * @param {*} handleBox type: 1, // 1:默认且追加  2:覆盖
      * @return {*}
      */
-    buttonDisplayType(handleBox) {
-      if (this.searchMap.sceneOptions.length && handleBox.type == 1) {
+    buttonDisplayType() {
+      if (this.searchMap.sceneOptions.length && this.handleBox.type == 1) {
         return true;
       }
       return false;
@@ -163,18 +191,13 @@ export default {
       this.searchBtn();
     },
     // 获取表格 attrs
-    getAttr() {
-      const {
-        struct: { viewTemplate }
-      } = this.defaultConfig;
-      const obj = {
+    getTableAttrs() {
+      return {
         isPage: this.isPage,
         pageNumber: this.pageNumber,
         pageSize: this.pageSize,
-        totalNumber: this.totalNumber || 0,
-        slotArr: viewTemplate.tableConfigSlot || {}
+        totalNumber: this.totalNumber || 0
       };
-      return obj;
     },
     // 获取表格列
     getTableColumnData() {
@@ -318,11 +341,13 @@ export default {
         attributes[i].columnUiPlugin = JSON.stringify(attributes[i].columnUiPlugin);
       }
       obj.attributes = attributes;
+      this.createBtnLoading = true;
       if (this.handleBtnInfo.sceneKey == 'edit') {
         await this.dataUpdate(obj);
       } else if (this.handleBtnInfo.sceneKey == 'create') {
         await this.dataInsert(obj);
       }
+      this.createBtnLoading = false;
       this.visible = false;
     },
     async dataInsert(data) {

@@ -23,7 +23,7 @@
     >
       <template v-if="newTableColumnData2 && newTableColumnData2.length > 0">
         <template v-for="(item, index) in newTableColumnData2">
-          <TableColumn :key="index" v-bind="item" v-if="item.display">
+          <TableColumn :key="index" v-bind="item" :sortable="item.sortable || false" v-if="item.display">
             <template #header="scope" v-if="item.headerSlotName">
               <slot :name="item.headerSlotName" v-bind="scope" />
             </template>
@@ -69,7 +69,7 @@
             </template>
             <template #default="scope" v-if="item.slotName">
               <template v-if="slotArr[item.slotName]">
-                <template v-for="btn in slotArr[item.slotName]">
+                <template v-for="btn in item.Plugin">
                   <el-button :type="btn.type || 'primary'" @click="handle(scope.row, btn)">{{ btn.text }}</el-button>
                 </template>
               </template>

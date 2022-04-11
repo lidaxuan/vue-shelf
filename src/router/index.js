@@ -16,6 +16,7 @@ const routes = [
     name: "", // ImplementationComponent
     // component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
     component: () => import(/* webpackChunkName: "about" */ "../views/ImplementationComponent/index.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/dropdownDemo.vue"), // optimization // testSelect fontClass
   },
   // {

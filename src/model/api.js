@@ -47,4 +47,11 @@ export default {
     url: '/data/delete',
     method: 'delete'
   },
+
+  structGetPage: {
+    method: 'get',
+    url: '/struct/get-page'
+  }
 }
+
+// this.$structDemoClient.

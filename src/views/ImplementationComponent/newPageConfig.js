@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 /*
- * @Description: 
+ * @Description: 保存的数据结构 
  * @Author: 李大玄
  * @Date: 2022-03-22 10:39:05
  * @FilePath: /vue-shelf/src/views/ImplementationComponent/newPageConfig.js
@@ -18,60 +18,35 @@ export default {
   assignTableName: null,
   deleteFlag: 0,
   viewTemplate: JSON.stringify({
-    rules: [],
-    required: [],
-    labelWidth: "200px",
-    itemWidth: "100px",
+    tableConfig: {
+      // pageSize: 10,
+      // pageNum: 1,
+      isPage: true,
+      type: ['selection', 'index'],
+    },
     tableTopHandleBox: [
-      // { text: "批量删除", showType: "confirm", multipleSelection: true, multipleSelectionKey: "id", message: "确认批量 删除?", title: "删除", url: "/del/id" },
-      // { text: "批量复制", showType: "confirm", multipleSelection: true, multipleSelectionKey: "", message: "确认批量 复制?", title: "复制", url: "/del/id" },
-      // { text: "批量应用", showType: "confirm", multipleSelection: true, multipleSelectionKey: "all", message: "确认批量 应用?", title: "应用", url: "/del/id" },
-      // { text: "新增 ||  添加", showType: "el-drawer", sceneKey: "create", url: "/a/b/creat", method: "post" }
-      { text: "创建团队标签", showType: "el-drawer", sceneKey: "create", url: "/a/b/creat", method: "post" }
+      { text: '创建', showtype: 'text || button', triggerShowType: 'el-drawer', sceneKey: 'create' },
+      { text: "批量删除", showType: "confirm", multipleSelection: true, multipleSelectionKey: "id", message: "确认批量 删除?", title: "删除", url: "/del/id" },
     ],
-    handleBox: {
-      type: 1 // 1:默认且追加  2:覆盖
+    searchConfig: {
+      sceneOptions: [
+        'name', // mappingClassField
+        'status'
+      ],
+      showLabel: true || false,
+      labelWidth: '123px'
     },
-    // 搜索场景
-    pageSize: 10,
-    pageNum: 1,
-    isPage: true,
-    search: {
-      sort: [
-        { mappingClassField: "id", placeholder: "id", "required": false },
-        { mappingClassField: "userSize", placeholder: "团队成员", width: "220px", "required": false, label: "团队成员" },
-        { mappingClassField: "name", placeholder: "团队标签名称", width: "250px", "required": false, label: "团队标签名称" },
-        'name'
+    
+    createConfig: {
+      sceneOptions: [
+        'name',
+        'status'
       ],
       rules: [],
       labelWidth: "",
-      defaultValue: {
-        id: '',
-        name: "",
-        userSize: ""
-      }
-    },
-    create: {
-      sort: [
-        { mappingClassField: "id", width: "200px" },
-        { mappingClassField: "name", placeholder: "请输入团队标签名称", label: "团队标签名称" },
-        { mappingClassField: "principal", placeholder: "请输入负责人", width: "220px", label: "负责人" },
-        { mappingClassField: "userSize", placeholder: "请输入团队成员", width: "220px", label: "团队成员" },
-        { mappingClassField: "status", placeholder: "请输入状态", width: "220px", label: "状态" },
-        { mappingClassField: "creator", placeholder: "请输入创建人", width: "220px", label: "创建人" },
-      ],
-      rules: [],
-      labelWidth: "",
-      defaultValue: {
-        name: null,
-        principal: null,
-        userSize: null,
-        status: '',
-        creator: '',
-      }
     },
     edit: {
-      sort: [
+      sceneOptions: [
         { mappingClassField: "name", placeholder: "请输入团队标签名称", label: "团队标签名称" },
         { mappingClassField: "principal", placeholder: "请输入负责人", width: "220px", label: "负责人" },
         { mappingClassField: "userSize", placeholder: "请输入团队成员", width: "220px", label: "团队成员" },
@@ -82,71 +57,15 @@ export default {
       labelWidth: "",
       disabled: []
     },
-    tableConfigSlot: {
-      handle: [
-        // { text: "启用", showType: "confirm", message: "", title: "", url: "/asd/asd" },
-        // { text: "停用", showType: "confirm", message: "", title: "", url: "/asd/asd" },
-        {
-          text: "编辑",
-          showType: "el-dialog",
-          title: "修改",
-          width: "40%",
-          sceneKey: "edit",
-          url: "/a/b/upd",
-          method: "post"
-        },
-        { text: "删除", showType: "confirm", message: "", title: "", url: "/asd/asd" }
-      ]
-    },
-    migrationStrategy: 0,
-    assignTableName: ""
+
   }),
   // },
   attributes: [
-    /* {
-      id: 11,
-      mappingClassField: '',
-      columnLabel: '多选',
-      columnUiPlugin: JSON.stringify({
-        tableColumnConfig: { type: 'selection', width: '150px', align: 'center', }, // slotName: 'name'
-      }),
-      validatedPlugin: '',
-      columnUiCss: '',
-      sortIndex: 1,
-      showInList: 1,
-      showInQuery: 0,
-      desp: '',
-      deleteFlag: 0
-    },*/
-    /*  {
-      id: 12,
-      mappingClassField: 'index',
-      columnLabel: '序号',
-      columnUiPlugin: JSON.stringify({
-        width: '50px',
-        tableColumnConfig: { type: 'index',  align: 'center', }, // slotName: 'name'
-      }),
-      validatedPlugin: '',
-      columnUiCss: '',
-      sortIndex: 1,
-      showInList: 1,
-      showInQuery: 0,
-      desp: '',
-      deleteFlag: 0
-    }, */
     {
       mappingClassField: "id",
       columnLabel: "团队标签ID",
       columnUiPlugin: JSON.stringify({
-        "compName": "input",
-        "clearable": true,
-        "width": "200px",
-        "placeholder": "请输入团队标签ID",
-        "model": "id",
-        "label": "",
-        "labelWidth": "100px",
-        // "requiredMessage": "id不能为空",
-        tableColumnConfig: { width: "150px", align: "center", "label": "团队标签ID" }, // slotName: 'name'
+        sortable: true,
       }),
       validatedPlugin: "",
       columnUiCss: "",
@@ -158,17 +77,36 @@ export default {
     },
     {
       mappingClassField: "name",
-      columnLabel: "团队标签名称",
+      columnLabel: "团队标签名称1",
       columnUiPlugin: JSON.stringify({
-        "compName": "input",
-        "clearable": true,
-        "width": "220px",
-        "placeholder": "请输入团队标签名称",
-        "model": "name",
-        "label": "",
-        "labelWidth": "100px",
+        compName: "input",
+        compConfig: {},
+        searchConfig: {
+          label: '',
+          value: '',
+          rules: [],
+          required: ''
+        },
+        createConfig: {
+          required: '',
+          value: '1111',
+          label: '团队标签名称'
+        },
+        editConfig: {
+          required: '',
+          value: '1111',
+          label: '团队标签名称'
+        },
+        tableConfig: {
+          width: '223px',
+          sortable: '',
+          type: '',
+          align: 'right',
+          plugin: [
+            { text: "", showType: 'el-switch',inactive: '', active: '' },
+          ]
+        },
         // "requiredMessage": "姓名不能为空",
-        tableColumnConfig: { width: "150px", align: "center", "label": "团队标签名称" } // slotName: 'name'
       }),
       columnUiCss: "",
       validatedPlugin: "input",
@@ -187,7 +125,7 @@ export default {
         "model": "principal",
         "label": "",
         searchwidth: '200px',
-        createwidth:'300px', 
+        createwidth: '300px',
         // options: [{ name: "男", id: 1 }, { name: "女", id: 2 }],
         tableColumnConfig: { width: "150px", align: "center", "label": "负责人" }
       }),
@@ -208,7 +146,7 @@ export default {
         "model": "asdasd",
         "label": "",
         searchwidth: '200px',
-        createwidth:'300px', 
+        createwidth: '300px',
         // options: [{ name: "男", id: 1 }, { name: "女", id: 2 }],
         tableColumnConfig: { width: "150px", align: "center", "label": "负责人" }
       }),
@@ -246,18 +184,27 @@ export default {
       mappingClassField: "status",
       columnLabel: "状态",
       columnUiPlugin: JSON.stringify({
-        "compName": "select",
-        "clearable": true,
-        "model": "status",
-        "label": "",
-        options: [{ name: "启用", id: 1 }, { name: "禁用", id: 2 }],
-        optionsLabel: "name",
-        optionsValue: "id",
-        // url: {
-        //   url: "/a/b/c",
-        //   method: "get"
-        // },
-        tableColumnConfig: { width: "150px", align: "center", "label": "状态" }
+        compName: "select",
+        compConfig: {
+          options: [{ name: "启用", id: 1 }, { name: "禁用", id: 2 }],
+          optionsLabel: "name",
+          optionsValue: "id",
+          url: {
+            url: "/a/b/c",
+            method: "get"
+          },
+          
+        },
+        tableConfig: {
+          width: '223px',
+          sortable: '',
+          type: '',
+          align: 'right',
+          plugin: [
+            { text: "", showType: 'el-switch',inactive: '', active: '' },
+          ]
+        },
+        
       }),
       columnUiCss: "",
       validatedPlugin: "",
@@ -294,6 +241,7 @@ export default {
       mappingClassField: "createTime",
       columnLabel: "创建时间",
       columnUiPlugin: JSON.stringify({
+        slotName: 'createTime',
         "compName": "date-picker",
         "clearable": true,
         "model": "",
@@ -318,8 +266,15 @@ export default {
       mappingClassField: "handle",
       columnLabel: "操作",
       columnUiPlugin: JSON.stringify({
-        tableColumnConfig: {
-          slotName: "handle"
+        tableConfig: {
+          width: '223px',
+          sortable: '',
+          type: '',
+          align: 'right',
+          plugin: [
+            { text: "编辑", showType: 'el-button', triggerShowType: "el-dialog", title: "修改", width: "40%", sceneKey: "edit", },
+            { text: "删除", showType: 'el-button', triggerShowType: "confirm", message: "确认删除此条数据?", title: "删除", }
+          ]
         }
       }),
       columnUiCss: "",
