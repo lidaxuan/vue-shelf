@@ -78,15 +78,20 @@ export default {
   methods: {
     async formatJson() {
       this.pageLoading = true;
-      const pageConfig = await this.$structDemoClient.structGetPage({ structId: this.structId });
+      const res = await this.$structDemoClient.structGetPage({ structId: this.structId });
+      if (res.code) {
+        this.$message.error(res.msg);
+        return;
+      }
+      const pageConfig = res.data || {};
       console.log(pageConfig);
       this.pageLoading = false;
       this.isPage = pageConfig.isPage || false;
       this.pageNumber = pageConfig.pageNum || 1;
       this.pageSize = pageConfig.pageSize || 10;
       this.tableColumnData = [].concat(pageConfig.tableColumnData || []);
-      this.tableConfigSlot = Object.assign({}, pageConfig.tableConfigSlot || {});
-      this.searchMap = Object.assign({}, pageConfig.search || {});
+      // this.tableConfigSlot = Object.assign({}, pageConfig.tableConfigSlot || {});
+      this.searchMap = Object.assign({}, pageConfig.searchConfig || {});
       return;
       this.tableTopHandleBox = [].concat(pageConfig.tableTopHandleBox || []);
       this.handleBox = Object.assign({}, pageConfig.handleBox || {});

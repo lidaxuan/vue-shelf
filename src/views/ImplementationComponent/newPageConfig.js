@@ -45,7 +45,7 @@ export default {
       rules: [],
       labelWidth: "",
     },
-    edit: {
+    editConfig: {
       sceneOptions: [
         { mappingClassField: "name", placeholder: "请输入团队标签名称", label: "团队标签名称" },
         { mappingClassField: "principal", placeholder: "请输入负责人", width: "220px", label: "负责人" },
@@ -123,27 +123,6 @@ export default {
         "compName": "input",
         "clearable": true,
         "model": "principal",
-        "label": "",
-        searchwidth: '200px',
-        createwidth: '300px',
-        // options: [{ name: "男", id: 1 }, { name: "女", id: 2 }],
-        tableColumnConfig: { width: "150px", align: "center", "label": "负责人" }
-      }),
-      columnUiCss: "",
-      validatedPlugin: "",
-      sortIndex: 3,
-      showInList: 1,
-      showInQuery: 1,
-      desp: "",
-      deleteFlag: 0
-    },
-    {
-      mappingClassField: "asdasd",
-      columnLabel: "负责人",
-      columnUiPlugin: JSON.stringify({
-        "compName": "input",
-        "clearable": true,
-        "model": "asdasd",
         "label": "",
         searchwidth: '200px',
         createwidth: '300px',
@@ -241,7 +220,7 @@ export default {
       mappingClassField: "createTime",
       columnLabel: "创建时间",
       columnUiPlugin: JSON.stringify({
-        slotName: 'createTime',
+        
         "compName": "date-picker",
         "clearable": true,
         "model": "",
@@ -267,6 +246,7 @@ export default {
       columnLabel: "操作",
       columnUiPlugin: JSON.stringify({
         tableConfig: {
+          slotName: 'createTime',
           width: '223px',
           sortable: '',
           type: '',

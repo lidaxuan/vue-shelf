@@ -13,7 +13,8 @@ export default {
     { text: "批量删除", showType: "confirm", multipleSelection: true, multipleSelectionKey: "id", message: "确认批量 删除?", title: "删除", url: "/del/id" },
   ],
   searchConfig: {
-    sceneOptions: [{
+    sceneOptions: [
+      {
         compName: 'input', // -105
         model: '', // -102
         label: '' || '团队标签ID', // 103
@@ -192,3 +193,17 @@ export default {
 }
 
 // tableColumnData[i]['plugin'] = viewTemplate.tableConfigSlot[tableColumnData[i]['slotName']]
+
+
+
+// {
+//   prop:     mappingClassField
+//   label:    columnLabel
+//   id:       '123'
+// }
+// slotName: columnUiPlugin.tableConfig.slotName
+// width:    columnUiPlugin.tableConfig.width
+// sortable: columnUiPlugin.tableConfig.sortable
+// type:     columnUiPlugin.tableConfig.type
+// align:    columnUiPlugin.tableConfig.align
+// plugin:   columnUiPlugin.tableConfig.plugin

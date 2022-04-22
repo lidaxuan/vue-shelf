@@ -5,18 +5,10 @@
 const path = require('path');
 const webpack = require('webpack');
 
-
-// =============================================================================
-
-
-// =============================================================================
-
-
-
-
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
+
 function getSassVar() {
   const text = [];
   if (process.env.VUE_APP_OS_domain) {
