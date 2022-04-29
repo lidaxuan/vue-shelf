@@ -15,7 +15,7 @@
       <thead>
         <tr>
           <th class="day" rowspan="2">
-            <span font="h6">星期\时间</span>
+            <span font="h6">{{ text[type] }}\时间</span>
           </th>
           <th colspan="24">00:00-12:00</th>
           <th colspan="24">12:00-24:00</th>
@@ -29,7 +29,7 @@
       <tbody>
         <tr v-for="(item, x) in time" :key="x">
           <td class="day">
-            <span font="h6">周{{ x | day }}</span>
+            <span font="h6">{{ timeObj[type][x] }}</span>
           </td>
           <template v-for="(value, y) in item">
             <td class="hour" :class="value | classNmae" :style="getbgColor(value)" :data-x="x" :data-y="y" :key="`${x}-${y}`" @click="checkendItem"></td>
@@ -54,29 +54,54 @@
   </div>
 </template>
 <script>
-import _ from 'lodash';
-import seafSet from '@lijixuan/safe-set';
-import seafGet from '@lijixuan/safe-get';
-
 const On = '1';
 const Off = '0';
 
 function create_data() {
   let arr = [];
   for (let i = 0; i < 48; i++) {
-    arr.push({
-      value: Off,
-      state: false,
-    });
+    arr.push({ value: Off, state: false });
   }
   return arr;
 }
 
+function getday(days = 1) {
+  let daysArr = [];
+  var currentDate = new Date();
+  for (let i = 0; i <= 24 * days; i += 24) {
+    //今天加上前6天
+    let dateItem = new Date(currentDate.getTime() + i * 60 * 60 * 1000); //使用当天时间戳减去以前的时间毫秒（小时*分*秒*毫秒）
+    let y = dateItem.getFullYear(); //获取年份
+    let m = dateItem.getMonth() + 1; //获取月份js月份从0开始，需要+1
+    let d = dateItem.getDate(); //获取日期
+    m = addZero(m); //给为单数的月份补零
+    d = addZero(d); //给为单数的日期补零
+    let valueItem = y + '/' + m + '/' + d; //组合
+    daysArr.push(valueItem); //添加至数组
+  }
+  return daysArr;
+}
+
+//给日期加0
+function addZero(time) {
+  if (time.toString().length == 1) {
+    time = '0' + time.toString();
+  }
+  return time;
+}
 export default {
   data: function () {
     return {
       time: [],
       text: '',
+      timeObj: {
+        week: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+        date: []
+      },
+      text: {
+        week: '星期',
+        date: '日期'
+      }
     };
   },
   props: {
@@ -84,40 +109,46 @@ export default {
       type: String,
       default: function () {
         return '';
-      },
+      }
     },
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     color: {
       type: String,
-      default: () => '#50aad8',
+      default: () => '#50aad8'
     },
+    // 类型 是星期还是日期
+    type: {
+      type: String,
+      default: () => 'week'
+    },
+    // 天数
+    days: {
+      type: Number | String,
+      default: () => 7
+    }
   },
   filters: {
-    day: function (index) {
-      return ['一', '二', '三', '四', '五', '六', '日'][index];
-    },
     classNmae: function (item) {
       if (item.value === On) {
-        return {
-          on: true,
-        };
+        return { on: true };
       }
-      return {
-        off: true,
-      };
-    },
+      return { off: true };
+    }
   },
   created() {
     this.autoSelect();
+    this.timeObj.date = getday(this.days - 0);
   },
-  mounted() {},
+  mounted() {
+    this.$emit('update:date', this.timeObj[this.type]);
+  },
   methods: {
     getbgColor(item) {
       if (item.value === On) {
-        return `background-color: ${this.color};`
+        return `background-color: ${this.color};`;
       }
       return '';
     },
@@ -136,8 +167,8 @@ export default {
         let x = dom.getAttribute('data-x');
         let y = dom.getAttribute('data-y');
         return {
-          x: _.toInteger(x),
-          y: _.toInteger(y),
+          x: parseInt(x),
+          y: parseInt(y)
         };
       }
     },
@@ -166,11 +197,11 @@ export default {
       }
     },
     SelectTD: function (start, end) {
-      const y1 = Math.min(_.toInteger(start.y), _.toInteger(end.y));
-      const y2 = Math.max(_.toInteger(start.y), _.toInteger(end.y));
-      const x1 = Math.min(_.toInteger(end.x), _.toInteger(end.x));
-      const x2 = Math.max(_.toInteger(start.x), _.toInteger(end.x));
-      let array = _.map(this.time, (item) => [].concat(item));
+      const y1 = Math.min(parseInt(start.y), parseInt(end.y));
+      const y2 = Math.max(parseInt(start.y), parseInt(end.y));
+      const x1 = Math.min(parseInt(end.x), parseInt(end.x));
+      const x2 = Math.max(parseInt(start.x), parseInt(end.x));
+      let array = this.time.map((item) => [].concat(item));
       for (let i = x1; i <= x2; i++) {
         for (let j = y1; j <= y2; j++) {
           let item = Object.assign({}, array[i][j]);
@@ -187,8 +218,8 @@ export default {
     },
     success() {
       const text = [];
-      this.time = _.map(this.time, function (arr) {
-        return _.map(arr, function (item) {
+      this.time = this.time.map((arr) => {
+        return arr.map((item) => {
           item.state = false;
           text.push(String(item.value));
           return item;
@@ -199,15 +230,15 @@ export default {
     },
     checkendItem(e) {
       let coordinate = this.getCoordinate(e);
-      const key = `[${coordinate.x}][${coordinate.y}].value`;
-      const value = seafGet(this.time, key) === On ? Off : On;
-      seafSet(this.time, key, value);
+      // const key = `[${coordinate.x}][${coordinate.y}].value`;
+      const value = this.time[coordinate.x][coordinate.y].value === On ? Off : On;
+      this.time[coordinate.x][coordinate.y].value = value;
       this.success();
     },
     // 清空数据
     empty() {
       this.mousedown = false;
-      this.time = _.map(this.time, function () {
+      this.time = this.time.map(() => {
         return create_data();
       });
       this.success();
@@ -216,33 +247,27 @@ export default {
       let time = [];
       for (let j = 0; j < 7; j++) {
         let text = this.value.slice(j * 48, (j + 1) * 48);
-        let day = [];
+        let dayArr = [];
         if (text) {
           text = text.split('');
           for (let i = 0; i < 48; i++) {
             text[i] = parseInt(text[i]);
-            if (_.isNaN(text[i]) || !text[i]) {
-              day[i] = {
-                value: Off,
-                state: false,
-              };
+            if (!text[i]) {
+              dayArr[i] = { value: Off, state: false };
             } else {
-              day[i] = {
-                value: String(text[i]),
-                state: false,
-              };
+              dayArr[i] = { value: String(text[i]), state: false };
             }
           }
         } else {
-          day = create_data();
+          dayArr = create_data();
         }
-        time.push(day);
+        time.push(dayArr);
       }
-      _.assign(this.$data, {
-        time: time,
+      Object.assign(this.$data, {
+        time: time
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -254,7 +279,7 @@ export default {
 .duration {
   position: relative;
   $width: 670px;
-  $day: 70px;
+  $day: 85px;
 
   width: $width;
   .mark {

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: 李大玄
  * @Date: 2021-08-05 09:45:21
- * @FilePath: /vue-shelf/src/views/icon.vue
+ * @FilePath: /vue-shelf/src/views/test/icon.vue
 -->
 <template>
   <div class="asdasdassds">
@@ -11,21 +11,8 @@
     </div>
     <div v-draggable class="asdasd">1 1</div>
     <input type="text" v-focus class="mt10 ml20">
-    <!-- {{ asaaaaaaaaa }}
-    <Timer v-model="asaaaaaaaaa" color="pink"></Timer>
-    <template v-for="(list, index) in timeList">
-      <div class="item-text pt8 pb8 pl25 pr25 mt12" v-for="(item, key) in list" :key="`${index}-${key}`">
-        <span class="mr10">
-          <span>周</span>
-          <span>{{ index | day }}</span>
-        </span>
-        <span>
-          <span>{{ item.start }}</span>
-          <span>-</span>
-          <span>{{ item.end }}</span>
-        </span>
-      </div>
-    </template>
+    
+    <!-- 
     <div class="box p10">
       <IconFont type="icon-qianmingguanli" fill="red" data-active="green" active="green" size="20"></IconFont>
     </div>
@@ -61,9 +48,7 @@
 //例如：import 《组件名称》 from '《组件路径》';
 import _ from 'lodash';
 import Preview from '@/components/Preview/image';
-import Timer from '@/components/timer';
 import MultipleCheckbox from '@/components/multiple-checkbox';
-import format from '@/components/timer/format';
 import { getRegionArea, getRegionCity } from '@/model/mock/mock';
 import safeGet from '@lijixuan/safe-get';
 export default {
@@ -76,7 +61,6 @@ export default {
   data() {
     return {
       cache: [],
-      asaaaaaaaaa: '',
       label: '名称',
       readio: false,
       form: {
@@ -97,11 +81,7 @@ export default {
       },
     };
   },
-  filters: {
-    day: function (index) {
-      return ['一', '二', '三', '四', '五', '六', '日'][index];
-    },
-  },
+ 
   //监听属性 类似于data概念
   computed: {
     timeList() {
