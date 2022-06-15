@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: 李大玄
  * @Date: 2021-07-21 18:19:56
- * @FilePath: /vue-shelf/src/views/show.vue
+ * @FilePath: /vue-shelf/src/views/test/show.vue
 -->
 <template>
   <div class="love flex flex-aic flex-ccc">
@@ -73,7 +73,7 @@ export default {
       timeHtmlStr: '',
       showMessage: false,
       showLoveu: false,
-      garden: '',
+      garden: ''
     };
   },
   //监听属性 类似于data概念
@@ -101,7 +101,6 @@ export default {
   //生命周期 - 挂载完成（可以访问DOM元素）
   beforeMount() {}, //生命周期 - 挂载之前
   mounted() {
-
     const gardenCanvas = this.$refs.gardenCanvas;
     console.log(gardenCanvas);
     let gardenCtx = gardenCanvas.getContext('2d');
@@ -200,16 +199,16 @@ export default {
           this.showLoveu = true;
         }, 3000);
       }, 5000);
-    },
+    }
   },
   beforeUpdate() {}, //生命周期 - 更新之前
   updated() {}, //生命周期 - 更新之后
   beforeDestroy() {}, //生命周期 - 销毁之前
   destroyed() {}, //生命周期 - 销毁完成
-  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 //@import url(); 引入公共css类
 #app .love /deep/ {
   width: 100%;
