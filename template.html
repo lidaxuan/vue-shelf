@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="http://statics.easyliao.com/web/project/env_loginUrl.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+
+<script>
+  function ajax(options) {
+    options = Object.assign({}, options || {});  //调用函数时如果options没有指定，就给它赋值{},一个空的Object
+    options.type = (options.type || "GET").toUpperCase();/// 请求格式GET、POST，默认为GET
+    options.dataType = options.dataType || "json";    //响应数据格式，默认json
+
+    let params = formatParams(options.data);//options.data请求的数据
+
+    let xhr;
+    //考虑兼容性
+    if (window.XMLHttpRequest) {
+      xhr = new XMLHttpRequest();
+    } else if (window.ActiveObject) {//兼容IE6以下版本
+      xhr = new ActiveXobject('Microsoft.XMLHTTP');
+    }
+
+    //启动并发送一个请求
+    if (options.type == "GET") {
+      xhr.open("GET", options.url + "?" + params, true);
+      xhr.send(null);
+    } else if (options.type == "POST") {
+      xhr.open("post", options.url, true);
+
+      //设置表单提交时的内容类型
+      //Content-type数据请求的格式
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.send(params);
+    }
+
+    //    设置有效时间
+    setTimeout(function () {
+      if (xhr.readySate != 4) {
+        xhr.abort();
+      }
+    }, options.timeout)
+
+    //    接收
+    //     options.success成功之后的回调函数  options.error失败后的回调函数    //xhr.responseText,xhr.responseXML  获得字符串形式的响应数据或者XML形式的响应数据
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4) {
+        let status = xhr.status;
+        if (status >= 200 && status < 300 || status == 304) {
+          options.success && options.success(JSON.parse(xhr.response), xhr.responseXML);
+        } else {
+          options.error && options.error(status);
+        }
+      }
+    }
+  }
+
+  //格式化请求参数
+  function formatParams(data) {
+    let arr = [];
+    for (let name in data) {
+      arr.push(encodeURIComponent(name) + "=" + encodeURIComponent(data[name]));
+    }
+    arr.push(("v=" + Math.random()).replace(".", ""));
+    return arr.join("&");
+
+  }
+  //基本的使用实例
+
+
+  function $ajax(data) {
+    return new Promise((resolve, reject) => {
+      ajax({
+        url: data.url,
+        type: data.type || 'get',
+        data: data.data,
+        dataType: data.dataType || 'json',
+        timeout: data.timeout || 10000,
+        contentType: data.contentType || "application/json",
+        success: function (res) {
+          resolve(res)
+        },        //异常处理
+        error: function (e) {
+          reject(e);
+        }
+      })
+    })
+  };
+
+
+  function getUrlParam(name = '') {
+    let url = location.search; //获取url中"?"符后的字串
+    let theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+      let str = url.substr(1);
+      strs = str.split("&");
+      for (let i = 0; i < strs.length; i++) {
+        theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+      }
+    }
+    if (name) {
+      return theRequest[name];
+    }
+    return theRequest;
+  }
+  const query = getUrlParam();
+
+  var url = ''; // [[${ host + '/' + contextPath + '/' + version + '/'}]];
+
+  /**
+  * @description: __sso
+  * @param {*} 参数为 test pre prd
+  */
+  window.__sso = '';//[[${ env }]];
+
+  const baseUrl = [`/css/chunk-vendors.css`, `/css/app.css`, `/js/chunk-vendors.js`, `/js/app.js`, `/js/main.js`];
+  /*
+      contextPath: "data-config-view"
+      env: "test"
+      host: "http://test-prd18.easyliao.net"
+      projectTitle: "自定义表单配置"
+      version: "v1.0.0"
+      http://test-prd18.easyliao.net/view/base?appkey=xxxxx&appid=xxx&xxxx   => index.html
+   */
+
+  function UpdateUrlParam(name, val) {
+    var thisURL = document.location.href;
+    // 如果 url中包含这个参数 则修改
+    if (thisURL.indexOf(name + '=') > 0) {
+      var v = getUrlParam(name);
+
+      if (v != null) {
+        // 是否包含参数
+        if (val) {
+          thisURL = thisURL.replace(name + '=' + v, name + '=' + val);
+        } else {
+
+          thisURL = thisURL.replace('?' + name + '=' + v, '');
+        }
+      } else {
+        thisURL = thisURL.replace(name + '=', name + '=' + val);
+      }
+    } // 不包含这个参数 则添加
+    else {
+      if (thisURL.indexOf('?') > 0) {
+        thisURL = thisURL + '&' + name + '=' + val;
+      } else {
+        thisURL = thisURL + '?' + name + '=' + val;
+      }
+    }
+    var state = {
+      title: document.title,
+      url: document.location.href,
+      otherkey: null
+    };
+    history.replaceState(state, document.title, thisURL);
+  }
+  UpdateUrlParam('appKey', '')
+
+  $ajax({
+    // window.lodation.origin
+    url: `http://192.168.165.65:7300/${query.appKey || 'data-config' || 'eachbot' || 'textbot'}/view/base`,
+    type: 'get',
+  }).then((res) => {
+    const { host, contextPath, version, env } = res.data;
+    url = `${host}/${contextPath}/${version}`;
+    window.static_url = url;
+    window.__sso = env;
+
+    const urlList = baseUrl.map(item => {
+      return url + item;
+    });
+    addLinkArr([url + `/load.js`], true);
+    setTimeout(() => {
+      addLinkArr(urlList);
+    }, 0);
+  })
+
+  function addLinkArr(srcArr, flag = false) {
+    let arr = srcArr;
+    arr.forEach((item) => {
+      if (/\.(?:css)$/.test(item)) {
+        this.addCssByLink(item);
+      } else if (item.match(".css")) {
+        this.addCssByLink(item);
+      } else if (/\.(?:js)$/.test(item)) {
+        this.addJsByScript(item, flag);
+      }
+    });
+  }
+
+  function addCssByLink(url) {
+    var doc = document;
+    var link = doc.createElement("link");
+    link.setAttribute("rel", "stylesheet");
+    link.setAttribute("type", "text/css");
+    link.setAttribute("href", url);
+    var heads = doc.getElementsByTagName("head");
+    if (heads.length) heads[0].appendChild(link);
+    else doc.documentElement.appendChild(link);
+  }
+  
+  function addJsByScript(url, flag) {
+    const s = document.createElement("script");
+    // s.type = "module";
+    s.src = url;
+    if (flag) {
+      var heads = document.getElementsByTagName("head");
+      if (heads.length) heads[0].appendChild(s);
+    } else {
+
+      document.body.appendChild(s);
+    }
+  }
+
+
+</script>
+
+</html>

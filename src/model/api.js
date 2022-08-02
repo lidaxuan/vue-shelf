@@ -51,6 +51,15 @@ export default {
   structGetPage: {
     method: 'get',
     url: '/struct/get-page'
+  },
+  dsdFindAll: {
+    method: 'get',
+    url: '/dsd/find-all'
+  },
+  // http://192.168.165.65:7300/${query.appKey || 'data-config'}/view/base
+  viewBase: {
+    method: 'get',
+    url: '/view/base'
   }
 }
 

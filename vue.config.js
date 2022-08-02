@@ -47,22 +47,21 @@ module.exports = {
     },
     proxy: {
       '/robot': {
-        // target: 'http://dev-prd19.easyliao.com', // 开发
-        // target: 'http://192.168.169.24:7101', // 开发
         target: 'http://192.168.169.217:7200', // 开发
-        // target: 'http://192.168.169.36:7107', // 开发
-        // target: 'http://app.easyliao.com', // 测试
         changeOrigin: true,
         pathRewrite: {
           '^/robot': '', //路径重写npm
         },
       },
       '/struct-demo-client': {
-        // target: 'http://dev-prd19.easyliao.com', // 开发
-        // target: 'http://192.168.169.24:7101', // 开发
-        target: 'http://192.168.169.217:7200', // 开发
-        // target: 'http://192.168.169.36:7107', // 开发
-        // target: 'http://app.easyliao.com', // 测试
+        target: 'http://192.168.165.65:7200', // 开发
+        changeOrigin: true,
+        // pathRewrite: {
+        //   '^/robot': '', //路径重写npm
+        // },
+      },
+      '/data-config': {
+        target: 'http://192.168.165.65:7300/', // 开发
         changeOrigin: true,
         // pathRewrite: {
         //   '^/robot': '', //路径重写npm

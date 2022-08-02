@@ -5,9 +5,19 @@
  * @Date: 2021-03-29 11:00:24
  * @FilePath: /vue-shelf/src/main.js
  */
+import './utils/fetch';
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router";
+
+
+import hljs from "highlight.js";
+import "highlight.js/styles/atelier-cave-dark.css";
+Vue.directive("highlight", function (el) {
+  let blocks = el.querySelectorAll("pre code");
+  blocks.forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
 
 import './directives/waves.css';
 import 'swiper/dist/js/swiper.min';
@@ -18,8 +28,8 @@ Vue.config.productionTip = false;
 
 import elementUi from 'element-ui';
 import IconFont from './components/IconFont';
-// import Directives from '@lijixuan/vue-customdirectives';
-import Directives from './directives';
+import Directives from '@lijixuan/vue-customdirectives';
+// import Directives from './directives';
 
 Vue.use(IconFont);
 Vue.use(elementUi, { size: 'small' });
@@ -33,22 +43,18 @@ import './element-variables.scss';
 import draggable from './utils/a';
 Vue.directive('draggable', draggable)
 
-
-
 import { robotServer, eachbotFlowAdminWeb } from './service';
 
 Vue.prototype.$HttpRobot = robotServer; //机器人serve
 Vue.prototype.$HttpFlowAdmin = eachbotFlowAdminWeb; //标签 serve
 import structDemoClient from './dao/axios/structDemoClient';
+import viewBase from './dao/axios/viewBase';
 Vue.prototype.$structDemoClient = structDemoClient; //标签 serve
-
-// const link = document.createElement('link');
-// link.rel = "stylesheet"
-// link.href = 'http://at.alicdn.com/t/font_2481220_2xx8kuodrwk.css'
-// document.querySelector('head').appendChild(link);
+Vue.prototype.$viewBase = viewBase; //标签 serve
 
 
+import router from "./router";
 new Vue({
-  router,
+  router: router,
   render: (h) => h(App),
-}).$mount("#app");
+}).$mount("#app-base");

@@ -67,6 +67,7 @@
                 </Popover>
               </span>
             </template>
+
             <template #default="scope" v-if="item.slotName">
               <template v-if="slotArr[item.slotName]">
                 <template v-for="btn in item.Plugin">
@@ -75,6 +76,7 @@
               </template>
               <slot v-else-if="!slotArr[item.slotName]" :name="item.slotName" v-bind="scope" />
             </template>
+
             <template #default="scope" v-else-if="!['index', 'selection', 'expand'].includes(item.type)">
               <span v-if="item.formatter">
                 <span>{{ item.formatter(scope.row, scope.column, '', scope.$index) }}</span>
@@ -115,17 +117,7 @@ import { Table, TableColumn, Popover, Tooltip, Pagination } from 'element-ui';
 // import draggable from "vuedraggable";
 
 const formatMethods = function () {
-  let methods = [
-    'clearSelection',
-    'toggleRowSelection',
-    'toggleAllSelection',
-    'toggleRowExpansion',
-    'setCurrentRow',
-    'clearSort',
-    'clearFilter',
-    'doLayout',
-    'sort'
-  ];
+  let methods = ['clearSelection', 'toggleRowSelection', 'toggleAllSelection', 'toggleRowExpansion', 'setCurrentRow', 'clearSort', 'clearFilter', 'doLayout', 'sort'];
   let newMethods = {};
   methods.forEach((item) => {
     newMethods[item] = function () {
@@ -175,7 +167,7 @@ export default {
       type: Number,
       default: 7
     },
-    slotArr: Object,
+    slotArr: Object
   },
   components: {
     Table,

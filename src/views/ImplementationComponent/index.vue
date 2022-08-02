@@ -21,6 +21,8 @@
     <viewComp ref="viewComp" :structId="structId" v-if="structId">
       <template #handleBox></template>
     </viewComp>
+
+    <Create ref="Create"></Create>
   </div>
 </template>
 
@@ -28,16 +30,19 @@
 //例如：import 《组件名称》 from '《组件路径》';
 import viewComp from './viewComp/viewComp.vue';
 import config from './newPageConfig';
+import Create from './create';
 import { data } from './data';
 
 export default {
   name: '', // Pascal命名
   mixins: [],
-  components: { viewComp },
+  components: { viewComp, Create },
   props: {},
   data() {
     return {
-      structId: 27
+      structId: 27,
+      a: 'db.customer.update({"companyId":"12704","_id":"62302dd8991916138fbd9357"},{$set:{"intentionId":4697,"customerProtectStatus":1});',
+      str: 'db.customer.update({"companyId":"12704","_id":"	 62302dd8991916138fbd9357	"},{$set:{"intentionId":	4697	,"customerProtectStatus":	1});'
     };
   },
   computed: {},
@@ -51,7 +56,10 @@ export default {
   beforeCreate() {},
   created() {},
   beforeMount() {},
-  mounted() {},
+  async mounted() {
+    const s =  this.str.replace(/\s*/g, '');
+    console.log(s);
+  },
   methods: {
     async formatData() {
       const item = {
@@ -105,8 +113,7 @@ export default {
       this.config = Object.assign({}, res || {});
     },
     async structCreate() {
-      const res = await this.$structDemoClient.structCreate(config);
-      console.log(res);
+      this.$refs.Create.drawer = true;
     },
 
     async dataQuery() {
@@ -128,6 +135,6 @@ export default {
   activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 //@import url(); 引入公共css类
 </style>
