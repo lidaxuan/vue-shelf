@@ -22,6 +22,8 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/dropdownDemo.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "@/views/configJson/index"), // optimization // testSelect fontClass
     component: () => import(/* webpackChunkName: "about" */ "../views/study/index.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/test/pannellum.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/test/About.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/showdigitroll",
@@ -52,10 +54,5 @@ const router = new VueRouter({
   routes: routes.concat(AppRoutes)
 });
 
-setTimeout(() => {
-  console.log();
-  AppRoutes = router.addRoute(handleRoutes.getRoutes(['about', 'home', 'configWorkType']))
-  
-}, 300);
 
 export default router;

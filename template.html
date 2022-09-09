@@ -123,12 +123,16 @@
 
   const baseUrl = [`/css/chunk-vendors.css`, `/css/app.css`, `/js/chunk-vendors.js`, `/js/app.js`, `/js/main.js`];
   /*
+    后端返回参数
       contextPath: "data-config-view"
       env: "test"
       host: "http://test-prd18.easyliao.net"
       projectTitle: "自定义表单配置"
       version: "v1.0.0"
-      http://test-prd18.easyliao.net/view/base?appkey=xxxxx&appid=xxx&xxxx   => index.html
+
+      appkey: "data-config" || "zentao-web"
+      appId: 10000 || 99001
+      http://test-prd18.easyliao.net/view/base?appkey=xxxxx&appId=xxx&xxxx   => index.html
    */
 
   function UpdateUrlParam(name, val) {
@@ -207,7 +211,7 @@
     if (heads.length) heads[0].appendChild(link);
     else doc.documentElement.appendChild(link);
   }
-  
+
   function addJsByScript(url, flag) {
     const s = document.createElement("script");
     // s.type = "module";

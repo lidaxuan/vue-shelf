@@ -6,7 +6,7 @@
 -->
 <template>
   <div class="hmax box">
-    <!-- <v-pannellum :src="equirectangularUrl" style="height: 500px"></v-pannellum> -->
+    <!-- <VuePannellum :src="equirectangularUrl" style="height: 500px"></VuePannellum> -->
     <div id="vrBox"></div>
     <div id="controls" class="flex controls">
       <div class="item" @click="vr.setPitch(vr.getPitch() + 10)">&#9650;</div>
@@ -40,13 +40,7 @@ export default {
     };
   },
   computed: {},
-  watch: {
-    // temObj: {
-    //   handler(newVal, oldVal) {},
-    //   deep: true, // 深度
-    //   immediate: true, // 立即执行
-    // },
-  },
+  watch: { },
   beforeCreate() {},
   created() {},
   beforeMount() {},
@@ -71,7 +65,7 @@ export default {
           pitch: 2,
           yaw: 360,
           type: 'equirectangular',
-          panorama: dddddd,
+          panorama: cccc,
 
           //hotSpots 以全景为坐标系的固定点，可以设置链接跳转和点击事件，也可以跳转到不同的场景，该属性的值为对象，该对象有几个常用的配置项：
           hotSpots: [
@@ -329,8 +323,12 @@ export default {
   activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 //@import url(); 引入公共css类
+.vrBox {
+  height: 100%;
+  width: 100%;
+}
 .box {
   position: relative;
 }
