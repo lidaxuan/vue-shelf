@@ -4,18 +4,19 @@
  * @Date: 2022-09-19 18:09:33
  * @FilePath: /vue-shelf/src/views/test/testResize.vue
  * @LastEditors: 李大玄
- * @LastEditTime: 2022-09-19 20:58:16
+ * @LastEditTime: 2022-09-20 10:29:00
 -->
 <template>
   <div class="f">
-    <el-switch active-value="300px" inactive-value="500px" v-model="sw"></el-switch>
+    <el-button v-testdir.112="{name: 1}" @click="bgchange('black')">black</el-button>
+    <!-- <el-switch active-value="300px" inactive-value="500px" v-model="sw"></el-switch>
     <el-button @click="bgchange('blue')">blue</el-button>
     <el-button @click="bgchange('yellow')">yellow</el-button>
-    <el-button @click="bgchange('black')">black</el-button>
+    <el-button v-testdir[112]="{ name: 1 }" @click="bgchange('black')">black</el-button>
     <div class="flex">
       <div class="box1" :style="{ width: sw, background: bg }"></div>
       <div v-watchResize="asdasd" class="flex-item box2"></div>
-    </div>
+    </div> -->
   </div>
 </template>
 

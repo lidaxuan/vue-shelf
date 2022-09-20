@@ -28,8 +28,8 @@ Vue.config.productionTip = false;
 
 import elementUi from 'element-ui';
 import IconFont from './components/IconFont';
-import Directives from '@lijixuan/vue-customdirectives';
-// import Directives from './directives';
+// import Directives from '@lijixuan/vue-customdirectives';
+import Directives from './directives';
 
 Vue.use(IconFont);
 Vue.use(elementUi, { size: 'small' });
