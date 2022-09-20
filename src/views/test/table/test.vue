@@ -5,7 +5,7 @@
  * @FilePath: /vue-shelf/src/views/test/table/test.vue
 -->
 <template>
-  <div class="mainbox wmax hmax flex flex-ccc flex-aic">
+  <div class="mainbox wmax hmax  flex-ccc flex-aic">
     <div class="btn-small  w100 h100" style="background: pink"></div>
     <i class="icon iconfont icon-wenzhangguanli"></i>
     <i class="icon iconfont icon-changwenzhang-xinjianwenzhang"></i>
@@ -22,7 +22,10 @@
         <el-table-column prop="f" label="6"></el-table-column>
       </el-table>
     </div>
-    <img src="@/assets/bg.jpg" width="100" alt="" />
+    <div v-for="item in 100" :key="item">
+      <img src="@/assets/bg.jpg" width="100" alt="" />
+
+    </div>
     <div class="loader"></div>
 
     <link rel="stylesheet" href="./b.scss">
@@ -127,7 +130,7 @@ export default {
 <style lang="scss" scoped>
 .mainbox {
   width: calc(100% - 10px);
-
+  overflow: auto;
   .table-head {
     position: fixed;
     top: 100px;

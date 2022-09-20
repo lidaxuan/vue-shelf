@@ -6,15 +6,13 @@
 -->
 <template>
   <div id="app-base">
-    <el-menu default-active="/" :router="true" mode="horizontal">
-      <!--基座中可以放自己的路由-->
+    <!-- <el-menu default-active="/" :router="true" mode="horizontal">
       <el-menu-item index="/">Home</el-menu-item>
-      <!--引用其他子应用-->
       <el-menu-item index="/configWorkType">configWorkType</el-menu-item>
       <el-menu-item index="/versionDataConfig">versionDataConfig</el-menu-item>
       <el-menu-item index="/home">home</el-menu-item>
       <el-menu-item index="/about">about</el-menu-item>
-    </el-menu>
+    </el-menu> -->
     <router-view></router-view>
   </div>
 </template>

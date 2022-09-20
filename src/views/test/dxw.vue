@@ -2,16 +2,30 @@
  * @Description: 
  * @Author: 李大玄
  * @Date: 2021-09-17 18:28:28
- * @FilePath: /vue-shelf/src/views/dxw.vue
+ * @FilePath: /vue-shelf/src/views/test/dxw.vue
 -->
 <template>
-  <div>
+  <div class="hmax ">
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
+    <div>asdas</div>
     <DTable :dConfig="dConfig" :elConfig="elConfig" :cellBox="cellBox" @onEvent="onEvent" />
+
+    <div v-for="item in 100">asdas</div>
   </div>
 </template>
 
 <script>
-import DTable from '../components/d-table/src/main.vue';
+import DTable from '@/components/d-table/src/main.vue';
 
 export default {
   components: {
