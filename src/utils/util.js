@@ -142,4 +142,4 @@ function addZero(time) {
   }
   return time;
 }
-console.log(getday(6));
+// console.log(getday(6));

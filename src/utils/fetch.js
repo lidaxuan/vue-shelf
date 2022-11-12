@@ -4,10 +4,9 @@
  * @Date: 2022-07-26 14:28:48
  * @FilePath: /vue-shelf/src/utils/fetch.js
  * @LastEditors: 李大玄
- * @LastEditTime: 2022-07-27 14:44:45
+ * @LastEditTime: 2022-11-12 10:30:36
  */
 var arr = [
-  'http://192.168.221.104:3434/lib/data-config-view.umd.min.js',
 ];
 
 

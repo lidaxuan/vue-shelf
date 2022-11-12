@@ -28,6 +28,8 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/dxw.vue"), // optimization // testSelect fontClass
     component: () => import(/* webpackChunkName: "about" */ "../views/abcde/App.vue"), // optimization // testSelect fontClass
     component: () => import(/* webpackChunkName: "about" */ "../views/test/testResize.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/test/drageDemo.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/testLoading/index.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/showdigitroll",

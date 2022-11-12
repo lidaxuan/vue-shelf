@@ -5,10 +5,17 @@
  * @Date: 2021-03-29 11:00:24
  * @FilePath: /vue-shelf/src/main.js
  */
-import './utils/fetch';
 import Vue from "vue";
 import App from "./App.vue";
-
+import loading from './views/testLoading/loading'
+// loading.initMask({
+//   text: '我是李大玄',
+//   fullscreen: true,
+//   // background: 'yellow',
+//   customClass: '',
+//   color: 'red'
+// })
+window.loading = loading;
 
 import hljs from "highlight.js";
 import "highlight.js/styles/atelier-cave-dark.css";
