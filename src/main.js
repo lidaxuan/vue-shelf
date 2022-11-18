@@ -7,7 +7,8 @@
  */
 import Vue from "vue";
 import App from "./App.vue";
-import loading from './views/testLoading/loading'
+// import loading from './views/testLoading/loading'
+import loading from '@lijixuan/loading';
 // loading.initMask({
 //   text: '我是李大玄',
 //   fullscreen: true,

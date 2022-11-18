@@ -14,6 +14,7 @@
   "dependencies": {
     "@antv/g6": "^4.5.0",
     "@lijixuan/dblist": "^1.0.2",
+    "@lijixuan/loading": "^1.0.0",
     "@lijixuan/safe-get": "^1.0.2",
     "@lijixuan/safe-set": "^1.0.1",
     "@lijixuan/timer": "^0.1.3",

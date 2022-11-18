@@ -4,7 +4,7 @@
  * @Date: 2022-11-12 09:17:20
  * @FilePath: /vue-shelf/src/views/testLoading/index.vue
  * @LastEditors: 李大玄
- * @LastEditTime: 2022-11-12 18:02:06
+ * @LastEditTime: 2022-11-18 18:54:26
 -->
 <template>
   <div class="aa">
@@ -40,7 +40,7 @@ export default {
       query: {
         name: "zs"
       },
-      context: ''
+      context: ""
     };
   },
   computed: {},
@@ -51,17 +51,17 @@ export default {
     //   immediate: true, // 立即执行
     // },
   },
-  beforeCreate() { },
+  beforeCreate() {},
   created() {
-    // this.initPage()
+    this.initPage();
   },
-  beforeMount() { },
-  mounted() { },
+  beforeMount() {},
+  mounted() {},
   methods: {
     async initPage() {
-      loading.ploading(this);
+      window.loading.ploading(this);
       const res = await this.getData(this.query);
-      loading.ploading(this);
+      window.loading.ploading(this);
       // console.log(res);
     },
     getData(query) {
@@ -75,17 +75,18 @@ export default {
       console.log("event1", event);
     },
     click2(event) {
-      loading.eloading(event)
+      window.loading.eloading(event);
+      this.initPage();
       setTimeout(() => {
-        loading.eloading(event)
-      }, 2000);
+        window.loading.eloading(event);
+      }, 3000);
     }
   },
-  beforeUpdate() { }, //生命周期 - 更新之前
-  updated() { }, //生命周期 - 更新之后
-  beforeDestroy() { }, //生命周期 - 销毁之前
-  destroyed() { }, //生命周期 - 销毁完成
-  activated() { } //如果页面有keep-alive缓存功能，这个函数会触发
+  beforeUpdate() {}, //生命周期 - 更新之前
+  updated() {}, //生命周期 - 更新之后
+  beforeDestroy() {}, //生命周期 - 销毁之前
+  destroyed() {}, //生命周期 - 销毁完成
+  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
 <style lang="scss" scoped>
