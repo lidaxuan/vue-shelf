@@ -5,29 +5,34 @@
  * @FilePath: /vue-shelf/src/views/Luckysheet/index.vue
 -->
 <template>
-  <div class="">
-    
-    <el-button class="btn" @click="getData">11</el-button>
-    <div id="luckysheet" style="margin: 0px; padding: 0px; position: absolute; width: 100%; height: 100%; left: 0px; top: 0px"></div>
+  <div class="wmax hmax">
+    <el-button class="btn" @click="getData">获取表格数据</el-button>
+    <div id="luckysheet" style="margin: 0px; padding: 0px; width: 100%; height: 100%; left: 0px; top: 0px"></div>
   </div>
 </template>
 
 <script>
 //例如：import 《组件名称》 from '《组件路径》';
-import luckysheetDemoUtil from './utils';
+import _ from "lodash";
+import luckysheetDemoUtil from "./utils";
+import sheetPivotTableData from "./demoData/sheetPivotTableData";
 
 export default {
-  name: '', // Pascal命名
+  name: "", // Pascal命名
   mixins: [],
   components: {},
   props: {
     ops: {
       default: () => {
         return {
-          title: '',
+          title: "",
           data: []
         };
       }
+    },
+    excelData: {
+      type: Object,
+      default: {}
     }
   },
   data() {
@@ -38,11 +43,15 @@ export default {
   },
   computed: {},
   watch: {
-    // temObj: {
-    //   handler(newVal, oldVal) {},
-    //   deep: true, // 深度
-    //   immediate: true, // 立即执行
-    // },
+    excelData: {
+      handler(newVal, oldVal) {
+        if (Object.keys(newVal).length) {
+          // this.init();
+        }
+      },
+      deep: true, // 深度
+      immediate: true // 立即执行
+    }
   },
   beforeCreate() {},
   created() {},
@@ -55,25 +64,40 @@ export default {
     //   logo: ''
     // };
     // luckysheet.create(options);
-    this.init();
+    // this.init();
   },
   methods: {
     init() {
-      let lang = luckysheetDemoUtil.language() === 'zh' ? 'zh' : 'en';
+      let lang = luckysheetDemoUtil.language() === "zh" ? "zh" : "en";
       let isShare = luckysheetDemoUtil.getRequest().share; // '?share=1' opens the collaborative editing mode
       let gridKey = luckysheetDemoUtil.getRequest().gridKey; // workbook id for collaborative editing, or directly define here
-      console.log(lang, isShare, gridKey);
-      this.optionSheet = {
-        container: this.container || 'luckysheet', //luckysheet为容器id
-        lang: 'zh', //中文
-        title: '李大玄', //表 头名
-        index: '0', //工作表索引
-        status: '1', //激活状态
-        order: '0', //工作表的顺序
-        hide: '0', //是否隐藏
+      const optionSheet = {
+        container: this.container || "luckysheet", //luckysheet为容器id
+        lang: lang, //中文
+        title: "李大玄", //表 头名
+        loading: {
+          image: () => {
+            return `<svg viewBox="25 25 50 50" class="circular"><circle cx="50" cy="50" r="20" fill="none"></circle></svg>`;
+          },
+          imageClass: "loadingAnimation"
+        },
+        // cellRightClickConfig: {
+        //   customs: [
+        //     {
+        //       title: "test",
+        //       onClick: function (clickEvent, event, params) {
+        //         console.log("function test click", clickEvent, event, params);
+        //       }
+        //     }
+        //   ]
+        // },
+        index: "0", //工作表索引
+        status: "1", //激活状态
+        order: "0", //工作表的顺序
+        hide: "0", //是否隐藏
         // column: 10, //列数
         // row: 30, //行数
-        color: 'red',
+        color: "red",
         showtoolbar: true, //是否显示工具栏
         showinfobar: true, //是否显示顶部信息栏
         showsheetbar: true, //是否显示底部sheet按钮 -------
@@ -85,10 +109,10 @@ export default {
 
         //--------------------
         allowUpdate: true,
-        loadUrl: '',
-        updateUrl: 'ws://xxxx',
+        loadUrl: "",
+        updateUrl: "ws://xxxx",
         //--------------------
-        data: luckysheetDemoUtil.getFiles([]),
+        // data: luckysheetDemoUtil.getFiles([]),
         cellRightClickConfig: {
           //自定义配置单元右键菜单
           copy: true, // 复制
@@ -196,25 +220,29 @@ export default {
         }
       };
 
-      this.optionSheet.loading = {
-        image: () => {
-          return `<svg viewBox="25 25 50 50" class="circular">
-					<circle cx="50" cy="50" r="20" fill="none"></circle>
-					</svg>`;
-        },
-        imageClass: 'loadingAnimation'
-      };
-      this.optionSheet.cellRightClickConfig = {
-        customs: [
-          {
-            title: 'test',
-            onClick: function (clickEvent, event, params) {
-              console.log('function test click', clickEvent, event, params);
-            }
-          }
-        ]
-      };
-      luckysheet.create(this.optionSheet);
+      // this.optionSheet.loading = {
+      //   image: () => {
+      //     return `<svg viewBox="25 25 50 50" class="circular">
+      // 		<circle cx="50" cy="50" r="20" fill="none"></circle>
+      // 		</svg>`;
+      //   },
+      //   imageClass: "loadingAnimation"
+      // };
+      // this.optionSheet.cellRightClickConfig = {
+      //   customs: [
+      //     {
+      //       title: "test",
+      //       onClick: function (clickEvent, event, params) {
+      //         console.log("function test click", clickEvent, event, params);
+      //       }
+      //     }
+      //   ]
+      // };
+      const data = luckysheetDemoUtil.getFiles([]);
+      optionSheet.data = data;
+      // optionSheet.data = [sheetPivotTableData];
+      optionSheet.data = [this.excelData];
+      luckysheet.create(optionSheet);
     },
     /**
      * 点击获取表格中的json数据，用于存放数据库
@@ -226,7 +254,18 @@ export default {
         sheetfiles[i].celldata = luckysheet.transToCellData(sheetfiles[i].data); //转换数据格式，存储表格数据，便于详情展示
       }
       this.sheetfiles = [].concat(sheetfiles);
-      console.log(this.sheetfiles);
+
+      const luckysheetData = luckysheet.getluckysheetfile();
+      console.log("luckysheetData", luckysheet.getSheetData());
+      let data = luckysheet.getSheetData();
+      data = data.filter((item) => {
+        if (_.compact(item).length) {
+          return item;
+        }
+      });
+      console.log("data", data);
+      console.log("luckysheetData", luckysheetData);
+      console.log(_.compact(luckysheetData[0].data.flat(Infinity)));
       // console.log(this.ops.data);
       // this.$emit('evs', {
       //   eventName: 'getOnJson',
@@ -243,7 +282,7 @@ export default {
   activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 //@import url(); 引入公共css类
 .btn {
   position: fixed;
