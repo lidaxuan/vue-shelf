@@ -29,7 +29,7 @@ if (process.env.NODE_ENV !== 'development') {
   // publicPath = process.env.VUE_APP_OS_domain ? `//${process.env.VUE_APP_OS_domain}` : '/';
 }
 
-
+const sdkChooseLoader = require( './src/customLoader/errorLoader.js' );
 module.exports = {
   publicPath,
   runtimeCompiler: true,
@@ -71,6 +71,11 @@ module.exports = {
     hot: true,
     disableHostCheck: true,
   },
+  configureWebpack: {
+    resolveLoader: {
+      modules: ['node_modules','./src/customLoader/'],
+    },
+  },
   chainWebpack(config) {
     config.plugins.delete('preload'); // TODO: need test
     config.plugins.delete('prefetch'); // TODO: need test
@@ -80,6 +85,8 @@ module.exports = {
     config.module.rule('pug').use('pug-plain-loader').loader('pug-plain-loader').end();
 
     config.module.rule('svg').exclude.add(resolve('src/icons')).end();
+    // config.module.rule('error').test(/\.vue$/).exclude.add(resolve('src/customLoader/errorLoader')).end();
+    config.module.rule('myLoader').test(/\.js$/).use('errorLoader').loader('errorLoader').end();
     config.module
       .rule('icons')
       .test(/\.svg$/)

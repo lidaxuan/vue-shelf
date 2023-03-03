@@ -64,7 +64,7 @@ export default {
     //   logo: ''
     // };
     // luckysheet.create(options);
-    // this.init();
+    this.init();
   },
   methods: {
     init() {
@@ -107,6 +107,7 @@ export default {
         //   return temp;
         // })(),
 
+        frozen: [{ type: "row" }],
         //--------------------
         allowUpdate: true,
         loadUrl: "",
@@ -228,20 +229,20 @@ export default {
       //   },
       //   imageClass: "loadingAnimation"
       // };
-      // this.optionSheet.cellRightClickConfig = {
-      //   customs: [
-      //     {
-      //       title: "test",
-      //       onClick: function (clickEvent, event, params) {
-      //         console.log("function test click", clickEvent, event, params);
-      //       }
-      //     }
-      //   ]
-      // };
+      this.optionSheet.cellRightClickConfig = {
+        customs: [
+          {
+            title: "test",
+            onClick: function (clickEvent, event, params) {
+              console.log("function test click", clickEvent, event, params);
+            }
+          }
+        ]
+      };
       const data = luckysheetDemoUtil.getFiles([]);
       optionSheet.data = data;
       // optionSheet.data = [sheetPivotTableData];
-      optionSheet.data = [this.excelData];
+      // optionSheet.data = [this.excelData];
       luckysheet.create(optionSheet);
     },
     /**

@@ -9,7 +9,8 @@
     "build:deve": "vue-cli-service build --mode development",
     "build:test": "vue-cli-service build --mode test",
     "build:produce": "vue-cli-service build --mode produce",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "inspect": "vue-cli-service inspect"
   },
   "dependencies": {
     "@antv/g6": "^4.5.0",

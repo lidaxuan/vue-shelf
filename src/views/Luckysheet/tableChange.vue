@@ -4,10 +4,10 @@
  * @Date: 2023-01-04 09:29:30
  * @FilePath: /vue-shelf/src/views/Luckysheet/tableChange.vue
  * @LastEditors: 李大玄
- * @LastEditTime: 2023-01-04 15:30:53
+ * @LastEditTime: 2023-01-04 17:18:34
 -->
 <template>
-  <div class="wmax hmax flex">
+  <div class="wmax hmax ">
     <div class="h500" style="width: 50%">
       <el-button type="primary" @click="changeData">切换excel 数据</el-button>
       <Table class="tableComStyle" key="1" style="width: 100%" height="100%" :data="list" :tableColumnData="tableColumnData" ref="table">
@@ -139,8 +139,8 @@ export default {
         status: 1, //激活状态
         order: 0, //工作表的下标
         hide: 0, //是否隐藏
-        // row: this.list.length + 1, //行数
-        // column: 18, //列数
+        row: this.list.length + 1, //行数
+        column: header.length, //列数
         defaultRowHeight: 19, //自定义行高
         defaultColWidth: 73, //自定义列宽
         celldata

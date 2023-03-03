@@ -33,6 +33,7 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/swiper.vue"), // optimization // testSelect fontClass
     component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/tableChange.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/study/test.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/showdigitroll",

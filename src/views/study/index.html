@@ -1,0 +1,77 @@
+<!--
+ * @Description: 
+ * @Author: 李大玄
+ * @Date: 2023-01-07 11:02:54
+ * @FilePath: /vue-shelf/src/views/study/index.html
+ * @LastEditors: 李大玄
+ * @LastEditTime: 2023-01-07 11:37:57
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    function addMethod(object, name, fn) {
+      var old = object[name];
+      object[name] = function () {
+        // console.log('arguments.length', arguments.length);
+        if (fn.length == arguments.length) {
+          return fn.apply(this, arguments);
+        } else if (typeof old == "function") {
+          return old.apply(this, arguments);
+        }
+      };
+    }
+    var ninjas = {
+      values: ['Dean Edwards', "Sam step", "Alex Russell"]
+    }
+    addMethod(ninjas, "find", function () {
+      return this.values
+    });
+    addMethod(ninjas, "find", function (name) {
+      var ret = []
+      for (let i = 0; i < this.values.length; i++) {
+        if (this.values[i].indexOf(name) == 0) {
+          ret.push(this.values[i])
+          return ret
+        }
+      }
+      return this.values
+    });
+    addMethod(ninjas, "find", function (first, last) {
+      var ret = []
+      for (let i = 0; i < this.values.length; i++) {
+        if (this.values[i] == first + ' ' + last) {
+          ret.push(this.values[i])
+          return ret
+        }
+      }
+      return this.values
+    });
+    // console.log('ninjas.find().length', ninjas.find());
+    // console.log('ninjas.find(Sam)', ninjas.find('Alex'));
+    // console.log('ninjas.find(Sam)', ninjas.find('Sam', 'step'));
+    // console.log('ninjas.find(Sam)', ninjas.find('Sam', 'step', 'asd'));
+
+    var later;
+    function o() {
+      var iv = '李大玄'
+      function inf() {
+        console.log(iv);
+      }
+      later = inf
+    }
+    o()
+    later()
+  </script>
+</body>
+
+</html>
