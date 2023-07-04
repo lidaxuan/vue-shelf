@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 /*
- * @Description: 
- * @version: 
+ * @Description:
+ * @version:
  * @Author: 李继玄（lijixuan@quclouds.com）
  * @Date: 2020-08-13 14:32:26
  * @LastEditors: Please set LastEditors

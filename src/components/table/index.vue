@@ -67,24 +67,24 @@
                 </Popover>
               </span>
             </template>
-
             <template #default="scope" v-if="item.slotName">
-              <template v-if="slotArr[item.slotName]">
-                <template v-for="btn in item.Plugin">
-                  <el-button :type="btn.type || 'primary'" @click="handle(scope.row, btn)">{{ btn.text }}</el-button>
-                </template>
-              </template>
-              <slot v-else-if="!slotArr[item.slotName]" :name="item.slotName" v-bind="scope" />
+<!--              <template v-if="slotArr[item.slotName]">-->
+<!--                <template v-for="btn in item.Plugin">-->
+<!--                  <el-button :type="btn.type || 'primary'" @click="handle(scope.row, btn)">{{ btn.text }}</el-button>-->
+<!--                </template>-->
+<!--              </template>-->
+              <slot :name="item.slotName" v-bind="scope" />
             </template>
 
-            <template #default="scope" v-else-if="!['index', 'selection', 'expand'].includes(item.type)">
-              <span v-if="item.formatter">
-                <span>{{ item.formatter(scope.row, scope.column, '', scope.$index) }}</span>
-              </span>
-              <span v-else>{{
-                `${item.beforeConcat || ''}${(scope.row[item.prop] == '0' ? '0' : scope.row[item.prop]) || item.defaultValue || ''}${item.afterConcat || ''}`
-              }}</span>
-            </template>
+<!--            <template #default="scope" v-else-if="!['index', 'selection', 'expand'].includes(item.type)">-->
+<!--              -->
+<!--              <span v-if="item.formatter">-->
+<!--                <span>{{ item.formatter(scope.row, scope.column, '', scope.$index) }}</span>-->
+<!--              </span>-->
+<!--              <span v-else>{{-->
+<!--                `${item.beforeConcat || ''}${(scope.row[item.prop] == '0' ? '0' : scope.row[item.prop]) || item.defaultValue || ''}${item.afterConcat || ''}`-->
+<!--              }}</span>-->
+<!--            </template>-->
           </TableColumn>
         </template>
       </template>

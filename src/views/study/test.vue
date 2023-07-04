@@ -31,7 +31,8 @@ export default {
     //   immediate: true, // 立即执行
     // },
   },
-  beforeCreate() {},
+  beforeCreate() {
+  },
   created() {
     console.log('李继玄', '李继玄')
     // .$emit
@@ -51,19 +52,6 @@ export default {
     };
     ninja = {};
 
-    // console.log(samurai.chirp);
-    // console.log("ninja", ninja);
-    // console.log(this.isPrime(11));
-    // console.log(this.isPrime(11));
-    // console.log(this.isPrime(10));
-    // console.log(this.isPrime(10));
-    // ----
-    function makeNinja() {}
-    function makeSamurai(name, rank) {}
-    // console.log(makeNinja.length, "Only expecting a single argument");
-    // console.log(makeSamurai.length == 2, " Two arguments expected");
-    // ----
-
     var ninja = {};
     this.addMethod(ninja, "whatever", function () {
       /* do something */
@@ -78,9 +66,12 @@ export default {
       /* yet something else */
     });
     console.log("ninja", ninja);
+    this.asdasd()
   },
-  beforeMount() {},
-  mounted() {},
+  beforeMount() {
+  },
+  mounted() {
+  },
   methods: {
     isPalindrome(text) {
       if (text.length <= 1) {
@@ -92,13 +83,25 @@ export default {
 
       return isPalindrome(text.substr(1, text.length - 2));
     },
+    async asdasd(data) {
+      return new Promise((resolve,reject) => {
+        setTimeout(() => {
+          if (data) {
+            resolve(true)
+          } else {
+            reject(throw Error('这是个错误函数'))
+
+          }
+        }, 500)
+      })
+    },
     /** 缓存函数实现
      * @param {*} value
-      ■在函数调用 获取之前计算结果的时候，最终用户享有性能优势。
-      ■发生在幕后， 完全无缝，最终用户和页面开发人员都无需任何特殊操作或为此做任何额外的初始化工作。但是，这种方式并不完全都是鲜花和掌声，与优点相比，也需要权衡-下缺点。
-      ■为了提高性能，任何类型的缓存肯定会牺牲掉内存。
-      ■纯粹主义者可能认为缓存这个问题不应该与业 务逻辑放在一起，一个函数或方法应该只做一件事，并把它做好。
-      ■很难测试或测量- 一个算法的性能，就像本例这样。
+     ■在函数调用 获取之前计算结果的时候，最终用户享有性能优势。
+     ■发生在幕后， 完全无缝，最终用户和页面开发人员都无需任何特殊操作或为此做任何额外的初始化工作。但是，这种方式并不完全都是鲜花和掌声，与优点相比，也需要权衡-下缺点。
+     ■为了提高性能，任何类型的缓存肯定会牺牲掉内存。
+     ■纯粹主义者可能认为缓存这个问题不应该与业 务逻辑放在一起，一个函数或方法应该只做一件事，并把它做好。
+     ■很难测试或测量- 一个算法的性能，就像本例这样。
      */
     isPrime(value) {
       if (!this.isPrime.answers) {
@@ -131,11 +134,16 @@ export default {
       };
     }
   },
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
-  destroyed() {}, //生命周期 - 销毁完成
-  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
+  beforeUpdate() {
+  }, //生命周期 - 更新之前
+  updated() {
+  }, //生命周期 - 更新之后
+  beforeDestroy() {
+  }, //生命周期 - 销毁之前
+  destroyed() {
+  }, //生命周期 - 销毁完成
+  activated() {
+  } //如果页面有keep-alive缓存功能，这个函数会触发
 };
 </script>
 <style lang="scss" scoped>

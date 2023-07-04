@@ -1,14 +1,14 @@
 <!--
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2023-01-04 09:29:30
  * @FilePath: /vue-shelf/src/views/Luckysheet/tableChange.vue
  * @LastEditors: 李大玄
- * @LastEditTime: 2023-01-04 17:18:34
+ * @LastEditTime: 2023-06-30 17:22:45
 -->
 <template>
-  <div class="wmax hmax ">
-    <div class="h500" style="width: 50%">
+  <div class="wmax hmax flex">
+    <div class="h500" style="width: 48%">
       <el-button type="primary" @click="changeData">切换excel 数据</el-button>
       <Table class="tableComStyle" key="1" style="width: 100%" height="100%" :data="list" :tableColumnData="tableColumnData" ref="table">
         <template #handle="scope">

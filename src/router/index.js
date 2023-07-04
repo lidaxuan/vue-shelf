@@ -31,11 +31,17 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ "../views/testLoading/index.vue"), // optimization // testSelect fontClass
     component: () => import(/* webpackChunkName: "about" */ "../views/test/testswiper.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/swiper.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/tableChange.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/study/test.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/study/test.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/study/drag.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/tableChange.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/MultipleRenderingComponents/index.vue"), // optimization // testSelect fontClass
   },
   {
+    path: "/sheet",
+    name: "showdigitroll",
+    component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index"), // optimization // testSelect fontClass
+  },{
     path: "/showdigitroll",
     name: "showdigitroll",
     component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
