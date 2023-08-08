@@ -5,32 +5,33 @@
  * @FilePath: /vue-shelf/src/views/test/table/pagination.vue
 -->
 <template>
-    <div :class= "{ 'fixed-foot': isFixed, 'pagination': !isFixed }">
-      <el-pagination
-          v-if="isSmall"
-          small
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          layout="total, prev, pager, next"
-          :page-size="page.pageSize"
-          :total="page.total">
-      </el-pagination>
+  <div :class="{ 'fixed-foot': isFixed, pagination: !isFixed }">
+    <el-pagination
+      v-if="isSmall"
+      small
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      layout="total, prev, pager, next"
+      :page-size="page.pageSize"
+      :total="page.total"
+    >
+    </el-pagination>
 
-      <el-pagination
-          :page-sizes="[10, 50, 100,500]"
-          layout="total,sizes,prev, pager, next,jumper"
-          :total="page.total"
-          :page-size="page.pageSize"
-          :current-page="page.currentPage"
-          @current-change="handleCurrentChange"
-          @size-change="handleSizeChange">
-      </el-pagination>
-
-    </div>
+    <el-pagination
+      :page-sizes="[10, 50, 100, 500]"
+      layout="total,sizes,prev, pager, next,jumper"
+      :total="page.total"
+      :page-size="page.pageSize"
+      :current-page="page.currentPage"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
+    >
+    </el-pagination>
+  </div>
 </template>
 <script>
 export default {
-  name: 'pagination', //分页组件
+  name: "pagination", //分页组件
   props: {
     page: {
       type: Object,
@@ -38,44 +39,44 @@ export default {
     },
     enableSmall: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isFixed: {
       type: Boolean,
-      default: true,
+      default: true
     }
   },
   data() {
     return {
-      isSmall: this.enableSmall || false, //是否启用small模式
-    }
+      isSmall: this.enableSmall || false //是否启用small模式
+    };
   },
   methods: {
-    handleCurrentChange(val){
-      this.$emit('pageChange', val);
+    handleCurrentChange(val) {
+      this.$emit("pageChange", val);
     },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
-      this.$emit('pageChangeSize', val);
+      this.$emit("pageChangeSize", val);
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
-.pagination{
+.pagination {
   position: absolute;
   bottom: 52px;
   width: calc(100% - 216px);
   margin: 0 !important;
   text-align: right;
 
-  .el-pagination{
+  .el-pagination {
     padding: 10px 10px 10px 0 !important;
     background-color: rgba(99, 99, 99, 0.6);
   }
 }
 
-.fixed-foot{
+.fixed-foot {
   position: fixed;
   width: calc(100% - 216px);
   right: 10px;
@@ -83,35 +84,34 @@ export default {
   margin: 0 !important;
   text-align: right;
 
-  .el-pagination{
+  .el-pagination {
     padding: 10px 10px 10px 0 !important;
     background-color: rgba(99, 99, 99, 0.6);
   }
 }
 
-/deep/.el-pagination__total{
+::v-deep.el-pagination__total {
   color: #fff;
 }
 
-/deep/ .el-input__inner,
-/deep/ .btn-prev,
-/deep/ .btn-next,
-/deep/ .el-pager li{
+::v-deep .el-input__inner,
+::v-deep .btn-prev,
+::v-deep .btn-next,
+::v-deep .el-pager li {
   border: 1px solid transparent;
   background-color: rgba(99, 99, 99, 0.6);
   color: #fff;
 }
 
-/deep/ .el-pager li.active{
-  color: #409EFF;
+::v-deep .el-pager li.active {
+  color: #409eff;
 }
 
-/deep/ .el-pagination button:disabled{
+::v-deep .el-pagination button:disabled {
   background-color: rgba(99, 99, 99, 0.6);
 }
 
-/deep/ .el-pagination__jump{
+::v-deep .el-pagination__jump {
   color: #fff;
 }
 </style>
-

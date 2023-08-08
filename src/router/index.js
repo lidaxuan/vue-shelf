@@ -20,28 +20,33 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "@/views/test/timeSelect/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/dropdownDemo.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "@/views/configJson/index"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/study/index.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/pannellum.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/About.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/table/test.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/study/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/test/pannellum.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/test/About.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/test/table/test.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/dxw.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/abcde/App.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/testResize.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/drageDemo.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/testLoading/index.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/testswiper.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/abcde/App.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/test/testResize.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/test/drageDemo.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/testLoading/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/test/testswiper.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/swiper.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/study/test.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/study/drag.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/tableChange.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/MultipleRenderingComponents/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/study/drag.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/tableChange.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/MultipleRenderingComponents/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/dragResize/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/testCompUpdata/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/testMixins"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/testStore/testStore"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/cssFilter/index.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/sheet",
     name: "showdigitroll",
     component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index"), // optimization // testSelect fontClass
-  },{
+  }, {
     path: "/showdigitroll",
     name: "showdigitroll",
     component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
@@ -67,7 +72,8 @@ let AppRoutes = [];
 
 const router = new VueRouter({
   base: process.env.BASE_URL,
-  routes: routes.concat(AppRoutes)
+  routes: routes.concat(AppRoutes),
+  mode: 'hash'
 });
 
 

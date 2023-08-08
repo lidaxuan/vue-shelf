@@ -31,10 +31,10 @@
 
 <script>
 //例如：import 《组件名称》 from '《组件路径》';
-import { Garden } from '@/utils/garden';
+import { Garden } from "@/utils/garden";
 console.log(Garden);
 export default {
-  name: '', // Pascal命名
+  name: "", // Pascal命名
   mixins: [],
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -50,13 +50,13 @@ export default {
         '<div>Boy i = <span class="keyword">new</span> Boy(<span class="string">"Lijixuan"</span>);</div>' +
         '<div>Girl u = <span class="keyword">new</span> Girl(<span class="string">"Jialiming"</span>);</div>' +
         '<div><span class="comments">// 2021-10-1, 我告诉过你我爱你。</span></div>' +
-        '<div>i.love(u);</div>' +
+        "<div>i.love(u);</div>" +
         '<div><span class="comments">// 幸运的是，你接受并从此成为我的女朋友。</span></div>' +
-        '<div>u.accepted();</div>' +
+        "<div>u.accepted();</div>" +
         '<div><span class="comments">// 从那以后，我每天都在想你。</span></div>' +
-        '<div>i.miss(u);</div>' +
+        "<div>i.miss(u);</div>" +
         '<div><span class="comments">//照顾好你和我们的爱。</span></div>' +
-        '<div>i.takeCareOf(u);</div>' +
+        "<div>i.takeCareOf(u);</div>" +
         '<div><span class="comments">// 你说你不会那么容易嫁给我的。</span></div>' +
         '<div><span class="comments">// 所以我一直在等待，我相信你会的。</span></div>' +
         '<div><span class="keyword">boolean</span> isHesitate = <span class="keyword">true</span>;</div>' +
@@ -65,15 +65,15 @@ export default {
         '<div><span class="placeholder" /><span class="comments">// 我认为这是一个重要的决定</span></div>' +
         '<div><span class="placeholder" /><span class="comments">// 你应该考虑一下。</span></div>' +
         '<div><span class="placeholder" />isHesitate = u.thinkOver();</div>' +
-        '<div>}</div>' +
+        "<div>}</div>" +
         '<div><span class="comments">// 在一场浪漫的婚礼之后，我们将从此过上幸福的生活。</span></div>' +
-        '<div>i.marry(u);</div>' +
-        '<div>i.liveHappilyWith(u);</div>',
-      htmlStr: '',
-      timeHtmlStr: '',
+        "<div>i.marry(u);</div>" +
+        "<div>i.liveHappilyWith(u);</div>",
+      htmlStr: "",
+      timeHtmlStr: "",
       showMessage: false,
       showLoveu: false,
-      garden: ''
+      garden: ""
     };
   },
   //监听属性 类似于data概念
@@ -92,7 +92,7 @@ export default {
   beforeCreate() {}, //生命周期 - 创建之前
   created() {
     this.typewriter();
-    const together = new Date('2020-02-14 00:00:00');
+    const together = new Date("2020-02-14 00:00:00");
     setInterval(() => {
       this.timeElapse(together);
     }, 500);
@@ -103,8 +103,8 @@ export default {
   mounted() {
     const gardenCanvas = this.$refs.gardenCanvas;
     console.log(gardenCanvas);
-    let gardenCtx = gardenCanvas.getContext('2d');
-    gardenCtx.globalCompositeOperation = 'lighter';
+    let gardenCtx = gardenCanvas.getContext("2d");
+    gardenCtx.globalCompositeOperation = "lighter";
     this.garden = new Garden(gardenCtx, gardenCanvas);
     console.log(this.garden.render);
     setInterval(() => {
@@ -118,12 +118,12 @@ export default {
       let str = this.content.trim();
       var timer = setInterval(() => {
         var current = str.substr(progress, 1);
-        if (current == '<') {
-          progress = str.indexOf('>', progress) + 1;
+        if (current == "<") {
+          progress = str.indexOf(">", progress) + 1;
         } else {
           progress++;
         }
-        this.htmlStr = str.substring(0, progress) + (progress & 1 ? '_' : '');
+        this.htmlStr = str.substring(0, progress) + (progress & 1 ? "_" : "");
         if (progress >= str.length) {
           clearInterval(timer);
         }
@@ -136,16 +136,16 @@ export default {
       seconds = seconds % (3600 * 24);
       var hours = Math.floor(seconds / 3600);
       if (hours < 10) {
-        hours = '0' + hours;
+        hours = "0" + hours;
       }
       seconds = seconds % 3600;
       var minutes = Math.floor(seconds / 60);
       if (minutes < 10) {
-        minutes = '0' + minutes;
+        minutes = "0" + minutes;
       }
       seconds = seconds % 60;
       if (seconds < 10) {
-        seconds = '0' + seconds;
+        seconds = "0" + seconds;
       }
       this.timeHtmlStr =
         '<span class="digit">' +
@@ -156,7 +156,7 @@ export default {
         minutes +
         '</span> minutes <span class="digit">' +
         seconds +
-        '</span> seconds';
+        "</span> seconds";
     },
     startHeartAnimation() {
       var angle = 10;
@@ -210,7 +210,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 //@import url(); 引入公共css类
-#app .love /deep/ {
+#app .love ::v-deep {
   width: 100%;
   height: 100%;
   background: #ffffee;
@@ -247,7 +247,7 @@ export default {
   }
 
   .words {
-    font-family: 'sans-serif';
+    font-family: "sans-serif";
     width: 500px;
     font-size: 24px;
     color: #666;
@@ -257,7 +257,7 @@ export default {
   }
 
   #elapseClock .digit {
-    font-family: 'digit';
+    font-family: "digit";
     font-size: 36px;
   }
 
@@ -280,7 +280,7 @@ export default {
 
   .code {
     color: #333;
-    font-family: 'Consolas', 'Monaco', 'Bitstream Vera Sans Mono', 'Courier New', 'sans-serif';
+    font-family: "Consolas", "Monaco", "Bitstream Vera Sans Mono", "Courier New", "sans-serif";
     font-size: 12px;
     .string {
       color: #2a36ff;

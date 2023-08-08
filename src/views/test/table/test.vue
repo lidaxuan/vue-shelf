@@ -5,8 +5,8 @@
  * @FilePath: /vue-shelf/src/views/test/table/test.vue
 -->
 <template>
-  <div class="mainbox wmax hmax  flex-ccc flex-aic">
-    <div class="btn-small  w100 h100" style="background: pink"></div>
+  <div class="mainbox wmax hmax flex-ccc flex-aic">
+    <div class="btn-small w100 h100" style="background: pink"></div>
     <i class="icon iconfont icon-wenzhangguanli"></i>
     <i class="icon iconfont icon-changwenzhang-xinjianwenzhang"></i>
     {{ flag }}
@@ -24,13 +24,12 @@
     </div>
     <div v-for="item in 100" :key="item">
       <img src="@/assets/bg.jpg" width="100" alt="" />
-
     </div>
     <div class="loader"></div>
 
-    <link rel="stylesheet" href="./b.scss">
-    <link rel="stylesheet" href="~@/views/test/table/b.scss">
-    <link rel="stylesheet" href="https://statics.easyliao.com/web/public/css/login.css">
+    <link rel="stylesheet" href="./b.scss" />
+    <link rel="stylesheet" href="~@/views/test/table/b.scss" />
+    <link rel="stylesheet" href="https://statics.easyliao.com/web/public/css/login.css" />
     <!-- <link rel="stylesheet" href="./a.css" /> -->
     <link v-if="flag" rel="stylesheet" href="//at.alicdn.com/t/font_2964213_r0bdd0q5qa.css" />
     <!-- 
@@ -40,9 +39,9 @@
 
 <script>
 export default {
-  name: 'test',
+  name: "test",
   components: {
-    Pagination: () => import('./pagination.vue')
+    Pagination: () => import("./pagination.vue")
   },
   data() {
     return {
@@ -56,7 +55,7 @@ export default {
       isFixedHead: null,
       emptyData: [],
       flag: true,
-      href: ''
+      href: ""
     };
   },
   mounted() {
@@ -84,26 +83,26 @@ export default {
   },
   methods: {
     placeholderVisible() {
-      console.log(document.getElementById('placeholder'));
-      let rect = document.getElementById('placeholder').getBoundingClientRect();
+      console.log(document.getElementById("placeholder"));
+      let rect = document.getElementById("placeholder").getBoundingClientRect();
       const viewHeight = window.innerHeight || document.documentElement.clientHeight;
-      console.log('判断', rect.bottom, window.innerHeight);
+      console.log("判断", rect.bottom, window.innerHeight);
       if (rect.bottom <= viewHeight) {
-        console.log('元素出现');
+        console.log("元素出现");
         this.isFixedFoot = false;
       } else {
-        console.log('元素消失');
+        console.log("元素消失");
         this.isFixedFoot = true;
       }
     },
     handleScroll() {
-      console.log(document.getElementById('table'));
-      let offsetTop = document.getElementById('alarmTable').getBoundingClientRect().top;
+      console.log(document.getElementById("table"));
+      let offsetTop = document.getElementById("alarmTable").getBoundingClientRect().top;
       if (offsetTop < 100) {
-        console.log('固定');
+        console.log("固定");
         this.isFixedHead = true;
       } else {
-        console.log('移除固定');
+        console.log("移除固定");
         this.isFixedHead = false;
       }
       this.placeholderVisible();
@@ -126,7 +125,6 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
 .mainbox {
   width: calc(100% - 10px);
@@ -137,12 +135,12 @@ export default {
     z-index: 1;
     width: calc(100% - 216px);
 
-    /deep/ .el-table__header {
+    ::v-deep .el-table__header {
       background-color: rgba(26, 64, 139, 0.9);
     }
 
-    /deep/ .el-table__row,
-    /deep/ .el-table__empty-block {
+    ::v-deep .el-table__row,
+    ::v-deep .el-table__empty-block {
       display: none;
     }
   }

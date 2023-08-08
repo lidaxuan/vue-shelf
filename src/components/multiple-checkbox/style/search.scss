@@ -12,7 +12,7 @@
     display: flex;
   }
   &.no-gutter {
-    & /deep/ input {
+    & ::v-deep input {
       /*
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
