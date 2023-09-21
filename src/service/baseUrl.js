@@ -27,6 +27,7 @@ export const webDataURL = process.env.NODE_ENV === 'production' ? "/webData" : "
 export const corpusURL = process.env.NODE_ENV === 'production' ? '/eachbot-corpus' : '/robot/eachbot-corpus'; //本地
 export const weChatURL = process.env.NODE_ENV === 'production' ? '/eachbot-business-card-allocation' : '/robot/eachbot-business-card-allocation'; //本地
 export const eachbotFlowAdminWeb = process.env.NODE_ENV === 'production' ? '/eachbot-flow-admin-web' : '/robot/eachbot-flow-admin-web'; //本地
+export const viewBase = process.env.NODE_ENV === 'production' ? '' : '/api'; //本地
 
 // 统一认证服务 和通话记录
 let unifiedCertificationUrl;

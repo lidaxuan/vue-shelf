@@ -14,7 +14,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "", // ImplementationComponent
+    // name: "", // ImplementationComponent
     // component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "@/views/test/scrollXY"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "@/views/test/timeSelect/index.vue"), // optimization // testSelect fontClass
@@ -40,7 +40,13 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/testCompUpdata/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/testMixins"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/testStore/testStore"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/cssFilter/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/cssFilter/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/scrollTop/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/Cascader/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/exportExcel/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/docMath/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/getWebSiteData/index.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/customData/index.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/sheet",
@@ -73,7 +79,7 @@ let AppRoutes = [];
 const router = new VueRouter({
   base: process.env.BASE_URL,
   routes: routes.concat(AppRoutes),
-  mode: 'hash'
+  // mode: 'hash'
 });
 
 

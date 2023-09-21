@@ -8,18 +8,18 @@
 import Vue from "vue";
 import App from "./App.vue";
 // import loading from './views/testLoading/loading'
-import loading from '@lijixuan/loading';
-import {store} from './store';
+// import loading from '@lijixuan/loading';
+import { store } from './store';
 
-import { createPinia, PiniaVuePlugin } from 'pinia'
-Vue.use(PiniaVuePlugin)
-const pinia = createPinia()
+// import { createPinia, PiniaVuePlugin } from 'pinia'
+// Vue.use(PiniaVuePlugin)
+// const pinia = createPinia()
 
-import VueDraggableResizable from 'vue-draggable-resizable'
+// import VueDraggableResizable from 'vue-draggable-resizable'
 
-import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+// import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
-Vue.component('VueDraggableResizable', VueDraggableResizable)
+// Vue.component('VueDraggableResizable', VueDraggableResizable)
 
 
 // loading.initMask({
@@ -29,22 +29,22 @@ Vue.component('VueDraggableResizable', VueDraggableResizable)
 //   customClass: '',
 //   color: 'red'
 // })
-window.loading = loading;
+// window.loading = loading;
 
-import hljs from "highlight.js";
-import "highlight.js/styles/atelier-cave-dark.css";
+// import hljs from "highlight.js";
+// import "highlight.js/styles/atelier-cave-dark.css";
 
-Vue.directive("highlight", function (el) {
-  let blocks = el.querySelectorAll("pre code");
-  blocks.forEach((block) => {
-    hljs.highlightBlock(block);
-  });
-});
+// Vue.directive("highlight", function (el) {
+//   let blocks = el.querySelectorAll("pre code");
+//   blocks.forEach((block) => {
+//     hljs.highlightBlock(block);
+//   });
+// });
 
-import './directives/waves.css';
-import 'swiper/dist/js/swiper.min';
+// import './directives/waves.css';
+// import 'swiper/dist/js/swiper.min';
 import "./assets/styles/index.scss";
-import 'swiper/dist/css/swiper.min.css';
+// import 'swiper/dist/css/swiper.min.css';
 import "./assets/styles/base/index.scss";
 
 Vue.config.productionTip = false;
@@ -55,27 +55,28 @@ import IconFont from './components/IconFont';
 import Directives from './directives';
 
 Vue.use(IconFont);
-Vue.use(elementUi, {size: 'small'});
+Vue.use(elementUi, { size: 'small' });
 Vue.use(Directives);
 
 
-import Table from "./components/table";
+// import Table from "./components/table";
 
-Vue.component('Table', Table)
+// Vue.component('Table', Table)
 import './element-variables.scss';
 
-import draggable from './utils/a';
+// import draggable from './utils/a';
 
-Vue.directive('draggable', draggable)
+// Vue.directive('draggable', draggable)
 
-import {robotServer, eachbotFlowAdminWeb} from './service';
+// import { robotServer, eachbotFlowAdminWeb } from './service';
+import { viewBase } from './service';
 
-Vue.prototype.$HttpRobot = robotServer; //机器人serve
-Vue.prototype.$HttpFlowAdmin = eachbotFlowAdminWeb; //标签 serve
-import structDemoClient from './dao/axios/structDemoClient';
-import viewBase from './dao/axios/viewBase';
+// Vue.prototype.$HttpRobot = robotServer; //机器人serve
+// Vue.prototype.$HttpFlowAdmin = eachbotFlowAdminWeb; //标签 serve
+// import structDemoClient from './dao/axios/structDemoClient';
+// import viewBase from './dao/axios/viewBase';
 
-Vue.prototype.$structDemoClient = structDemoClient; //标签 serve
+// Vue.prototype.$structDemoClient = structDemoClient; //标签 serve
 Vue.prototype.$viewBase = viewBase; //标签 serve
 
 
@@ -84,6 +85,5 @@ import router from "./router";
 new Vue({
   router,
   store,
-  pinia,
   render: (h) => h(App),
 }).$mount("#app-base");

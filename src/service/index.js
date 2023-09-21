@@ -16,6 +16,7 @@ export { default as weChatServer } from './weChatServer';
 export { default as webDataServer } from './webDataServer';
 export { default as socket} from './webSocketFlow';
 export { default as eachbotFlowAdminWeb} from './eachbotFlowAdminWeb';
+export { default as viewBase} from './viewBase';
 
 // 格式化时间
 export { default as moment } from 'moment';

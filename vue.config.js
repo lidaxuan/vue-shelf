@@ -47,35 +47,35 @@ module.exports = {
       errors: true
     },
     proxy: {
-      '/robot': {
-        target: 'http://192.168.169.217:7200', // 开发
+      '/api': {
+        target: 'https://www.che300.com', // 开发
         changeOrigin: true,
         pathRewrite: {
-          '^/robot': '', //路径重写npm
+          '^/api': 'api', //路径重写npm
         },
       },
-      '/struct-demo-client': {
-        target: 'http://192.168.165.65:7200', // 开发
-        changeOrigin: true,
-        // pathRewrite: {
-        //   '^/robot': '', //路径重写npm
-        // },
-      },
-      '/data-config': {
-        target: 'http://192.168.165.65:7300/', // 开发
-        changeOrigin: true,
-        // pathRewrite: {
-        //   '^/robot': '', //路径重写npm
-        // },
-      }
+      // '/struct-demo-client': {
+      //   target: 'http://192.168.165.65:7200', // 开发
+      //   changeOrigin: true,
+      //   // pathRewrite: {
+      //   //   '^/robot': '', //路径重写npm
+      //   // },
+      // },
+      // '/data-config': {
+      //   target: 'http://192.168.165.65:7300/', // 开发
+      //   changeOrigin: true,
+      //   // pathRewrite: {
+      //   //   '^/robot': '', //路径重写npm
+      //   // },
+      // }
     },
     hot: true,
     disableHostCheck: true,
   },
   configureWebpack: {
-    resolveLoader: {
-      modules: ['node_modules','./src/customLoader/'],
-    },
+    // resolveLoader: {
+    //   modules: ['node_modules', './src/customLoader/'],
+    // },
   },
   chainWebpack(config) {
     config.plugins.delete('preload'); // TODO: need test
@@ -112,7 +112,7 @@ module.exports = {
       .end();
 
     config
-    // https://webpack.js.org/configuration/devtool/#development
+      // https://webpack.js.org/configuration/devtool/#development
       .when(process.env.NODE_ENV === 'development', conf => conf.devtool('cheap-source-map'));
     config.resolve.alias
       .set('@', resolve('src'))
@@ -120,9 +120,9 @@ module.exports = {
       .set('@lijixuan/gojs', resolve('src/components/go'))
       .set('utils', resolve('src/utils'));
 
-    config.plugin('provide').use(webpack.ProvidePlugin, [{
-      'window.Quill': 'quill'
-    }]);
+    // config.plugin('provide').use(webpack.ProvidePlugin, [{
+    //   'window.Quill': 'quill'
+    // }]);
   },
   css: {
     // 是否使用css分离插件 ExtractTextPlugin

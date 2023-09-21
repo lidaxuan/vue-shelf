@@ -1,7 +1,18 @@
-import service from "../api";
+// import service from "../api";
 // import store from "../store";
 import { Message } from "element-ui";
 import router from '@/router';
+
+const service = {
+    seriesListAll: {
+        method: 'get',
+        url: '/series/list_all'
+    },
+    modelListAll: {
+        method: 'get',
+        url: '/model/list_all'
+    },
+}
 
 export function storageFun(msg) {
     Message.error(msg)
