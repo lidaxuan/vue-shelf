@@ -4,14 +4,10 @@ import { Message } from "element-ui";
 import router from '@/router';
 
 const service = {
-    seriesListAll: {
+    createChat: {
         method: 'get',
-        url: '/series/list_all'
-    },
-    modelListAll: {
-        method: 'get',
-        url: '/model/list_all'
-    },
+        url: '/live/1/1/chat/chat'
+    }
 }
 
 export function storageFun(msg) {

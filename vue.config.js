@@ -21,7 +21,7 @@ function getSassVar() {
   return code;
 }
 
-const port = 9528; // dev port
+const port = 6537; // dev port
 
 let publicPath = '/';
 
@@ -54,13 +54,13 @@ module.exports = {
           '^/api': 'api', //路径重写npm
         },
       },
-      // '/struct-demo-client': {
-      //   target: 'http://192.168.165.65:7200', // 开发
-      //   changeOrigin: true,
-      //   // pathRewrite: {
-      //   //   '^/robot': '', //路径重写npm
-      //   // },
-      // },
+      '/prd18': {
+        target: 'http://test-prd18.easyliao.net', // 开发
+        changeOrigin: true,
+        pathRewrite: {
+          '^/prd18': '', //路径重写npm
+        },
+      },
       // '/data-config': {
       //   target: 'http://192.168.165.65:7300/', // 开发
       //   changeOrigin: true,

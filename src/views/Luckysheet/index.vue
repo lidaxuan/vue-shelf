@@ -16,6 +16,7 @@
 import _ from "lodash";
 import luckysheetDemoUtil from "./utils";
 import sheetPivotTableData from "./demoData/sheetPivotTableData";
+// import luckysheet from "luckysheetVue";
 
 export default {
   name: "", // Pascal命名
@@ -32,7 +33,7 @@ export default {
     },
     excelData: {
       type: Object,
-      default: {}
+      default: () => ({})
     }
   },
   data() {
@@ -239,9 +240,9 @@ export default {
           }
         ]
       };
-      const data = luckysheetDemoUtil.getFiles([]);
-      optionSheet.data = data;
-      // optionSheet.data = [sheetPivotTableData];
+      // const data = luckysheetDemoUtil.getFiles([]);
+      // optionSheet.data = data;
+      optionSheet.data = [sheetPivotTableData];
       // optionSheet.data = [this.excelData];
       luckysheet.create(optionSheet);
     },
@@ -266,6 +267,7 @@ export default {
       });
       console.log("data", data);
       console.log("luckysheetData", luckysheetData);
+      ƒ;
       console.log(_.compact(luckysheetData[0].data.flat(Infinity)));
       // console.log(this.ops.data);
       // this.$emit('evs', {
