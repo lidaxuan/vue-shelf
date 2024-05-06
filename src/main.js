@@ -7,8 +7,6 @@
  */
 import Vue from "vue";
 import App from "./App.vue";
-// import loading from './views/testLoading/loading'
-// import loading from '@lijixuan/loading';
 import { store } from './store';
 
 function loadScript(url) {
@@ -24,50 +22,13 @@ function loadScript(url) {
   });
 }
 
-
-
-
-// import { createPinia, PiniaVuePlugin } from 'pinia'
-// Vue.use(PiniaVuePlugin)
-// const pinia = createPinia()
-
-// import VueDraggableResizable from 'vue-draggable-resizable'
-
-// import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
-
-// Vue.component('VueDraggableResizable', VueDraggableResizable)
-
-
-// loading.initMask({
-//   text: '我是李大玄',
-//   fullscreen: true,
-//   // background: 'yellow',
-//   customClass: '',
-//   color: 'red'
-// })
-// window.loading = loading;
-
-// import hljs from "highlight.js";
-// import "highlight.js/styles/atelier-cave-dark.css";
-
-// Vue.directive("highlight", function (el) {
-//   let blocks = el.querySelectorAll("pre code");
-//   blocks.forEach((block) => {
-//     hljs.highlightBlock(block);
-//   });
-// });
-
-// import './directives/waves.css';
-// import 'swiper/dist/js/swiper.min';
 import "./assets/styles/index.scss";
-// import 'swiper/dist/css/swiper.min.css';
 import "./assets/styles/base/index.scss";
 
 Vue.config.productionTip = false;
 
 import elementUi from 'element-ui';
 import IconFont from './components/IconFont';
-// import Directives from '@lijixuan/vue-customdirectives';
 import Directives from './directives';
 
 Vue.use(IconFont);

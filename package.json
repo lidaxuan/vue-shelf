@@ -41,6 +41,7 @@
     "quill-image-drop-module": "^1.0.3",
     "quill-image-resize-module": "^3.0.0",
     "sass": "^1.32.13",
+    "three": "^0.158.0",
     "vue": "^2.6.11",
     "vue-draggable-resizable": "^2.3.0",
     "vue-pannellum": "^0.5.3",

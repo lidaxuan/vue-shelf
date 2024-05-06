@@ -2,7 +2,7 @@ export default {
   debounce(func, wait = 50, immediate = false) {
     let timer = null;
     let result;
-    let debounced = function(...args) {
+    let debounced = function (...args) {
       if (timer) {
         clearTimeout(timer)
       }
@@ -21,7 +21,7 @@ export default {
       }
       return result;
     }
-    debounced.cancel = function() {
+    debounced.cancel = function () {
       clearTimeout(timer);
       timer = null;
     };
@@ -35,15 +35,15 @@ export default {
  * @param  {HTMLElement} wrapEl  包裹元素
  */
 export const wrap = (el, wrapEl) => {
-    let wrapper = wrapEl || document.createElement('div')
-    el.parentNode.insertBefore(wrapper, el)
-    el.parentNode.removeChild(el)
-    wrapper.appendChild(el)
-  }
-  /**
-   * 取消包裹 DOM 元素
-   * @param  {HTMLElement} el      需要取消包裹的元素
-   */
+  let wrapper = wrapEl || document.createElement('div')
+  el.parentNode.insertBefore(wrapper, el)
+  el.parentNode.removeChild(el)
+  wrapper.appendChild(el)
+}
+/**
+ * 取消包裹 DOM 元素
+ * @param  {HTMLElement} el      需要取消包裹的元素
+ */
 export const unwrap = (el) => {
   Array.prototype.forEach.call(el.childNodes, (child) => {
     el.parentNode.insertBefore(child, el)
@@ -143,3 +143,69 @@ function addZero(time) {
   return time;
 }
 // console.log(getday(6));
+
+
+export function waitForQtFlagAndDoSomething1(callback) {
+  // 使用 Object.defineProperty 定义一个 getter 函数，监视 window.qtFlag 的变化
+  Object.defineProperty(window, 'qtFlag', {
+    get: function () {
+      return this._qtFlag;
+    },
+    set: function (value) {
+      this._qtFlag = value;
+      // 当 window.qtFlag 变为 true 时执行回调函数
+      if (value === true) {
+        callback();
+      }
+    }
+  });
+}
+
+function waitForQtFlagAndDoSomething2(callback) {
+  // 检查 window.qtFlag 是否为 true
+  if (window.qtFlag === true) {
+    // 如果是 true，则立即执行回调函数
+    callback();
+  } else {
+    // 如果不是 true，则设置定时器，每隔一段时间检查一次
+    const interval = setInterval(() => {
+      // 再次检查 window.qtFlag 是否为 true
+      if (window.qtFlag === true) {
+        // 如果是 true，则清除定时器并执行回调函数
+        clearInterval(interval);
+        callback();
+      }
+    }, 1000); // 每隔一秒检查一次
+  }
+}
+
+
+export function waitForQtFlagAndDoSomething3(obj, propName, callback) {
+  Object.defineProperty(obj, propName, {
+    get: function () {
+      return this[propName];
+    },
+    set: function (value) {
+      this[propName] = value;
+      if (value === true) {
+        callback();
+      }
+    }
+  });
+}
+
+/* 
+// 示例用法
+waitForQtFlagAndDoSomething(() => {
+  console.log("window.qtFlag 已经变为 true，可以执行某些操作了！");
+});
+// 示例用法
+waitForQtFlagAndDoSomething(() => {
+  console.log("window.qtFlag 已经变为 true，可以执行某些操作了！");
+}); 
+// 模拟 window.qtFlag 的变化
+setTimeout(() => {
+  window.qtFlag = true;
+}, 3000); // 3秒后将 window.qtFlag 设为 true
+*/
+
