@@ -145,7 +145,7 @@ function addZero(time) {
 // console.log(getday(6));
 
 
-export function waitForQtFlagAndDoSomething1(callback) {
+export function waitForPropAndDoSomething1(callback) {
   // 使用 Object.defineProperty 定义一个 getter 函数，监视 window.qtFlag 的变化
   Object.defineProperty(window, 'qtFlag', {
     get: function () {
@@ -161,7 +161,7 @@ export function waitForQtFlagAndDoSomething1(callback) {
   });
 }
 
-function waitForQtFlagAndDoSomething2(callback) {
+function waitForPropAndDoSomething2(callback) {
   // 检查 window.qtFlag 是否为 true
   if (window.qtFlag === true) {
     // 如果是 true，则立即执行回调函数
@@ -180,7 +180,7 @@ function waitForQtFlagAndDoSomething2(callback) {
 }
 
 
-export function waitForQtFlagAndDoSomething3(obj, propName, callback) {
+export function waitForPropAndDoSomething3(obj, propName, callback) {
   Object.defineProperty(obj, propName, {
     get: function () {
       return this[propName];
@@ -196,11 +196,11 @@ export function waitForQtFlagAndDoSomething3(obj, propName, callback) {
 
 /* 
 // 示例用法
-waitForQtFlagAndDoSomething(() => {
+waitForPropAndDoSomething(() => {
   console.log("window.qtFlag 已经变为 true，可以执行某些操作了！");
 });
 // 示例用法
-waitForQtFlagAndDoSomething(() => {
+waitForPropAndDoSomething(() => {
   console.log("window.qtFlag 已经变为 true，可以执行某些操作了！");
 }); 
 // 模拟 window.qtFlag 的变化
