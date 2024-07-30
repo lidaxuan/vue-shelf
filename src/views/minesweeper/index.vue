@@ -9,7 +9,9 @@
 <template>
   <div id="app">
       <SelectDifficulty class="app-section" @showGame="showGame" />
-
+<i class="iconfont  icon-sixintong-AIkefugongzuoshijianpeizhi"></i>
+<i class="iconfont  icon-doutuilogo"></i>
+<i class="iconfont  icon-douyinicon"></i>
       <MineSweeper class="app-section" :key="uuid"
                    :width="width" :height="height" :mine-count="mineCount"
       />

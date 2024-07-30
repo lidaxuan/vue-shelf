@@ -106,7 +106,7 @@ export default {
         });
         if (match) {
           this.$nextTick(() => {
-            alert('win');
+            this.$message.success('win');
           });
           this.isEnd = true;
         }
@@ -143,7 +143,7 @@ export default {
         this.openStatus.splice(index, 1, 1);
         this.isEnd = true;
         this.$nextTick(() => {
-          alert('mine');
+          this.$message.error('mine');
         });
         return;
       }
