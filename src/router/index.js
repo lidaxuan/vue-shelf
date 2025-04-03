@@ -56,8 +56,9 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/splitPane"), // 测试通过配置 cn  en 读取文件 合并对象内容 并返回
     // component: () => import(/* webpackChunkName: "about" */ "../views/xScroll"), // 测试通过配置 cn  en 读取文件 合并对象内容 并返回
     // component: () => import(/* webpackChunkName: "about" */ "../views/imgsort"), //
-    component: () => import(/* webpackChunkName: "about" */ "../views/minesweeper"), //
-    component: () => import(/* webpackChunkName: "about" */ "../views/ScaleVideo"), //
+    // component: () => import(/* webpackChunkName: "about" */ "../views/minesweeper"), //
+    // component: () => import(/* webpackChunkName: "about" */ "../views/ScaleVideo"), //
+    component: () => import(/* webpackChunkName: "about" */ "../views/crazyTree"), //
   },
   {
     path: "/sheet",
