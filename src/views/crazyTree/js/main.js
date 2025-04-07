@@ -27,15 +27,15 @@ import npcDie from '../images/npcDie.png'
 
 export default class main {
   constructor() {
-    const canvas = document.getElementById("canvas");
-    this.ctx = canvas.getContext('2d')
+    this.canvas = document.getElementById("canvas");
+    this.ctx = this.canvas.getContext('2d')
     this.restart = false
     this.init()
   }
 
   init() {
     databus.reset()
-    canvas.removeEventListener('touchstart', this.touchHandler)
+    this.canvas.removeEventListener('touchstart', this.touchHandler)
 
     // wx.triggerGC()
     /*降低帧率*/
@@ -51,9 +51,9 @@ export default class main {
       databus.pushTree(_tree)
     }
     this.touch()
-    setTimeout(() => {
-      window.requestAnimationFrame(this.loop.bind(this), canvas)
-    }, 1000)
+    // setTimeout(() => {
+    window.requestAnimationFrame(this.loop.bind(this), this.canvas)
+    // }, 1000)
   }
 
   run() {
@@ -97,7 +97,6 @@ export default class main {
         _a = treeCen
         _b = "center"
       }
-
     } else {
       _a = treeCen
       _b = "center"
@@ -122,44 +121,36 @@ export default class main {
     let y = e.touches[0].clientY
 
     let area = this.gameinfo.btnArea
-    if (x >= area.startX
-      && x <= area.endX
-      && y >= area.startY
-      && y <= area.endY) {
-      this.ctx.clearRect(0, 0, canvas.width, canvas.height)
+    if (x >= area.startX && x <= area.endX && y >= area.startY && y <= area.endY) {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
       this.init()
     }
   }
 
   touchCuttree(e) {
     e.preventDefault()
-    let that = this;
     if (databus.gameOver) {
       return
     }
-    that.npc.update(npcMove)
+    console.log("点击了")
+    this.npc.update(npcMove)
     setTimeout(() => {
-      that.npc.update(npcImg)
+      this.npc.update(npcImg)
     }, 100)
-    that.touchX = e.touches[0].clientX;
-    that.run()
+    this.touchX = e.touches[0].clientX;
+    this.run()
   }
 
   touch() {
-    let that = this;
-    this.touchCuttrees = that.touchCuttree.bind(this) // 更改this指向
-    canvas.addEventListener('touchstart', this.touchCuttrees)
+    this.touchCuttrees = this.touchCuttree.bind(this) // 更改this指向
+    this.canvas.addEventListener('touchstart', this.touchCuttrees)
   }
 
   loop() {
-    console.log("执行了")
     let that = this
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height)
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.back.render()
-    setTimeout(() => {
-      this.npc.render()
-    }, 100)
-
+    this.npc.render()
     for (var k in databus.trees) {
       databus.trees[k].renderTree(k)
     }
@@ -168,16 +159,18 @@ export default class main {
 
     /*检测结束*/
     if (databus.gameOver || this.npc.blood < 0.017) {
+      console.log(1111111111111111)
       databus.gameOver = true
       this.gameinfo.gameOver(databus.score)
-      canvas.removeEventListener('touchstart', this.touchCuttrees)
+      this.canvas.removeEventListener('touchstart', this.touchCuttrees)
       this.touchHandler = that.touchEventHandler.bind(this)
-      canvas.addEventListener('touchstart', this.touchHandler)
+      this.canvas.addEventListener('touchstart', this.touchHandler)
       return
     } else {
+      console.log(22222222222222)
       this.gameinfo.render(databus.score)
     }
-    // window.requestAnimationFrame(this.loop.bind(this), canvas)
+    window.requestAnimationFrame(this.loop.bind(this), canvas)
     // return;
   }
 

@@ -1,4 +1,4 @@
 export const baseConfig = {
-  width: 300,
-  height: 150
+  width: window.innerWidth, //300,
+  height: window.innerHeight // 150
 }

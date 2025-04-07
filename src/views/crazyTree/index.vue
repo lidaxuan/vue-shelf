@@ -1,6 +1,7 @@
 <template>
   <div class="box">
-    <canvas id="canvas" style="width: 300px; height: 500px"></canvas>
+<!--    <canvas id="canvas" style="width: 300px; height: 500px"></canvas>-->
+    <canvas id="canvas" width="100%" height="100%"></canvas>
   </div>
 </template>
 
@@ -32,11 +33,18 @@ export default {
   //生命周期 - 挂载完成（可以访问DOM元素）
   beforeMount() {}, //生命周期 - 挂载之前
   mounted() {
-    new Main()
+    // window.addEventListener('resize', this.handleResize);
+    this.handleResize()
   },
   //方法集合
   methods: {
+    handleResize() {
+      var canvas = document.getElementById("canvas");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
   
+      new Main()
+    }
   }
 }
 </script>

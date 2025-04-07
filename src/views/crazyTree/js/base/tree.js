@@ -1,12 +1,16 @@
-let screenHeight = window.innerHeight
-let screenWidth = window.innerWidth
-
+// let screenHeight = window.innerHeight
+// let screenWidth = window.innerWidth
+import {baseConfig} from "./config";
 export default class tree {
   constructor(ctx, src = '', l = true) {
     this.ctx = ctx
     this.img = new Image()
     this.img.src = src
     this.posiDr = l  // 1代表左边，0代表右边
+
+    // this.img.error = () => {
+    //   console.log("2222")
+    // }
   }
 
   update(src, posiDr) {
@@ -15,21 +19,24 @@ export default class tree {
   }
 
   renderTree(i) {
-    let that = this
-    that.treePosition(i)
-    //that.img.onload = function(){
-    that.ctx.drawImage(that.img, that.x, that.y, 207, 60)
-    //}
+    this.treePosition(i)
+    // this.img.onload = () => {
+    // document.body.append(this.img)
+    this.ctx.drawImage(this.img, this.x, this.y, 207, 60)
+    // }
   }
 
   treePosition(i) {
-    i++
+    // i++
     if (this.posiDr && this.posiDr != "center") {
-      this.x = screenWidth / 2 - 54
+      this.x = baseConfig.width / 2 - 54
     } else {
-      this.x = screenWidth / 2 - 156
+      this.x = baseConfig.width / 2 - 156
     }
-    this.y = screenHeight - 60 - i * 60
+    // this.x = 100
+    this.y = baseConfig.height - 128 - i * 60
+    // this.y = baseConfig.height - 60 - i * 60
+    // this.y = 120
   }
 
   renderMove() {
