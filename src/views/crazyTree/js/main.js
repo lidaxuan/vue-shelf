@@ -159,7 +159,7 @@ export default class main {
 
     /*检测结束*/
     if (databus.gameOver || this.npc.blood < 0.017) {
-      console.log(1111111111111111)
+      console.log(11111111111111111)
       databus.gameOver = true
       this.gameinfo.gameOver(databus.score)
       this.canvas.removeEventListener('touchstart', this.touchCuttrees)
