@@ -118,7 +118,6 @@ export default class main {
     if (databus.gameOver) {
       return
     }
-    console.log("点击了")
     // this.npc.update(IMAGES.npcMove)
     this.npc.update("move")
     setTimeout(() => {
