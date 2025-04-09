@@ -1,19 +1,20 @@
 <template>
   <div class="box">
-<!--    <canvas id="canvas" style="width: 300px; height: 500px"></canvas>-->
-    <canvas id="canvas" width="100%" height="100%"></canvas>
+    <canvas id="Mycanvas" width="100%" height="100%"></canvas>
+<!--    <img src="../../assets/images/1.jpg" width="400" height="200" alt="">-->
+<!--    <div class="topText">本网址仅供学习,禁止传播,如有侵权请24小时联系我</div>-->
+<!--    <span class="centerText">本片由 <span class="lim">wwww.easyliao.com</span> 独家提供</span>-->
+<!--    <span class="bottomRight">最新网址</span>-->
   </div>
 </template>
 
 <script>
-//例如：import 《组件名称》 from '《组件路径》';
 import Main from './js/main'
 export default {
   name:'',  // Pascal命名
   mixins: [],
   components: {},
   props: {},
-  //import引入的组件需要注入到对象中才能使用
   //这里存放数据
   data() {
     return {
@@ -39,11 +40,11 @@ export default {
   //方法集合
   methods: {
     handleResize() {
-      var canvas = document.getElementById("canvas");
+      var canvas = document.getElementById("Mycanvas");
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
   
-      new Main()
+      new Main("Mycanvas")
     }
   }
 }
@@ -54,7 +55,36 @@ export default {
   width: 100%;
   height: 100%;
 }
-#canvas {
-  border: 1px solid red;
+.topText {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  text-align: center;
+  font-size: 20px;
+  color: #ffd669;
+  font-weight: bold;
+}
+.centerText {
+  position: fixed;
+  top: 120px;
+  left: 0;
+  //transform: translate(-50%, 0);
+  text-align: center;
+  font-size: 20px;
+  color: #ffd669;
+  font-weight: bold;
+  .lim {
+    font-size: 16px;
+    color: red;
+  }
+}
+.bottomRight {
+  position: fixed;
+  top: 160px;
+  right: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
 }
 </style>

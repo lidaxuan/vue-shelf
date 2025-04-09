@@ -1,25 +1,34 @@
-import {baseConfig} from "./config";
-import npcImg from "../../images/npc.png";
-const baseCount = 3000;
+import {IMAGES, baseConfig} from "./config";
+
 export default class npc {
   constructor(ctx) {
     this.ctx = ctx
     this.posi = true
     /*定义血条*/
-    this.blood = baseCount
-    this.img = new Image()
-    this.img.src = npcImg
+    this.blood = baseConfig.baseBlood
+    // this.img = new Image()
+    // this.img.src = IMAGES.npcImg
 
-    // this.img.onload = () => { // 使用箭头函数保留外层 this 指向
-    //   // console.log("成功123")
-    //   setTimeout(() => {
-    //     this.img.src = npcMove
-    //   }, 3000)
-    // };
+    this.images = {
+      normal: new Image(),
+      move: new Image(),
+      die: new Image(),
+    }
+    this.images.normal.src = IMAGES.npcImg
+    this.images.move.src = IMAGES.npcMove
+    this.images.die.src = IMAGES.npcDie
+    this.img = this.images.normal // 当前显示图片
   }
 
-  update(src) {
-    this.img.src = src
+  update(type) {
+    // this.img.src = src
+    if (type === 'move') {
+      this.img = this.images.move
+    } else if (type == "die") {
+      this.img = this.images.die
+    } else {
+      this.img = this.images.normal
+    }
   }
 
   render() {
@@ -52,6 +61,6 @@ export default class npc {
     this.ctx.fillStyle = "#222"
     this.ctx.fillRect(baseConfig.width / 2 - 95, 30, 190, 30)
     this.ctx.fillStyle = "red"
-    this.ctx.fillRect(baseConfig.width / 2 - 90, 35, 180 * (this.blood / baseCount), 20)
+    this.ctx.fillRect(baseConfig.width / 2 - 90, 35, 180 * (this.blood / baseConfig.baseBlood), 20)
   }
 }

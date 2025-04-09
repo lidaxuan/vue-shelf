@@ -1,19 +1,15 @@
-import {baseConfig} from "./config";
-import bgImg from "../../images/bg.jpg";
+import {baseConfig, IMAGES} from "./config";
 
 export default class back {
   constructor(ctx) {
     this.ctx = ctx
+    this.bg = new Image()
+    this.bg.src = IMAGES.bgImg
   }
+
   render() {
-    let bg = new Image()
-    bg.src = bgImg
-    // bg.onerror = function() {
-    // 	console.error('图片加载失败，请检查路径或跨域配置');
+    // bg.onload = () => {
+    this.ctx.drawImage(this.bg, 0, 0, baseConfig.width, baseConfig.height)
     // };
-    //
-    bg.onload = () => {
-      this.ctx.drawImage(bg, 0, 0, baseConfig.width, baseConfig.height)
-    };
   }
 }
