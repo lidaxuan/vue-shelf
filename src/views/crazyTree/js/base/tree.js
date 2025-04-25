@@ -14,23 +14,18 @@ export default class tree {
 
   renderTree(i) {
     this.treePosition(i)
-    // this.img.onload = () => {
-    // document.body.append(this.img)
-    this.ctx.drawImage(this.img, this.x, this.y, 207, 60)
-    // }
+    this.ctx.drawImage(this.img, this.x, this.y, 218, 60)
   }
 
   treePosition(i) {
     // i++
     if (this.posiDr && this.posiDr != "center") {
-      this.x = baseConfig.width / 2 - 54
+      this.x = baseConfig.width / 2 - 56 // 右
     } else {
-      this.x = baseConfig.width / 2 - 156
+      this.x = baseConfig.width / 2 - 164 // 无树叶
     }
     // this.x = 100
     this.y = baseConfig.height - 128 - i * 60
-    // this.y = baseConfig.height - 60 - i * 60
-    // this.y = 120
   }
 
   renderMove() {

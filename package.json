@@ -29,6 +29,7 @@
     "eslint-plugin-html": "^6.1.2",
     "i": "^0.3.7",
     "js-cookie": "^2.2.1",
+    "libgif": "0.0.3",
     "lodash": "^4.17.21",
     "luckysheetvue": "^1.6.5",
     "moment": "^2.29.1",
