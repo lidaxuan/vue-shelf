@@ -1,6 +1,5 @@
 import duang from "../../audio/duang.mp3";
 import bg from "../../audio/bg.mp3";
-import {IMAGES} from "@/views/crazyTree/js/base/config";
 export default class AudioObj {
 
   constructor(ctx) {

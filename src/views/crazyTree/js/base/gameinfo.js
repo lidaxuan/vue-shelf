@@ -11,6 +11,8 @@ export default class gameinfo {
     this.ctx.fillText("得分：" + score, baseConfig.width / 2 - 50, 100)
   }
 
+
+
   gameOver(score) {
     this.ctx.fillStyle = "#883a3a"
     this.ctx.fillRect(baseConfig.width / 2 - 150, baseConfig.height / 2 - 100, 300, 160)

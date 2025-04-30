@@ -8,10 +8,14 @@ import AudioObj from "./base/audio.js";
 
 let databus = new Databus()
 export default class main {
-  constructor(el) {
+  constructor(el, isMusic, isSoundEffects) {
     this.canvas = document.getElementById(el);
-    this.ctx = this.canvas.getContext('2d')
-    this.restart = false
+    this.ctx = this.canvas.getContext('2d');
+    this.restart = false;
+    this.isMusic = isMusic;
+    this.isSoundEffects = isSoundEffects;
+    this.bgAudio = null;
+    this.gamePaused = !true;
     this.init()
   }
 
@@ -26,11 +30,31 @@ export default class main {
       databus.pushTree(databus.pool.getItemByClass('tree', Tree, this.ctx, _img.img, _img.p))
     })
     this.touch()
-    window.requestAnimationFrame(this.loop.bind(this), this.canvas)
-    const audioObj = new AudioObj()
-    audioObj.playAudio("bg");
+    // window.requestAnimationFrame(this.loop.bind(this), this.canvas)
+    this.loop();
+    this.updateAudio();
   }
 
+  updateGameStatus(status) {
+    this.gamePaused = status;
+  }
+
+  // 更新声音状态
+  updatePlayStatus(key, val) {
+    this[key] = val;
+    this.updateAudio();
+  }
+  //
+  updateAudio() {
+    if (!this.bgAudio) {
+      this.bgAudio = new AudioObj()
+    }
+    if (this.isMusic) {
+      this.bgAudio.playAudio("bg");
+    } else {
+      this.bgAudio.stopAudio();
+    }
+  }
   // 1. 生产木头有问题 已解决
   // 2. 点击后只换了位置,没有砍  已解决
   run() {
@@ -87,21 +111,16 @@ export default class main {
     console.log(22)
     const rand = Math.round(Math.random());
     return {img: [IMAGES.treeLeft, IMAGES.treeRight][rand], p: Boolean(rand)};*/
-
-    /*var rand = Math.random();
-    console.log(rand, databus.score)
-    if (rand < 0.3334) {
-      return {img: IMAGES.treeRight, p: true};
-    } else if (rand < 0.6667) {
-      return {img: IMAGES.treeLeft, p: false};
-    }
-    return {img: IMAGES.treeCen, p: "center"};*/
   }
 
   /*碰撞检测*/
   collisionDetection() {
     let isCollision = (this.npc.posi == databus.trees[0].posiDr)
-    isCollision && (databus.gameOver = true) && (this.npc.update("die"))
+    if (isCollision)  {
+      this.bgAudio.stopAudio();
+      databus.gameOver = true;
+      this.npc.update("die");
+    }
   }
 
   //游戏结束后的触摸事件处理逻辑
@@ -129,11 +148,11 @@ export default class main {
     if (databus.gameOver) {
       return
     }
-
-    const audioObj = new AudioObj()
-    audioObj.playAudio("duang");
+    if (this.isSoundEffects) {
+      const audioObj = new AudioObj()
+      audioObj.playAudio("duang");
+    }
     this.touchX = e.touches[0].clientX;
-    console.log("this.touchX", this.touchX)
     this.run()
   }
 
@@ -145,22 +164,26 @@ export default class main {
 
   // 循环
   loop() {
-    let that = this
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.back.render()
     this.npc.render()
+    console.log(123)
     for (var k in databus.trees) {
       databus.trees[k].renderTree(k)
     }
-    // return;
     this.npc.renderLifebar()
-    // this.npc.startCountdownFlash()
+
+    if (this.gamePaused) {
+      // this.canvas.removeEventListener('touchstart', this.touchCuttrees)
+      return;
+    }
+
     /*检测结束*/
     if (databus.gameOver || this.npc.blood < 0.017) {
       databus.gameOver = true
       this.gameinfo.gameOver(databus.score)
       this.canvas.removeEventListener('touchstart', this.touchCuttrees)
-      this.touchHandler = that.touchEventHandler.bind(this)
+      this.touchHandler = this.touchEventHandler.bind(this)
       this.canvas.addEventListener('touchstart', this.touchHandler)
       return
     } else {
