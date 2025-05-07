@@ -11,10 +11,8 @@ export default class main {
   constructor(el, isMusic, isSoundEffects) {
     this.canvas = document.getElementById(el);
     this.ctx = this.canvas.getContext('2d');
-    this.restart = false;
     this.isMusic = isMusic;
     this.isSoundEffects = isSoundEffects;
-    this.bgAudio = null;
     this.gamePaused = !true;
     this.init()
   }
@@ -32,29 +30,13 @@ export default class main {
     this.touch()
     // window.requestAnimationFrame(this.loop.bind(this), this.canvas)
     this.loop();
-    this.updateAudio();
+    // this.updateAudio();
   }
 
   updateGameStatus(status) {
     this.gamePaused = status;
   }
 
-  // 更新声音状态
-  updatePlayStatus(key, val) {
-    this[key] = val;
-    this.updateAudio();
-  }
-  //
-  updateAudio() {
-    if (!this.bgAudio) {
-      this.bgAudio = new AudioObj()
-    }
-    if (this.isMusic) {
-      this.bgAudio.playAudio("bg");
-    } else {
-      this.bgAudio.stopAudio();
-    }
-  }
   // 1. 生产木头有问题 已解决
   // 2. 点击后只换了位置,没有砍  已解决
   run() {
@@ -117,7 +99,7 @@ export default class main {
   collisionDetection() {
     let isCollision = (this.npc.posi == databus.trees[0].posiDr)
     if (isCollision)  {
-      this.bgAudio.stopAudio();
+      // this.bgAudio.stopAudio();
       databus.gameOver = true;
       this.npc.update("die");
     }
@@ -167,7 +149,6 @@ export default class main {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.back.render()
     this.npc.render()
-    console.log(123)
     for (var k in databus.trees) {
       databus.trees[k].renderTree(k)
     }

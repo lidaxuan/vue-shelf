@@ -23,9 +23,12 @@ export default class gameinfo {
     this.ctx.fillText('得分: ' + score, baseConfig.width / 2 - 50, baseConfig.height / 2 - 100 + 80)
 
     this.ctx.fillRect(baseConfig.width / 2 - 100, baseConfig.height / 2, 200, 50)
-
     this.ctx.fillStyle = "#883a3a"
     this.ctx.fillText('重新开始', baseConfig.width / 2 - 50, baseConfig.height / 2 - 100 + 130)
+
+    // this.ctx.fillRect(baseConfig.width / 2 - 100, baseConfig.height / 2, 400, 50)
+    // this.ctx.fillStyle = "#883a3a"
+    // this.ctx.fillText('返回', baseConfig.width / 2 - 50, baseConfig.height / 2 - 100 + 130)
 
     this.btnArea = {
       startX: baseConfig.width / 2 - 150,
