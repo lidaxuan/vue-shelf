@@ -33,6 +33,12 @@ export default class main {
     // this.updateAudio();
   }
 
+  // 更新音频状态
+  // key: isSoundEffects || isMusic
+  updateAudioStatus(key, status) {
+    this[key] = status;
+  }
+
   updateGameStatus(status) {
     this.gamePaused = status;
   }
@@ -44,7 +50,6 @@ export default class main {
     let tap = this.touchX >= baseConfig.width / 2
     if (!(this.npc.posi == tap)) { // 是否可以切换位置
       this.npc.posi = !this.npc.posi
-      console.log("进来了")
       // return
     }
 

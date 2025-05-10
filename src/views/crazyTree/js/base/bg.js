@@ -8,8 +8,6 @@ export default class back {
   }
 
   render() {
-    // bg.onload = () => {
     this.ctx.drawImage(this.bg, 0, 0, baseConfig.width, baseConfig.height)
-    // };
   }
 }

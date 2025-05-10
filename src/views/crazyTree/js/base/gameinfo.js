@@ -14,7 +14,7 @@ export default class gameinfo {
 
 
   gameOver(score) {
-    this.ctx.fillStyle = "#883a3a"
+    this.ctx.fillStyle = "#70351e"
     this.ctx.fillRect(baseConfig.width / 2 - 150, baseConfig.height / 2 - 100, 300, 160)
     this.ctx.font = "24px Microsoft YaHei"
     this.ctx.fillStyle = "#fefefe"

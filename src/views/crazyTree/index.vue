@@ -56,14 +56,18 @@ export default {
   beforeMount() {
   }, //生命周期 - 挂载之前
   mounted() {
+    console.clear();
     const localIsMusic = JSON.parse(localStorage.getItem("isMusic"));
     const localIsSoundEffects = JSON.parse(localStorage.getItem("isSoundEffects"));
     if (localIsMusic === null && localIsSoundEffects === null) {
       localStorage.setItem("isMusic", JSON.stringify(true));
       localStorage.setItem("isSoundEffects", true);
     } else {
-      this.configChange("isMusic", localIsMusic);
+      this.configChange("isMusic", localIsMusic); // 播放音乐
     }
+    // setTimeout(() => {
+    //   this.playGame()
+    // }, 0)
   },
   //方法集合
   methods: {
@@ -95,21 +99,36 @@ export default {
         this.controller.updateGameStatus(true);
       }
     },
-    // 更新声音状态
-    configChange(key, val) {
+    // 更新 背景音乐 声音状态 这里的音量设置为0.6
+    async configChange(key, val) {
+      // 背景音乐
       if (key == "isMusic") {
         if (!this.bgAudio) {
-          this.bgAudio = new AudioObj()
+          this.bgAudio = new AudioObj(0.6)
         }
-        if (val) {
-          console.log(1)
-          this.bgAudio.playAudio("bg");
-        } else {
-          this.bgAudio.stopAudio();
+        try {
+          if (val) {
+            await this.bgAudio.playAudio("bg");
+          } else {
+            this.bgAudio.stopAudio();
+          }
+        } catch (error) {
+          if (error.name === "NotAllowedError") {
+            document.body.addEventListener('click', async () => {
+              try {
+                await this.bgAudio.playAudio("bg");
+              } catch (error) {
+                console.error('播放失败:', error);
+              }
+            }, {once: true}); // 仅监听一次
+          }
         }
       }
+      // 点击音效
+      if (key == "isSoundEffects") {
+        this.controller.updateAudioStatus(key, val);
+      }
     },
-
   }
 }
 </script>
@@ -117,6 +136,7 @@ export default {
 .game {
   width: 100%;
   height: 100%;
+
   .configIcon {
     position: fixed;
     top: 20px;

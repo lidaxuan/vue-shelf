@@ -3,7 +3,7 @@
     <div class="dialog" v-if="visibleConfig">
       <div class="close" @click="closeConfig">X</div>
       <div class="content">
-        <div class="item" style="margin-bottom: 20px">
+        <div class="item">
           <span class="text">音乐</span>
           <el-switch v-model="isMusic" @change="e => configChange('isMusic', e)" active-color="#13ce66" inactive-color="#463E3E"></el-switch>
         </div>
@@ -12,7 +12,7 @@
           <el-switch v-model="isSoundEffects" @change="e => configChange('isSoundEffects', e)" active-color="#13ce66" inactive-color="#463E3E"></el-switch>
         </div>
         <div class="item" v-if="!visibleBack">
-          <el-button size="lang" type="primary" class="back" @click="backPage">返回</el-button>
+          <div size="lang" type="primary" class="back" @click="backPage">返回</div>
         </div>
       </div>
     </div>
@@ -121,18 +121,29 @@ export default {
     .item {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      &:last-child {
+        margin-bottom: 0;
+      }
       .text {
         font-size: 20px;
         margin-right: 20px;
       }
 
       .back {
+        background: #70351e;
         width: 100%;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2px 0;
+        border-radius: 5px;
+        color: #fff;
         font-size: 20px;
       }
     }

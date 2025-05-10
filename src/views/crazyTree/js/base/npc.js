@@ -62,9 +62,11 @@ export default class npc {
       return;
     }
     this.blood = this.blood - 16
-    this.ctx.fillStyle = "#222"
-    this.ctx.fillRect(baseConfig.width / 2 - 95, 30, 190, 30)
-    this.ctx.fillStyle = "red"
+    // this.ctx.fillStyle = "#222"
+    // this.ctx.fillRect(baseConfig.width / 2 - 95, 30, 190, 30)
+    this.ctx.fillStyle = "rgba(0, 0, 0, 0.6)"
+    this.ctx.fillRect(baseConfig.width / 2 - 90, 35, 190, 20)
+    this.ctx.fillStyle = "red"; // 进度调颜色
     this.ctx.fillRect(baseConfig.width / 2 - 90, 35, 180 * (this.blood / baseConfig.baseBlood), 20)
     const path2D = new Path2D();
     path2D.moveTo(10, 10);
