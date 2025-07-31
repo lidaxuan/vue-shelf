@@ -1,26 +1,19 @@
 <!--
- * @Description: 
- * @Author: 李大玄
- * @Date: 2022-11-12 11:10:22
- * @FilePath: /vue-shelf/src/views/testLoading/compcopy.vue
- * @LastEditors: 李大玄
- * @LastEditTime: 2022-11-12 11:22:09
--->
-<!--
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2022-11-12 10:15:46
  * @FilePath: /vue-shelf/src/views/testLoading/comp.vue
  * @LastEditors: 李大玄
- * @LastEditTime: 2022-11-12 10:28:46
+ * @LastEditTime: 2022-11-12 16:02:33
 -->
 <template>
-  <div class="w300 h300 box"></div>
+  <div class="w300 h300 box11"></div>
 </template>
 
 <script>
 
-import loading from './loading';
+import LdxLoading from "@/views/testLoading/LdxLoading";
+
 export default {
   name: '', // Pascal命名
   mixins: [],
@@ -45,11 +38,12 @@ export default {
   },
   beforeMount() { },
   mounted() {
-    const a = loading.cloading(this);
-    setTimeout(() => {
+    const el = document.querySelector('.box11')
+    LdxLoading.open(el);
 
-      a.close()
-    }, 2000);
+    setTimeout(() => {
+      LdxLoading.close(el);
+    }, 1000);
   },
   methods: {
 
@@ -64,6 +58,6 @@ export default {
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
 .box {
-  background: rgb(189, 28, 54);
+  background: red;
 }
 </style>

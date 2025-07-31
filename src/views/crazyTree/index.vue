@@ -17,7 +17,7 @@
       <div class="bottom">
         <div class="item">排行榜</div>
         <div class="item">消息</div>
-        <div class="item">人物角色</div>
+        <div class="item" @click="role">人物角色</div>
       </div>
     </div>
 
@@ -71,6 +71,9 @@ export default {
   },
   //方法集合
   methods: {
+    role() {
+      this.$router.push("/game-role");
+    },
     playGame() {
       this.visiblePage = false;
       setTimeout(() => {

@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2022-11-12 10:15:46
  * @FilePath: /vue-shelf/src/views/testLoading/comp.vue
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+
+import LdxLoading from "@/views/testLoading/LdxLoading";
 
 export default {
   name: '', // Pascal命名
@@ -36,13 +38,12 @@ export default {
   },
   beforeMount() { },
   mounted() {
-    loading.ploading({
-      target: this,
-      text: 'asdasdasdasdasd'
-    });
+    const el = document.querySelector('.box')
+    LdxLoading.open(el, {text: "页面加载中111", fullscreen: false});
+
     setTimeout(() => {
-      loading.ploading(this);
-    }, 4000);
+      LdxLoading.close(el);
+    }, 1000);
   },
   methods: {
 
@@ -57,6 +58,6 @@ export default {
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
 .box {
-  background: pink;
+  background: yellow;
 }
 </style>

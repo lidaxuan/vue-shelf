@@ -28,7 +28,6 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/abcde/App.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/testResize.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/drageDemo.vue"), // optimization // testSelect fontClass
-    // component: () => import(/* webpackChunkName: "about" */ "../views/testLoading/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/testswiper.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/swiper.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index.vue"), // optimization // testSelect fontClass
@@ -58,13 +57,20 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/imgsort"), //
     // component: () => import(/* webpackChunkName: "about" */ "../views/minesweeper"), //
     // component: () => import(/* webpackChunkName: "about" */ "../views/ScaleVideo"), //
-    component: () => import(/* webpackChunkName: "about" */ "../views/crazyTree"), //
+    // component: () => import(/* webpackChunkName: "about" */ "../views/crazyTree"), //
+    component: () => import(/* webpackChunkName: "about" */ "../views/testLoading/index.vue"), // optimization // testSelect fontClass
+  },
+  {
+    path: "/game-role",
+    name: "game-role",
+    component: () => import(/* webpackChunkName: "about" */ "../views/crazyTree/role.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/sheet",
     name: "showdigitroll",
     component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index"), // optimization // testSelect fontClass
-  }, {
+  },
+  {
     path: "/showdigitroll",
     name: "showdigitroll",
     component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass

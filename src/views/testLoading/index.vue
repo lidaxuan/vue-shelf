@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2022-11-12 09:17:20
  * @FilePath: /vue-shelf/src/views/testLoading/index.vue
@@ -7,32 +7,37 @@
  * @LastEditTime: 2022-11-18 18:54:26
 -->
 <template>
-  <div class="aa">
-    <!-- <Comp></Comp> -->
-    <!-- <Compcopy></Compcopy> -->
+  <div class="page-asd">
+<!--     <Comp></Comp>-->
+<!--     <Compcopy></Compcopy>-->
 
     <div>
       <div v-for="item in 3" :key="item">奥术大师多反而AV方式变奥术大师多反而AV方式变奥术大师多反而AV方式变奥术大师多反而AV方式变奥术大师多反而AV方式变</div>
     </div>
-    <hr />
-    <!-- <pre>
-      {{ query }}
-    </pre> -->
-    <el-button :loading="true" @click="click1($event)">按钮1</el-button>
+    <hr/>
+
+    <el-button  @click="click1($event)">按钮1</el-button>
     <el-button type="primary" @click="click2($event)">按钮2</el-button>
+    <div type="primary" @click="click2($event)">按钮3-div</div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
 import Comp from "./comp.vue";
 import Compcopy from "./compcopy.vue";
+import LdxLoading from "./LdxLoading.js";
+
+LdxLoading.init({
+  text: "加载中...",
+  customClass: "ldx-loading",
+  color: 'green',
+  // fullscreen:false
+})
 export default {
   name: "", // Pascal命名
   mixins: [],
   components: {
-    Comp,
-    Compcopy
+    Comp,Compcopy
   },
   props: {},
   data() {
@@ -40,58 +45,45 @@ export default {
       query: {
         name: "zs"
       },
-      context: ""
     };
   },
-  computed: {},
-  watch: {
-    // temObj: {
-    //   handler(newVal, oldVal) {},
-    //   deep: true, // 深度
-    //   immediate: true, // 立即执行
-    // },
+  mounted() {
+    // this.initPage();
   },
-  beforeCreate() {},
-  created() {
-    this.initPage();
-  },
-  beforeMount() {},
-  mounted() {},
   methods: {
     async initPage() {
-      window.loading.ploading(this);
+      const el = document.querySelector('.page-asd')
+      LdxLoading.open(el, {text: "页面加载中"});
       const res = await this.getData(this.query);
-      window.loading.ploading(this);
-      // console.log(res);
+      LdxLoading.close(el);
     },
     getData(query) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          resolve({ ...query, age: 18 });
-        }, 2000);
+          resolve({...query, age: 18});
+        }, 1000);
       });
     },
     click1(event) {
-      console.log("event1", event);
+      console.log("点击了")
+      this.initPage();
     },
     click2(event) {
-      window.loading.eloading(event);
-      this.initPage();
+      console.log("event", Array.from(event.target.classList).includes('ldx-loading-mask'));
+      const el = event.currentTarget; // 或 event.target
+      LdxLoading.open(el, {text: ""});
       setTimeout(() => {
-        window.loading.eloading(event);
+        LdxLoading.close(el);
       }, 3000);
     }
-  },
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
-  destroyed() {}, //生命周期 - 销毁完成
-  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
+  }
 };
 </script>
 <style lang="scss" scoped>
-//@import url(); 引入公共css类
-.el-button {
-  // background: pink;
+.page-asd {
+  width: 100%;
+  height: 100%;
+  background: pink;
+  overflow-y: auto;
 }
 </style>
