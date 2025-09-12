@@ -1,8 +1,8 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2022-11-12 09:25:34
- * @FilePath: /vue-shelf/src/views/testLoading/loading/index.js
+ * @FilePath: /vue-shelf/src/views/testLoading/loading/index.vue
  * @LastEditors: 李大玄
  * @LastEditTime: 2022-11-12 17:52:47
  */

@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
 /*
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2021-08-06 14:45:01
- * @FilePath: /vue-shelf/src/components/multiple-checkbox/index.js
+ * @FilePath: /vue-shelf/src/components/multiple-checkbox/index.vue
  */
 
 

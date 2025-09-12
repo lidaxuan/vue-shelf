@@ -3,7 +3,7 @@
  * @Description:
  * @Author: 李继玄（15201002062@163.com）
  * @Date: 2021-03-29 11:00:24
- * @FilePath: /vue-shelf/src/router/index.js
+ * @FilePath: /vue-shelf/src/router/index.vue
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -58,7 +58,10 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/minesweeper"), //
     // component: () => import(/* webpackChunkName: "about" */ "../views/ScaleVideo"), //
     // component: () => import(/* webpackChunkName: "about" */ "../views/crazyTree"), //
-    component: () => import(/* webpackChunkName: "about" */ "../views/testLoading/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/testLoading/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/MotionKit/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/test/indexdb.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/apiBase/index.vue"), // optimization // testSelect fontClass
   },
   {
     path: "/game-role",

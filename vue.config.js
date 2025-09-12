@@ -3,7 +3,8 @@
  */
 
 const path = require('path');
-const webpack = require('webpack');
+// const webpack = require('webpack');
+const { codeInspectorPlugin } = require('code-inspector-plugin');
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -70,6 +71,11 @@ module.exports = {
   },
   configureWebpack: {},
   chainWebpack(config) {
+    config.plugin('code-inspector-plugin').use(
+      codeInspectorPlugin({
+        bundler: 'webpack',
+      })
+    );
     config.plugins.delete('preload'); // TODO: need test
     config.plugins.delete('prefetch'); // TODO: need test
 

@@ -4,7 +4,7 @@
  * @Date: 2020-05-22 11:12:07
  * @LastEditors: 李大玄
  * @LastEditTime: 2022-07-26 14:06:38
- * @FilePath: /vue-shelf/src/api/index.js
+ * @FilePath: /vue-shelf/src/api/index.vue
  */
 
 import knowledgeApi from './knowledgeApi';

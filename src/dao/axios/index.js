@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
 /*
- * @Description: 
+ * @Description:
  * @Author: 李继玄（15201002062@163.com）
  * @Date: 2021-03-29 18:14:02
- * @FilePath: /vue-project1/src/dao/axios/index.js
+ * @FilePath: /vue-project1/src/dao/axios/index.vue
  */
 import _ from 'lodash';
 import server from './server';

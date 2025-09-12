@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
 /*
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2020-12-23 09:51:57
- * @FilePath: /vue-shelf/src/directives/index.js
+ * @FilePath: /vue-shelf/src/directives/index.vue
  */
 // import copy from './copy';
 // import longpress from './longpress';

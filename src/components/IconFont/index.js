@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
 /*
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2021-04-27 17:09:44
- * @FilePath: /vue-shelf/src/components/IconFont/index.js
+ * @FilePath: /vue-shelf/src/components/IconFont/index.vue
  */
 import Load from './load';
 import IconFont from './icon';

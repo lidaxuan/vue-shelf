@@ -3,7 +3,7 @@
  * @Description: 1
  * @Author: 李继玄（15201002062@163.com）
  * @Date: 2021-03-29 18:22:20
- * @FilePath: /vue-project1/src/model/flowNode/index.js
+ * @FilePath: /vue-project1/src/model/flowNode/index.vue
  */
 // import _ from 'lodash';
 import { axios } from "@/dao/index";

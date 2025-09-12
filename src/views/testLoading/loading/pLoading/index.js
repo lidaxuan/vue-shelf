@@ -1,16 +1,16 @@
 /*
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2022-11-12 15:02:15
- * @FilePath: /vue-shelf/src/views/testLoading/loading/pLoading/index.js
+ * @FilePath: /vue-shelf/src/views/testLoading/loading/pLoading/index.vue
  * @LastEditors: 李大玄
  * @LastEditTime: 2022-11-12 17:45:46
  */
 /*
- * @Description: 
+ * @Description:
  * @Author: 李大玄
  * @Date: 2022-11-12 09:25:34
- * @FilePath: /vue-shelf/src/views/testLoading/loading/index.js
+ * @FilePath: /vue-shelf/src/views/testLoading/loading/index.vue
  * @LastEditors: 李大玄
  * @LastEditTime: 2022-11-12 15:01:13
  */

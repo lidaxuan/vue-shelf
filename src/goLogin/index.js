@@ -3,7 +3,7 @@
  * @Description: 1
  * @Author: 李继玄（15201002062@163.com）
  * @Date: 2021-03-29 18:15:47
- * @FilePath: /vue-project1/src/goLogin/index.js
+ * @FilePath: /vue-project1/src/goLogin/index.vue
  */
 // import process from '@/env/index';
 export function gologin() {

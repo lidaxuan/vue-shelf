@@ -1,12 +1,12 @@
 /* jshint esversion: 6 */
 /*
- * @Description: 
- * @version: 
+ * @Description:
+ * @version:
  * @Author: 李继玄（lijixuan@quclouds.com）
  * @Date: 2020-08-04 14:20:53
  * @LastEditors: 李继玄（lijixuan@quclouds.com）
  * @LastEditTime: 2020-08-04 14:20:58
- * @FilePath: \decision-web\src\model\share\index.js
+ * @FilePath: \decision-web\src\model\share\index.vue
  */
 
 import { axios } from '../../dao/index';

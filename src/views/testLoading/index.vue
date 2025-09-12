@@ -25,7 +25,7 @@
 <script>
 import Comp from "./comp.vue";
 import Compcopy from "./compcopy.vue";
-import LdxLoading from "./LdxLoading.js";
+import LdxLoading from "@lijixuan/loading";
 
 LdxLoading.init({
   text: "加载中...",

@@ -15,7 +15,7 @@
   "dependencies": {
     "@antv/g6": "^4.5.0",
     "@lijixuan/dblist": "^1.0.2",
-    "@lijixuan/loading": "^1.0.0",
+    "@lijixuan/loading": "^2.0.3",
     "@lijixuan/safe-get": "^1.0.2",
     "@lijixuan/safe-set": "^1.0.1",
     "@lijixuan/timer": "^0.1.3",
@@ -23,6 +23,7 @@
     "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "benz-amr-recorder": "^1.1.3",
+    "code-inspector-plugin": "^1.0.4",
     "copy-webpack-plugin": "^6.4.1",
     "core-js": "^3.6.5",
     "element-ui": "^2.15.1",
