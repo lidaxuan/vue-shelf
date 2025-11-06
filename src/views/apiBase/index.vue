@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import  "./apiBase";
-
-console.clear()
-console.log("apiBase", JSON.stringify(window.__config, null, 2))
+// import  "./apiBase";
+console.log(window.ELBaseConfig)
+// console.clear()
+// console.log( JSON.stringify(window.__config, null, 2))
 export default {
   name:'',  // Pascal命名
   mixins: [],

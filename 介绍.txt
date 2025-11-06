@@ -3,3 +3,33 @@ scss
 axios
 router
 login
+
+MotionKit/
+│
+├── components/
+│   ├── Motion.vue            # 单动画组件
+│   ├── MotionGroup.vue       # 动画序列/并行动画
+│   └── motion.scss           # 通用动画样式
+│
+├── core/
+│   ├── timeline.js           # 时间轴引擎（requestAnimationFrame）
+│   ├── easing.js             # 缓动函数
+│   └── animator.js           # 属性插值逻辑（选）
+│
+├── hooks/
+│   └── useMotion.js          # 动画控制 Hook
+│
+├── presets/
+│   ├── fadeIn.json
+│   ├── slideUp.json
+│   └── index.js              # 统一导出预设
+│
+├── utils/
+│   ├── helpers.js            # now、clamp、lerp等工具
+│   └── dom.js                # DOM 操作辅助
+│
+├── generator/
+│   └── presetGenerator.js    # 生成 JSON 动画文件
+│
+└── index.vue                 # Demo / 使用入口
+

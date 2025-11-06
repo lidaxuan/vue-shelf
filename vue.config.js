@@ -28,6 +28,7 @@ let publicPath = '/';
 if (process.env.NODE_ENV !== 'development') {
   // publicPath = process.env.VUE_APP_OS_domain ? `//${process.env.VUE_APP_OS_domain}` : '/';
 }
+// console.log(2222, window.__config);
 module.exports = {
   publicPath,
   runtimeCompiler: true,
@@ -71,14 +72,10 @@ module.exports = {
   },
   configureWebpack: {},
   chainWebpack(config) {
-    config.plugin('code-inspector-plugin').use(
-      codeInspectorPlugin({
-        bundler: 'webpack',
-      })
-    );
+    config.plugin('code-inspector-plugin').use(codeInspectorPlugin({bundler: 'webpack'}));
     config.plugins.delete('preload'); // TODO: need test
     config.plugins.delete('prefetch'); // TODO: need test
-
+    config.module.rule('vue').use('vue2-source-loader').loader(path.resolve(__dirname, 'webpack-vue2-source-loader.js')).before('vue-loader');
     config.module.rule('js').include.add(resolve('node_modules/@fengqiaogang/dblist')).end();
 
     config.module.rule('pug').use('pug-plain-loader').loader('pug-plain-loader').end();
@@ -104,7 +101,7 @@ module.exports = {
     sourceMap: process.env.NODE_ENV === 'development' ? true : false,
     loaderOptions: {
       sass: {
-        prependData: getSassVar()
+        // prependData: getSassVar()
       }
     },
     extract: false,

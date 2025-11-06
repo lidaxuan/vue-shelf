@@ -1,63 +1,88 @@
 <template>
-  <div id="app" style="display:flex;height:100vh;">
-    <CanvasArea ref="canvas" :elements="elements" @select-element="onSelectElement" style="flex:1;"/>
-    <ControlPanel
-        :selectedElement="selectedElement"
-        @export-json="exportJson"
-        @import-json="importJson"
-        @export-html="exportHtml"
-        style="width:350px;height:100%;"
-    />
+  <div class="container">
+    <h2>MotionKit Demo</h2>
+
+    <section>
+      <h3>Preset fadeIn</h3>
+      <Motion ref="m1" :config="'fadeIn'">
+        <div class="box red">Fade In</div>
+      </Motion>
+      <div class="controls"><button @click="play('m1')">Play</button><button @click="pause('m1')">Pause</button><button @click="stop('m1')">Stop</button></div>
+    </section>
+
+    <section>
+      <h3>Preset slideUp</h3>
+      <Motion ref="m2" :config="'slideUp'">
+        <div class="box blue">Slide Up</div>
+      </Motion>
+      <div class="controls"><button @click="play('m2')">Play</button><button @click="pause('m2')">Pause</button><button @click="stop('m2')">Stop</button></div>
+    </section>
+
+    <section>
+      <h3>Group (sequence)</h3>
+      <MotionGroup ref="group" :motions="groupMotions" mode="sequence">
+        <template v-slot="{ index }">
+          <div class="box" :class="index === 0 ? 'green' : 'yellow'">Group {{ index + 1 }}</div>
+        </template>
+      </MotionGroup>
+      <div class="controls"><button @click="playGroup">Play Group</button><button @click="pauseGroup">Pause Group</button><button @click="stopGroup">Stop Group</button></div>
+    </section>
   </div>
 </template>
 
 <script>
-import ControlPanel from './components/ControlPanel.vue';
-import CanvasArea from './components/CanvasArea.vue';
+import Motion from './components/Motion.vue';
+import MotionGroup from './components/MotionGroup.vue';
+import presets from './presets/index.js';
 
 export default {
-  name: 'App',
-  components: { ControlPanel, CanvasArea },
-  data() {
+  name: 'MotionDemo',
+  components: { Motion, MotionGroup },
+  data: function () {
     return {
-      elements: [
-        {
-          innerText: 'Hello',
-          transform: { x:50, y:50, z:0, rotateX:0, rotateY:0, rotateZ:0, scaleX:1, scaleY:1, scaleZ:1, skewX:0, skewY:0, transformOrigin:'50% 50%' },
-          style: { color:'#000', background:'#f00', gradientType:'', gradient:'', border:'', borderRadius:'0', boxShadow:'', filter:'', opacity:1, fontSize:'16px', fontFamily:'Arial', textAlign:'center' },
-          animation: [ { duration:1000, delay:0, easing:'linear', keyframes:[] } ]
-        }
-      ],
-      selectedElement: null
-    }
+      groupMotions: [
+        presets.slideUp,
+        presets.fadeIn
+      ]
+    };
   },
-  methods:{
-    onSelectElement(el){ this.selectedElement = el; },
-    exportJson(){
-      const data = JSON.stringify(this.elements,null,2);
-      console.log('导出JSON:',data);
-      alert('JSON导出到控制台');
+  methods: {
+    play(refName) {
+      var c = this.$refs[refName];
+      if (c && c.play) c.play();
     },
-    importJson(json){
-      try{
-        this.elements = JSON.parse(json);
-        alert('导入成功');
-      }catch(e){
-        alert('JSON格式错误');
-      }
+    pause(refName) {
+      var c = this.$refs[refName];
+      if (c && c.pause) c.pause();
     },
-    exportHtml(){
-      let html = '';
-      this.elements.forEach(el=>{
-        html+=`<div style="position:absolute; left:${el.transform.x}px; top:${el.transform.y}px; color:${el.style.color}; background:${el.style.background}; width:100px;height:100px;">${el.innerText}</div>\n`;
-      });
-      console.log('导出HTML:',html);
-      alert('HTML导出到控制台');
+    stop(refName) {
+      var c = this.$refs[refName];
+      if (c && c.stop) c.stop();
+    },
+    playGroup() {
+      var g = this.$refs.group;
+      if (g && g.play) g.play();
+    },
+    pauseGroup() {
+      var g2 = this.$refs.group;
+      if (g2 && g2.pause) g2.pause();
+    },
+    stopGroup() {
+      var g3 = this.$refs.group;
+      if (g3 && g3.stop) g3.stop();
     }
   }
-}
+};
 </script>
 
-<style>
-body,html,#app{margin:0;padding:0;height:100%;font-family:Arial;}
+<style scoped>
+.container { padding: 24px; font-family: Arial, sans-serif; }
+.section { margin-bottom: 20px; }
+.box { width: 160px; height: 80px; line-height: 80px; color: #fff; margin: 12px auto; border-radius: 8px; text-align: center; }
+.red { background: #ef4444; }
+.blue { background: #3b82f6; }
+.green { background: #10b981; }
+.yellow { background: #f59e0b; }
+.controls { display:flex; gap:8px; justify-content:center; margin-top:8px; }
+button { padding:6px 10px; border-radius:6px; border:none; background:#374151; color:#fff; cursor:pointer; }
 </style>

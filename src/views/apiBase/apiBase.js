@@ -1,19 +1,27 @@
 const DOMAIN_MAP = {
   cn: {
     test: {
-      base: "//test-prd18.easyliao.net",
+      base: "https://test-prd18.easyliao.net",
+      im: "https://test-prd18.easyliao.net/im-gateway",
+      webcall: "https://test-prd18.easyliao.net/im-gateway",
+    },
+    prod: {
+      base: "https://group-mgr.easyliao.com",
+      authEupms: "https://auth.easyliao.com",
+      im: "https://group-im-api.easyliao.com",
+      webcall: "https://group-im-api.easyliao.com",
     },
     group5: {
-      auth: "//group5-auth.easyliao.com",
-      im: "//group5-gw.easyliao.com",
-      webcall: "//group5-gw.easyliao.com",
-      base: "//group5-gw.easyliao.com",
+      base: "https://group5-gw.easyliao.com",
+      authEupms: "https://group5-auth.easyliao.com",
+      im: "https://group5-gw.easyliao.com/im-gateway",
+      webcall: "https://group5-gw.easyliao.com/im-gateway",
     },
     group6: {
-      auth: "//group6-auth.easyliao.com",
-      im: "//group6-gw1.easyliao.com",
-      webcall: "//group6-gw1.easyliao.com",
-      base: "//group6-gw1.easyliao.com",
+      authEupms: "https://group6-auth.easyliao.com",
+      im: "https://group6-gw1.easyliao.com/im-gateway",
+      webcall: "https://group6-gw1.easyliao.com/im-gateway",
+      base: "https://group6-gw1.easyliao.com",
     },
   },
   en: {
@@ -21,13 +29,13 @@ const DOMAIN_MAP = {
   }
 };
 
-var serviceMap = {
+const serviceContextMap = {
   authEupms: "/auth-eupms",
   authSso: "/auth-sso",
   im: "/im",
   webcall: "/webcall",
   eachbotFlowWeb: "/eachbot-flow-web",
-  apiTrust: window.isLocal ? (window.ReferEnv === "prod" ? "/trust" : "/webcall-trust-web") : "/trust",
+  trust: window.__sso == "test" ? "/trust" : "/webcall-trust-web",
   ocomsWeb: "/ocoms-web",
   consoleWeb: "/console/Service",
   report: "/report",
@@ -46,66 +54,66 @@ var serviceMap = {
   rpaClientApi: "/rpa-client-api"
 };
 
+const envs = ['test', 'prod', 'group5', 'group6'];
+
 // 拼接全路径，优先取对应服务，没有则用 base
 function getServicePath(region, env) {
-  var domainObj = DOMAIN_MAP[region] && DOMAIN_MAP[region][env];
+  const domainObj = DOMAIN_MAP[region] && DOMAIN_MAP[region][env];
   if (!domainObj) return {};
-  var result = {};
-  for (var key in serviceMap) {
-    var domain = domainObj[key] || domainObj.base;
+  let result = {};
+  for (let key in serviceContextMap) {
+    let domain = domainObj[key] || domainObj.base;
     if (domain) {
-      result[key] = domain + serviceMap[key];
+      result[key] = domain //+ serviceContextMap[key];
     }
   }
   return result;
+}
+
+function getLocalProxyServicePath(region, env) {
+  const domainObj = DOMAIN_MAP[region] ? DOMAIN_MAP[region][env] : "";
+  if (!domainObj) return {};
+
+  return Object.keys(domainObj).reduce((acc, item) => {
+    acc[item] = `/${region}${env}${item}`;
+    return acc;
+  }, {});
 }
 
 // 自动生成代理配置
 function getProxyConfig(region, env) {
-  var domainObj = DOMAIN_MAP[region] && DOMAIN_MAP[region][env];
-  if (!domainObj) return {};
-  var proxy = {};
-  for (var key in serviceMap) {
-    var domain = domainObj[key] || domainObj.base;
-    if (domain) {
-      var proxyKey = "/" + region + env + key;
-      var pathRewrite = {};
-      pathRewrite["^" + proxyKey] = serviceMap[key];
-      proxy[proxyKey] = {
-        target: domain,
-        changeOrigin: true,
-        loglevel: "debug",
-        pathRewrite: pathRewrite
-      };
-    }
+  if (Array.isArray(env)) {
+    return env.reduce((acc, curEnv) => {
+      const proxyPart = getProxyConfig(region, curEnv); // 递归复用自身
+      return { ...acc, ...proxyPart }; // 合并对象
+    }, {});
   }
+
+  const domainObj = DOMAIN_MAP[region] && DOMAIN_MAP[region][env];
+  if (!domainObj) return {};
+
+  let proxy = {};
+  const localPaths = getLocalProxyServicePath(region, env)
+  Object.keys(domainObj).forEach(proxyKey => {
+    proxy[localPaths[proxyKey]] = {
+      target: domainObj[proxyKey]+ (serviceContextMap[proxyKey] || ""),
+      changeOrigin: true,
+      loglevel: "debug",
+      pathRewrite: {
+        [`^${localPaths[proxyKey]}`]: ""
+      },
+      localPath: localPaths[`${region}${env}${proxyKey}`] // 额外字段，按需保留
+    };
+  });
   return proxy;
 }
-
-function getLocalProxyServicePath(region, env) {
-  var domainObj = DOMAIN_MAP[region] && DOMAIN_MAP[region][env];
-  if (!domainObj) return {};
-  var result = {};
-  var hasOnlyBase = Object.keys(domainObj).length === 1 && domainObj.base;
-  for (var key in serviceMap) {
-    if (hasOnlyBase) {
-      // 只有 base 时，所有服务都走 base
-      result[key] = "/" + region + env + "base";
-    } else {
-      // 有独立域名时，服务走自己的代理前缀
-      result[key] = "/" + region + env + key;
-    }
-  }
-  return result;
-}
-
 // 获取完整 API 地址
 function getApi(serviceKey, path) {
   path = path || "";
-  var region = window.__region || "cn";
-  var env = window.__sso || "test";
-  var servicePathObj = getServicePath(region, env);
-  var baseUrl = servicePathObj[serviceKey];
+  let region = window.__region || "cn";
+  let env = window.__sso || "test";
+  let servicePathObj = getServicePath(region, env);
+  let baseUrl = servicePathObj[serviceKey];
   if (window.isLocal) {
     return "/" + region + env + serviceKey + path;
   }
@@ -116,13 +124,15 @@ function getApi(serviceKey, path) {
   return baseUrl + path;
 }
 
-// 导出全局配置
-var region = window.__region || "cn";
-var env = window.__sso || "test";
+// 导出全局配置 EL-PubBase
+const region = window.$CONFIG  ? window.$CONFIG.lang : '' || "cn";
+const env = window.__sso || "test";
 window.__config = {
   // getApi: getApi,
+  SERVICE_CONTEXT_MAP: serviceContextMap,
   SERVICE_PATH: getServicePath(region, env),
-  LOCAL_PROXY_SERVICE_PATH: getLocalProxyServicePath(region, env)
-  // PROXY_CONFIG: getProxyConfig(region, env),
+  PROXY_CONFIG: getProxyConfig(region, envs),
+  LOCAL_PROXY_SERVICE_PATH: getLocalProxyServicePath(region, env),
   // DOMAIN_MAP: DOMAIN_MAP[region][env]
 };
+
