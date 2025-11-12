@@ -61,10 +61,10 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/testLoading/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/MotionKit/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/test/indexdb.vue"), // optimization // testSelect fontClass
-    // component: () => import(/* webpackChunkName: "about" */ "../views/apiBase/index.vue"), // optimization // testSelect fontClass
+    component: () => import(/* webpackChunkName: "about" */ "../views/apiBase/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/three/index.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/MotionKit/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/MotionKit/index.vue"), // optimization // testSelect fontClass
 
   },
   {

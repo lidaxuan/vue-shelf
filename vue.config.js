@@ -4,7 +4,7 @@
 
 const path = require('path');
 // const webpack = require('webpack');
-const { codeInspectorPlugin } = require('code-inspector-plugin');
+// const { codeInspectorPlugin } = require('code-inspector-plugin');
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -72,17 +72,17 @@ module.exports = {
   },
   configureWebpack: {},
   chainWebpack(config) {
-    config.plugin('code-inspector-plugin').use(codeInspectorPlugin({bundler: 'webpack'}));
-    config.plugins.delete('preload'); // TODO: need test
-    config.plugins.delete('prefetch'); // TODO: need test
-    config.module.rule('vue').use('vue2-source-loader').loader(path.resolve(__dirname, 'webpack-vue2-source-loader.js')).before('vue-loader');
-    config.module.rule('js').include.add(resolve('node_modules/@fengqiaogang/dblist')).end();
-
-    config.module.rule('pug').use('pug-plain-loader').loader('pug-plain-loader').end();
-
-    config.module.rule('svg').exclude.add(resolve('src/icons')).end();
-    config.module.rule('icons').test(/\.svg$/).include.add(resolve('src/icons')).end()
-      .use('svg-sprite-loader').loader('svg-sprite-loader').options({symbolId: 'icon-[name]'}).end();
+    // config.plugin('code-inspector-plugin').use(codeInspectorPlugin({bundler: 'webpack'}));
+    // config.plugins.delete('preload'); // TODO: need test
+    // config.plugins.delete('prefetch'); // TODO: need test
+    // config.module.rule('vue').use('vue2-source-loader').loader(path.resolve(__dirname, 'webpack-vue2-source-loader.js')).before('vue-loader');
+    // config.module.rule('js').include.add(resolve('node_modules/@fengqiaogang/dblist')).end();
+    //
+    // config.module.rule('pug').use('pug-plain-loader').loader('pug-plain-loader').end();
+    //
+    // config.module.rule('svg').exclude.add(resolve('src/icons')).end();
+    // config.module.rule('icons').test(/\.svg$/).include.add(resolve('src/icons')).end()
+    //   .use('svg-sprite-loader').loader('svg-sprite-loader').options({symbolId: 'icon-[name]'}).end();
     // set preserveWhitespace
     config.module.rule('vue').use('vue-loader').loader('vue-loader').tap(options => {
       options.compilerOptions.preserveWhitespace = true;
@@ -97,14 +97,14 @@ module.exports = {
       .set('utils', resolve('src/utils'));
   },
   css: {
-    extract: process.env.NODE_ENV === 'development' ? false : true,
-    sourceMap: process.env.NODE_ENV === 'development' ? true : false,
+    // extract: process.env.NODE_ENV === 'development' ? false : true,
+    // sourceMap: process.env.NODE_ENV === 'development' ? true : false,
     loaderOptions: {
       sass: {
         // prependData: getSassVar()
       }
     },
-    extract: false,
-    sourceMap: true
+    // extract: false,
+    // sourceMap: true
   },
 };

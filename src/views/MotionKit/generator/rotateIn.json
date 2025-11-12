@@ -1,0 +1,7 @@
+{
+  "name": "rotateIn",
+  "keyframes": [
+    { "rotate": -90, "opacity": 0 },
+    { "rotate": 0, "opacity": 1 }
+  ]
+}
