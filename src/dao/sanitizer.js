@@ -1,130 +1,97 @@
-// sanitizer.js
-import DOMPurify from 'dompurify';
-
-/**
- * 默认标签与属性白名单
- */
-export const DEFAULT_ALLOWED_TAGS = ['b', 'i', 'u', 'strong', 'em', 'br', 'p', 'ul', 'ol', 'li', 'a', 'img', 'h1', 'h2', 'h3', 'span'];
-
-export const DEFAULT_ALLOWED_ATTR = ['href', 'src', 'alt', 'title', 'width', 'height', 'target', 'rel', 'style'];
-
-export const DEFAULT_ALLOWED_CSS = ['color', 'background-color', 'font-size', 'font-family', 'text-align', 'font-weight', 'text-decoration'];
-
-/**
- * 允许保留 HTML 的字段名
- */
-export const DEFAULT_HTML_FIELDS = ['content', 'description', 'remark', 'html', 'intro', 'desc', 'message'];
-
-/**
- * 判断某字段是否允许保留 HTML
- */
-function isAllowHtmlField(fieldName, customAllowList = []) {
-  if (!fieldName) return false;
-  const merged = new Set([...DEFAULT_HTML_FIELDS, ...customAllowList]);
-  return merged.has(fieldName);
-}
-
-/**
- * Hook: 控制属性净化逻辑
- */
-(function installHooks() {
-  DOMPurify.addHook('uponSanitizeAttribute', function (node, data) {
-    const attr = data.attrName?.toLowerCase?.() || '';
-    const val = data.attrValue;
-
-    // 移除事件属性
-    if (attr.startsWith('on')) {
-      data.keepAttr = false;
-      return;
-    }
-
-    // href/src 协议安全校验
-    if ((attr === 'src' || attr === 'href') && typeof val === 'string') {
-      const trimmed = val.trim();
-      if (!trimmed) {
-        data.keepAttr = false;
-        return;
-      }
-      const lower = trimmed.toLowerCase();
-      if (lower.startsWith('javascript:') || lower.startsWith('data:')) {
-        data.keepAttr = false;
-        return;
-      }
-
-      if (!/^[a-zA-Z0-9.+-]+:/.test(trimmed) && !trimmed.startsWith('//')) {
-        if (trimmed.includes('.') || trimmed.includes('/')) {
-          data.attrValue = 'https://' + trimmed;
-        }
-      }
-
-      try {
-        const url = new URL(data.attrValue, window.location.origin);
-        const proto = url.protocol.replace(':', '').toLowerCase();
-        const safeProto = ['http', 'https', 'mailto', 'tel'];
-        if (!safeProto.includes(proto)) {
-          data.keepAttr = false;
-        }
-      } catch {
-        data.keepAttr = false;
-      }
-    }
-  });
-})();
-
 /**
  * 类型判断工具
  */
 const isObject = v => Object.prototype.toString.call(v) === '[object Object]';
 const isString = v => typeof v === 'string';
+// 禁止的标签（整个标签直接转义）
+export const forbiddenTags = ["script", "iframe", "object", "embed", "applet", "meta", "link", "svg", "math", "base", "noscript"];
 
-/**
- * 防止 HTML 实体绕过
- */
-function decodeEntities(str) {
-  if (!isString(str)) return str;
-  try {
-    const txt = document.createElement('textarea');
-    txt.innerHTML = str;
-    return txt.value;
-  } catch {
-    return str;
-  }
+// 禁止的属性名（style 保留）
+export const forbiddenAttrNames = ["on[a-z]+", "srcdoc", "innerHTML", "outerHTML", "formaction", "xlink:href"];
+
+// 禁止的协议（js 注入）
+export const forbiddenProtocols = ["javascript:", "vbscript:", "data:text/html", "data:text/javascript", "livescript:", "mocha:", "about:blank?javascript"];
+
+// --- Style 过滤 ---
+function sanitizeStyle(styleText) {
+  if (!styleText) return "";
+  let s = styleText;
+  // 去掉 javascript: / vbscript:
+  forbiddenProtocols.forEach(proto => {
+    const re = new RegExp(proto, "gi");
+    s = s.replace(re, "");
+  });
+  // 去掉 url(javascript:)
+  s = s.replace(/url\((.*?)\)/gi, (m, content) => {
+    if (/javascript:|vbscript:|data:text\/html/gi.test(content)) {
+      return "url(#)";
+    }
+    return m;
+  });
+  // expression() （IE）
+  s = s.replace(/expression\s*\(/gi, "");
+  // -moz-binding
+  s = s.replace(/-moz-binding/gi, "");
+  // behavior: url()
+  s = s.replace(/behavior\s*:/gi, "");
+  return s;
 }
 
-/**
- * 对单个字符串执行 DOMPurify 净化
- */
-function sanitizeString(value, allowHtml = false) {
-  const decoded = decodeEntities(value);
-  console.log(value)
-  console.log(`-----------`)
-  console.log(decoded)
-  return DOMPurify.sanitize(decoded, allowHtml ? {
-    ALLOWED_TAGS: DEFAULT_ALLOWED_TAGS,
-    ALLOWED_ATTR: DEFAULT_ALLOWED_ATTR,
-    ALLOWED_CSS_PROPERTIES: DEFAULT_ALLOWED_CSS,
-    ALLOW_DATA_ATTR: false,
-  } : {
-    ALLOWED_TAGS: [],
-    ALLOWED_ATTR: [],
+
+// --- 主函数 ---
+export function sanitizeString(html) {
+  if (!html) return html;
+  let res = html;
+
+  // 1. 转义禁止标签（整个标签内容都转义）
+  if (forbiddenTags.length) {
+    const blockTagRegex = new RegExp(`<(${forbiddenTags.join("|")})([\\s\\S]*?)<\\/\\1>`, "gi");
+    res = res.replace(blockTagRegex, match =>
+      match.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    );
+
+    const singleTagRegex = new RegExp(`<\\/?(?:${forbiddenTags.join("|")})(?:\\s[^>]*?)?>`, "gi");
+    res = res.replace(singleTagRegex, match =>
+      match.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    );
+  }
+
+  // 2. 移除危险属性（onerror/onload/onclick/srcdoc/...）
+  if (forbiddenAttrNames.length) {
+    const attrRegex = new RegExp(`\\s(?:${forbiddenAttrNames.join("|")})\\s*=\\s*(?:"[^"]*"|'[^']*'|[^\\s>]+)`, "gi");
+    res = res.replace(attrRegex, "");
+  }
+
+  // 3. 清理 style="..." 中的危险内容
+  res = res.replace(/style\s*=\s*"(.*?)"/gi, (match, css) => {
+    return `style="${sanitizeStyle(css)}"`;
   });
+
+  res = res.replace(/style\s*=\s*'(.*?)'/gi, (match, css) => {
+    return `style='${sanitizeStyle(css)}'`;
+  });
+
+  // 4. 清理 href="javascript:xxx"
+  res = res.replace(/href\s*=\s*"(javascript:[^"]*)"/gi, `href="#"`);
+  res = res.replace(/href\s*=\s*'(javascript:[^']*)'/gi, `href="#"`);
+
+  return res;
 }
 
 /**
  * 深度净化 Payload
  */
-export function sanitizePayload(payload, customAllowList = [], parentKey = '') {
+export function sanitizePayload(payload, parentKey = '') {
   if (payload == null) return payload;
 
   // string
   if (isString(payload)) {
-    const allowHtml = isAllowHtmlField(parentKey, customAllowList);
-    return sanitizeString(payload, allowHtml);
+    return sanitizeString(payload);
   }
 
   // array
   if (Array.isArray(payload)) {
-    return payload.map(item => sanitizePayload(item, customAllowList, parentKey));
+    return payload.map(item => sanitizePayload(item, parentKey));
   }
 
   // object
@@ -132,7 +99,7 @@ export function sanitizePayload(payload, customAllowList = [], parentKey = '') {
     const out = {};
     for (const key in payload) {
       if (!Object.prototype.hasOwnProperty.call(payload, key)) continue;
-      out[key] = sanitizePayload(payload[key], customAllowList, key);
+      out[key] = sanitizePayload(payload[key], key);
     }
     return out;
   }
@@ -154,5 +121,8 @@ export function debugSanitizeDiff(original, sanitized) {
         after: sanitized
       });
     }
-  } catch {}
+  } catch {
+  }
 }
+
+

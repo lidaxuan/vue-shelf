@@ -10,17 +10,19 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
-function getSassVar() {
-  const text = [];
-  if (process.env.VUE_APP_OS_domain) {
-    text.push(`$domain: "${process.env.VUE_APP_OS_domain}";`);
-  } else {
-    text.push(`$domain: null;`);
-  }
-  text.push('@import "@/assets/styles/common.scss";');
-  const code = text.join('\n');
-  return code;
-}
+// function getSassVar() {
+//   const text = [];
+//   if (process.env.VUE_APP_OS_domain) {
+//     text.push(`$domain: "${process.env.VUE_APP_OS_domain}";`);
+//   } else {
+//     text.push(`$domain: null;`);
+//   }
+//   text.push('@import "@/assets/styles/common.scss";');
+//   const code = text.join('\n');
+//   return code;
+// }
+
+
 
 const port = 6537; // dev port
 let publicPath = '/';
@@ -32,11 +34,11 @@ if (process.env.NODE_ENV !== 'development') {
 module.exports = {
   publicPath,
   runtimeCompiler: true,
-  outputDir: 'dist',
-  assetsDir: 'static',
-  lintOnSave: false,
-  productionSourceMap: false,
-  parallel: require('os').cpus().length > 1,
+  // outputDir: 'dist',
+  // assetsDir: 'static',
+  // lintOnSave: false,
+  // productionSourceMap: false,
+  // parallel: require('os').cpus().length > 1,
   devServer: {
     port: port,
     open: true,
@@ -89,7 +91,7 @@ module.exports = {
       return options;
     }).end();
 
-    config.when(process.env.NODE_ENV === 'development', conf => conf.devtool('cheap-source-map'));
+    // config.when(process.env.NODE_ENV === 'development', conf => conf.devtool('cheap-source-map'));
     config.resolve.alias
       .set('@', resolve('src'))
       .set('assets', resolve('src/assets'))

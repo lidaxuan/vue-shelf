@@ -65,39 +65,40 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/three/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/MotionKit/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/iframe/index.vue"), // optimization // testSelect fontClass
 
   },
-  {
-    path: "/game-role",
-    name: "game-role",
-    component: () => import(/* webpackChunkName: "about" */ "../views/crazyTree/role.vue"), // optimization // testSelect fontClass
-  },
-  {
-    path: "/sheet",
-    name: "showdigitroll",
-    component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index"), // optimization // testSelect fontClass
-  },
-  {
-    path: "/showdigitroll",
-    name: "showdigitroll",
-    component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
-  },
-  {
-    path: "/optimization",
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/optimization"),
-  },
-  {
-    path: "/testSelect",
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/testSelect"),
-  },
-  {
-    path: "/deconstruction",
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/deconstruction"),
-  },
-  {
-    path: "/dataWorkType",
-    component: () => import(/* webpackChunkName: "about" */ "../views/test/testSelect"),
-  },
+  // {
+  //   path: "/game-role",
+  //   name: "game-role",
+  //   component: () => import(/* webpackChunkName: "about" */ "../views/crazyTree/role.vue"), // optimization // testSelect fontClass
+  // },
+  // {
+  //   path: "/sheet",
+  //   name: "showdigitroll",
+  //   component: () => import(/* webpackChunkName: "about" */ "../views/Luckysheet/index"), // optimization // testSelect fontClass
+  // },
+  // {
+  //   path: "/showdigitroll",
+  //   name: "showdigitroll",
+  //   component: () => import(/* webpackChunkName: "about" */ "../views/showComponents/showResize.vue"), // optimization // testSelect fontClass
+  // },
+  // {
+  //   path: "/optimization",
+  //   component: () => import(/* webpackChunkName: "about" */ "../views/test/optimization"),
+  // },
+  // {
+  //   path: "/testSelect",
+  //   component: () => import(/* webpackChunkName: "about" */ "../views/test/testSelect"),
+  // },
+  // {
+  //   path: "/deconstruction",
+  //   component: () => import(/* webpackChunkName: "about" */ "../views/test/deconstruction"),
+  // },
+  // {
+  //   path: "/dataWorkType",
+  //   component: () => import(/* webpackChunkName: "about" */ "../views/test/testSelect"),
+  // },
 ];
 let AppRoutes = [];
 

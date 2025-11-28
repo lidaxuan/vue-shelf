@@ -63,7 +63,8 @@ const client = {
   "ext.autojoinchat" : "0",
   "ext.delayTime" : "40",
   "extBodyJson" : "{\n   \"autojoinchat\" : \"0\",\n   \"delayTime\" : \"40\"\n}\n",
-  "message" : "<p>机器人自我介绍asdasdasd<img height=\"18\" src=\"http://test-prd18.easyliao.net/el-client-view/qt5/v1.0.0/html/images/emotion/37.png\"><img height=\"18\" src=\"http://test-prd18.easyliao.net/el-client-view/qt5/v1.0.0/html/images/emotion/38.png\"></p>"
+  "message" : "<p>机器人自我介绍asdasdasd<img height=\"18\" src=\"test-prd18.easyliao.net/el-client-view/qt5/v1.0.0/html/images/emotion/37.png\"><img height=\"18\" src=\"http://test-prd18.easyliao.net/el-client-view/qt5/v1.0.0/html/images/emotion/38.png\"></p>",
+  content: `<div onClick="alert('123')" style="color: pink;padding: 10px">123</div>`
 }
 
 const test9 = {
@@ -75,7 +76,7 @@ const test9 = {
     "contents": [
       {
         "sec": 0,
-        "content": "<iframe src=\"www.baodu.com\" frameborder=\"0\"></iframe>&lt;p&gt;asd<span style=\"font-family: 黑体;\">asd</span> as<strong>dasdfreaqgryiikgymjdu7yu 阿斯达</strong></p><p><strong>阿尔特刚问过好</strong>儿童观<span style=\"font-size: 13px;\">儿童钙hertghrew</span>thwrjr7<span style=\"font-size: 22px;\">tuik 高危儿t6i</span>7ujtegh<span style=\"color: rgb(54, 88, 226);\">67ukrdsrtgbtyhjku</span>9itd通过<span style=\"background-color: rgb(225, 60, 57);\">后建议UK规划</span>局<em>可</em>退{keyword}</p>"
+        "content": "&lt;p&gt;asd<span style=\"font-family: 黑体;\">asd</span> as<strong>dasdfreaqgryiikgymjdu7yu 阿斯达</strong></p><p><strong>阿尔特刚问过好</strong>儿童观<span style=\"font-size: 13px;\">儿童钙hertghrew</span>thwrjr7<span style=\"font-size: 22px;\">tuik 高危儿t6i</span>7ujtegh<span style=\"color: rgb(54, 88, 226);\">67ukrdsrtgbtyhjku</span>9itd通过<span style=\"background-color: rgb(225, 60, 57);\">后建议UK规划</span>局<em>可</em>退{keyword}</p>"
       }
     ]
   },
@@ -130,9 +131,9 @@ const test9 = {
   "updateTime": 1762938688203
 }
 
-setTimeout(() => {
-  document.getElementById("box").innerHTML = testCase_basic.comment
-}, 1000)
+// setTimeout(() => {
+//   document.getElementById("box").innerHTML = testCase_basic.comment
+// }, 1000)
 
 // console.log('✅ 测试1 basic', JSON.parse(JSON.stringify(sanitizePayload(testCase_basic))));
 // console.log('✅ 测试2 htmlAllow',JSON.parse(JSON.stringify(sanitizePayload(testCase_htmlAllow, ['title', 'content']))) );
@@ -141,8 +142,8 @@ setTimeout(() => {
 // console.log('✅ 测试5 mixed',JSON.parse(JSON.stringify(sanitizePayload(testCase_mixed))) );
 // console.log('✅ 测试6 params',JSON.parse(JSON.stringify(sanitizePayload(params, ['']))) );
 // console.log('✅ 测试7 空', sanitizePayload("", ['']));
-// console.log('✅ 测试8 client', sanitizePayload(client));
-console.log('✅ 测试9 test9', sanitizePayload(test9));
+console.log('✅ 测试8 client', sanitizePayload(client));
+// console.log('✅ 测试9 test9', sanitizePayload(test9));
 
 
 // axios.interceptors.request.use(config => {
@@ -159,3 +160,11 @@ console.log('✅ 测试9 test9', sanitizePayload(test9));
 //   }
 //   return config;
 // });
+
+const obj = Object.create({name: 11, hasOwnProperty: () => true})
+obj.aa = 2
+
+
+obj.desc = `<div onClick="alert('123')" style="color: pink; padding: 10px" > 123 </div>`
+
+// console.log('✅ 测试10 test9', sanitizePayload(obj));
