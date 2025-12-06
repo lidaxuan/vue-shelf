@@ -9,6 +9,17 @@ import Vue from "vue";
 import App from "./App.vue";
 import { store } from './store';
 import router from "./router";
+import "./assets/styles/index.scss";
+import "./assets/styles/base/index.scss";
+import elementUi from 'element-ui';
+import IconFont from './components/IconFont';
+import Directives from './directives';
+
+Vue.use(IconFont);
+Vue.use(elementUi, { size: 'small' });
+Vue.use(Directives);
+import './element-variables.scss';
+
 new Vue({
   router,
   store,
