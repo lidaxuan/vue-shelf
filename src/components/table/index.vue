@@ -227,11 +227,6 @@ export default {
       //   this.display = true; // 重新展示组件
       // });
     },
-    headerCellStyle({ row, rowIndex }) {
-      // if (rowIndex === 0) {
-      //   return 'background-color: #f5f7fa';
-      // }
-    },
     tableColumnCheckboxChange() {
       this.tableColumnChange();
     },

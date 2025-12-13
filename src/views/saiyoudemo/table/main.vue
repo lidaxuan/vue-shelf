@@ -5,6 +5,7 @@
     <div ref="operColumn" class="oper-column" v-if="oper">
       <i class="iconfont icon-D1-A6" style="font-size: 22px; cursor: pointer; color: #bbb;" @click="$emit('oper-click')"/>
     </div>
+
     <el-table v-bind="$attrs" :border="styleComputed === 'border'" v-on="$listeners" :data="data" ref="table" size="medium" :height="height" :row-class-name="rowClassNameComputed">
       <template v-for="(item, index) in columnsComputed || []">
         <Column v-bind="item" :key="index" v-if="item.display === undefined || item.display === true" :columnData="columnsComputed" :defaultValue="item.defaultValue" :globaDefaultValue="defaultValue">
@@ -98,10 +99,10 @@ export default {
   },
   computed: {
     sizeComputed() {
-      return this.size || this.$store?.getters?.layoutSetting?.tableSetting?.rowHeight || "mini";
+      return this.size ||  "mini";
     },
     styleComputed() {
-      return this.tableStyle || this.$store?.getters?.layoutSetting?.tableSetting?.tableStyle || "minimalist";
+      return this.tableStyle  || "minimalist";
     },
     //
     slotNames() {

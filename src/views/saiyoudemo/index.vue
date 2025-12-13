@@ -1,52 +1,219 @@
 <template>
   <div class="page-box">
-    <div class="quick-filters">
-      <div v-for="(item, index1) in pageConfigJson.quickFilters" :key="index1">
-        <QuickFilter @setValue="quickFilterSetValue" :config="item" :key="index1"></QuickFilter>
+    <div class="left-class-list" :style="`width: ${classListFoldFlag ? '230px' : '120px'}`">
+      <div v-if="classListFoldFlag" class="search-box">
+        <el-input placeholder="请输入期次名称" v-model="searchStr" suffix-icon="el-icon-search"></el-input>
       </div>
-    </div>
 
-    <el-form :inline="true" :model="pageForm" class="">
-      <template v-for="(item, index1) in pageConfigJson.formFilters">
-        <el-form-item :label="item.label" :key="index1">
-          <el-select v-if="item.type == 'select'" :multiple="item.porps?.multiple" v-model="pageForm[item.key]" placeholder="活动区域">
-            <el-option v-for="(optionItem, index2) in item.props?.options" :label="optionItem.label" :value="optionItem.value" :key="index2"></el-option>
-          </el-select>
-          <el-date-picker v-if="item.type == 'date'" v-model="pageForm[item.key]" type="daterange" align="right" unlink-panels
-                          :start-placeholder="item.props?.placeholder[0]" range-separator="至" :end-placeholder="item.props?.placeholder[1]"
-                          value-format="yyyy-MM-dd HH:mm:ss" :default-time="['00:00:00', '23:59:59']"
-                          :picker-options="getPickerOptions(item.props?.shortcuts)">
-          </el-date-picker>
-          <el-input v-if="item.type == 'input'" v-model="pageForm[item.key]" :placeholder="item.props?.placeholder"></el-input>
-        </el-form-item>
-      </template>
-    </el-form>
+      <div class="class-list" v-if="classListFoldFlag">
 
+        <div v-for="(item, index) in classList" :key="index" class="item" @click="selectClass(item)" :class="{active:selectClassInfo.id == item.id}">
+          <div class="title-box">
+            <div class="tag" :class="{light: item.type == 1, gray: item.type == 3,default: item.type==2}">{{ item.aaaaaaa }}</div>
+            <div class="title">{{ item.bbbbbbb }}</div>
+          </div>
+          <div class="teacher">{{ item.ccccccc }}</div>
+          <div class="info-desc">
+            <div class="label">开课时间</div>
+            <div class="val">{{ item.ddddddd }}</div>
+          </div>
+          <div class="info-desc">
+            <div class="label">统计结束</div>
+            <div class="val">{{ item.eeeeeee }}</div>
+          </div>
+          <div class="info-desc">
+            <div class="label">课程数量</div>
+            <div class="val">{{ item.fffffff }}</div>
+          </div>
 
-    <div class="stats-region">
-      <div v-for="groupItem in pageConfigJson.statsRegion?.groups" class="group-item">
-        <div>{{ groupItem.title }}</div>
-        <div v-for="item in groupItem.items" class="item">
-          {{ item.label }}: {{ item.key }}
+          <div class="bottom-btns">
+            <div class="btn">查看直播</div>
+            <div class="btn">查看教程</div>
+          </div>
         </div>
       </div>
+
+      <div v-else class="selectItemFold">
+        <div class="top">
+          <div class="tag" :class="{light: selectClassInfo.type == 1, gray: selectClassInfo.type == 3,default: selectClassInfo.type==2}">{{ selectClassInfo.aaaaaaa }}</div>
+          <div class="title">20250845</div>
+        </div>
+        <div class="bottom-btns">
+          <div class="btn">查看直播</div>
+          <div class="btn">查看教程</div>
+        </div>
+      </div>
+      <i class="el-icon-s-fold fold" :class="{'is-reverse': !classListFoldFlag}" @click="classListFoldFlag = !classListFoldFlag"></i>
     </div>
 
-    <div>
-      <el-button type="primary" v-for="(item, index) in pageConfigJson.actionBtn" :key="index">{{ item.label }}</el-button>
-    </div>
-    <TableSp height="100%" :data="tableData" v-loading="pageLoading" :tableColumnData="pageConfigJson.table">
-      <template #profile="{ $index, row, column }">
-        <Profile :info="row[column.property]"></Profile>
-      </template>
-    </TableSp>
+    <div class="right-box">
+      <Collapse class="search-area" :height="clientHeightForSearch" :cheight="'60px'">
+        <template #top>
+          <div class="quick-filters">
+            <div v-for="(item, index) in pageConfigJson.quickFilters" :key="index">
+              <QuickFilter @setValue="quickFilterSetValue" :config="item" :key="index"></QuickFilter>
+            </div>
+          </div>
+        </template>
+        <template #bottom>
+          <div class="search-form">
+            <el-form :inline="true" :model="pageForm" class="">
+              <template v-for="(item, index1) in pageConfigJson.formFilters">
+                <el-form-item :label="item.label" :key="index1">
+                  <el-select v-if="item.type == 'select'" :multiple="item.porps?.multiple" v-model="pageForm[item.key]" placeholder="活动区域" size="mini">
+                    <el-option v-for="(optionItem, index2) in item.props?.options" :label="optionItem.label" :value="optionItem.value" :key="index2"></el-option>
+                  </el-select>
+                  <el-select v-if="item.type == 'modal'" :multiple="item.porps?.multiple" v-model="pageForm[item.key]" placeholder="活动区域" size="mini">
+                    <el-option v-for="(optionItem, index2) in item.props?.options" :label="optionItem.label" :value="optionItem.value" :key="index2"></el-option>
+                  </el-select>
+                  <el-date-picker v-if="item.type == 'date'" v-model="pageForm[item.key]" type="daterange" align="right" unlink-panels size="mini"
+                                  :start-placeholder="item.props?.placeholder[0]" range-separator="至" :end-placeholder="item.props?.placeholder[1]"
+                                  value-format="yyyy-MM-dd HH:mm:ss" :default-time="['00:00:00', '23:59:59']"
+                                  :picker-options="getPickerOptions(item.props?.shortcuts)">
+                  </el-date-picker>
+                  <el-input v-if="item.type == 'input'" v-model="pageForm[item.key]" :placeholder="item.props?.placeholder" size="mini"></el-input>
+                </el-form-item>
+              </template>
+              <div>
+                <el-button>重置</el-button>
+                <el-button>查询</el-button>
+              </div>
+            </el-form>
+          </div>
+        </template>
+      </Collapse>
+      <!--      <pre class="prebox">{{ pageConfigJson.statsRegion.groups }}</pre>-->
 
-    <Pagination layout="total,sizes,prev, pager, next,jumper" :page="page"
-                @current-change="handleCurrentChange" @size-change="handleSizeChange">
-    </Pagination>
+      <Collapse class="region-top-box" :height="clientHeightForRegion" :cheight="'60px'">
+        <template #top>
+          <div class="region-top-config">
+            <el-checkbox-group v-model="showRegionList">
+              <el-checkbox v-for="item in pageConfigJson.statsRegion?.groups" :label="item.key">{{ item.title }}</el-checkbox>
+            </el-checkbox-group>
+            <div class="label">统计范围:</div>
+            <el-radio-group v-model="searchRang">
+              <el-radio :label="1">全部数据</el-radio>
+              <el-radio :label="2">跟随筛选</el-radio>
+            </el-radio-group>
+          </div>
+        </template>
+        <template #bottom>
+          <div class="stats-region">
+            <div v-for="groupItem in pageConfigJson.statsRegion?.groups" class="group-item" v-if="showRegionList.includes(groupItem.key)">
+              <div v-for="item in groupItem.items" class="item" :class="{highlight: item.stateMap.includes('highlight')}">
+                <div class="val">1111
+                  <!--                  {{ item.key }}-->
+                </div>
+                <div class="label">
+                  {{ item.label }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </Collapse>
+
+      <div class="handle-box">
+        <el-button type="primary" v-for="(item, index) in pageConfigJson.actionBtn" :key="index">{{ item.label }}</el-button>
+      </div>
+
+<!--      <el-button @click="$refs.batchWechatRemark.open()">test</el-button>-->
+<!--      <el-button @click="$refs.liveRoom.open()">test</el-button>-->
+<!--      <el-button @click="$refs.clueFollowRemark.open()">test</el-button>-->
+
+
+      <div class="table-box">
+        <TableSp height="300px" tableStyle="border" style="width: 100%" :data="tableData" header-cell-style="background:#F4F5F8;"
+                 v-loading="pageLoading" :tableColumnData="tableColumnData">
+          <!-- 1. 学员_线索插槽：头像+姓名@微信+编辑按钮 -->
+          <template #student="{ row }">
+            <div class="student-slot">
+              <img :src="row.avatar" class="student-avatar" alt="头像" @click="userInfo(row)"/>
+              <span class="student-name">{{ row.studentName }}<span class="wechat-tag">@微信</span></span>
+              <el-button type="text" icon="el-icon-edit" size="mini" class="edit-btn"/>
+            </div>
+          </template>
+
+          <!-- 2. 微信备注插槽：多行文本+编辑按钮 -->
+          <template #wechatRemark="{ row }">
+            <div class="remark-slot">
+              <div class="remark-text">{{ row.wechatRemark }}</div>
+            </div>
+          </template>
+
+          <!-- 3. 手机号插槽：带电话图标 -->
+          <template #phone="{ row }">
+            <div class="phone-slot">
+              <span>{{ row.phone }}</span>
+              <el-button type="text" icon="el-icon-phone-outline" size="mini" class="phone-icon"/>
+            </div>
+          </template>
+
+          <!-- 4. 用户标签插槽：多标签 -->
+          <template #userTags="{ row }">
+            <div class="tags-slot">
+              <el-tag size="mini" v-for="tag in row.userTags" :key="tag">{{ tag }}</el-tag>
+            </div>
+          </template>
+
+          <!-- 5. 活跃行为_线索插槽：多标签+计数 -->
+          <template #activeBehavior="{ row }">
+            <div class="behavior-slot">
+              <el-tag size="mini" type="primary" v-for="(item, idx) in row.activeBehavior" :key="idx">
+                {{ item.label }}<span class="count" v-if="item.count">x{{ item.count }}</span>
+              </el-tag>
+            </div>
+          </template>
+
+          <!-- 6. 开通课程插槽：多标签 -->
+          <template #courses="{ row }">
+            <div class="courses-slot">
+              <el-tag size="mini" v-for="course in row.courses" :key="course">{{ course }}</el-tag>
+            </div>
+          </template>
+
+          <!-- 7. 直播到课情况插槽：多状态图标 -->
+          <template #liveAttendStatus="{ row }">
+            <div class="live-status-slot">
+              11
+            </div>
+          </template>
+
+          <!-- 8. 最近电话沟通插槽：带“查看”按钮 -->
+          <template #latestCall="{ row }">
+            <div class="call-slot">
+              <span>{{ row.latestCall }}</span>
+              <el-button type="text" size="mini" class="view-btn">查看</el-button>
+            </div>
+          </template>
+
+          <!-- 9. 最近线索跟进人加微信插槽：带“查看”按钮 -->
+          <template #latestWechatAdd="{ row }">
+            <div class="wechat-add-slot">
+              <span>{{ row.latestWechatAdd }}</span>
+              <el-button type="text" size="mini" class="view-btn">查看</el-button>
+            </div>
+          </template>
+
+          <!-- 10. 跟进备注_线索插槽：多行文本+编辑按钮 -->
+          <template #followRemark="{ row }">
+            <div class="follow-remark-slot">
+              <div class="remark-text">{{ row.followRemark }}</div>
+              <el-button type="text" icon="el-icon-edit" size="mini" class="edit-btn"/>
+            </div>
+          </template>
+        </TableSp>
+
+        <Pagination layout="total,sizes,prev, pager, next,jumper" :page="page"
+                    @current-change="handleCurrentChange" @size-change="handleSizeChange">
+        </Pagination>
+      </div>
+    </div>
 
     <CustomerInfo ref="customerInfo"></CustomerInfo>
-<!--    <pre class="prebox">{{ pageForm }}</pre>-->
+    <BatchWechatRemark ref="batchWechatRemark"></BatchWechatRemark>
+    <LiveRoom ref="liveRoom"></LiveRoom>
+    <ClueFollowRemark ref="clueFollowRemark"></ClueFollowRemark>
   </div>
 </template>
 
@@ -55,7 +222,11 @@ import Pagination from "./pagination.vue";
 import Profile from "./profile.vue";
 import TableSp from "./table/main.vue";
 import QuickFilter from "./quickFilter.vue";
-import CustomerInfo from "./customerInfo.vue";
+import CustomerInfo from "./customerInfo/index.vue";
+import Collapse from "./Collapse.vue";
+import BatchWechatRemark from "./BatchWechatRemark.vue";
+import LiveRoom from "./LiveRoom.vue";
+import ClueFollowRemark from "./ClueFollowRemark.vue";
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -68,22 +239,102 @@ function formatDate(date, time) {
   return `${y}-${m}-${d} ${time}`;
 }
 
+const tableColumnData = [
+  {type: "selection", width: 50},
+  {label: "学员_线索", prop: "student", slotName: "student"},
+  {label: "微信备注", prop: "wechatRemark", slotName: "wechatRemark"},
+  {label: "手机号", prop: "phone", slotName: "phone"},
+  {label: "用户标签", prop: "userTags", slotName: "userTags"},
+  {label: "活跃行为_线索", prop: "activeBehavior", slotName: "activeBehavior"},
+  {label: "最近活跃时间", prop: "latestActiveTime", sortable: true},
+  {label: "客户意向分(采深)", prop: "intentionScore", sortable: true},
+  {label: "跟进备注_线索", prop: "followRemark", slotName: "followRemark"},
+  {label: "微信昵称", prop: "wechatNickname"},
+  {label: "年龄_线索", prop: "age"},
+  {label: "省市_线索", prop: "provinceCity"},
+  {label: "学历_线索", prop: "education"},
+  {label: "开通课程", prop: "courses", slotName: "courses"},
+  {label: "邮寄情况", prop: "mailStatus"},
+  {label: "聊完情况", prop: "chatStatus"},
+  {label: "进群情况(顾问)", prop: "groupStatus"},
+  {label: "考期确认", prop: "examStatus"},
+  {label: "直播到课情况", prop: "liveAttendStatus", slotName: "liveAttendStatus"},
+  {label: "直播类直播观看时长", prop: "liveWatchDuration", sortable: true},
+  {label: "直播类观看时长", prop: "liveTotalDuration", sortable: true},
+  {label: "进量数量", prop: "leadCount"},
+  {label: "复购校验", prop: "repurchaseCheck"},
+  {label: "进线来源", prop: "leadSource"},
+  {label: "分配时间", prop: "assignTime"},
+  {label: "线索类型", prop: "leadType"},
+  {label: "线索跟进人", prop: "follower"},
+  {label: "线索跟进人部门", prop: "followerDept"},
+  {label: "线索跟进人加微", prop: "isWechatAdded"},
+  {label: "线索加微时间", prop: "wechatAddTime"},
+  {label: "当前跟进人", prop: "currentFollower"},
+  {label: "最近电话沟通", prop: "latestCall", slotName: "latestCall"},
+  {label: "最近线索跟进人加微信", prop: "latestWechatAdd", slotName: "latestWechatAdd"}
+]
+
 export default {
   name: '', // Pascal命名
   mixins: [],
   components: {
+    Collapse,
     TableSp,
     Pagination,
     Profile,
     QuickFilter,
-    CustomerInfo
+    CustomerInfo,
+    LiveRoom,
+    BatchWechatRemark,
+    ClueFollowRemark,
   },
   computed: {
-    capitalizeFirstLetter: () => capitalizeFirstLetter
+    capitalizeFirstLetter: () => capitalizeFirstLetter,
+    tableColumnData: () => tableColumnData,
   },
   props: {},
   data() {
     return {
+      searchStr: '',
+      classListFoldFlag: true,
+      selectClassInfo: {},
+      clientHeightForSearch: '',
+      clientHeightForRegion: '',
+      searchRang: 1,
+      showRegionList: [],
+      classList: [
+        {
+          aaaaaaa: "当期",
+          bbbbbbb: "251208期家庭教育指导三天入门训练营",
+          ccccccc: "家庭指导师",
+          ddddddd: "2025-09-30 19:00",
+          eeeeeee: "2025-09-30 19:00",
+          fffffff: "2",
+          type: 1,
+          id: 1,
+        },
+        {
+          aaaaaaa: "当期",
+          bbbbbbb: "251208期家庭教育指导三天入门训练营",
+          ccccccc: "家庭指导师",
+          ddddddd: "2025-09-30 19:00",
+          eeeeeee: "2025-09-30 19:00",
+          fffffff: "2",
+          type: 2,
+          id: 2,
+        },
+        {
+          aaaaaaa: "当期",
+          bbbbbbb: "251208期家庭教育指导三天入门训练营",
+          ccccccc: "家庭指导师",
+          ddddddd: "2025-09-30 19:00",
+          eeeeeee: "2025-09-30 19:00",
+          fffffff: "2",
+          type: 3,
+          id: 3,
+        }
+      ],
       pageLoading: false,
       pageForm: {},
       pageConfigJson: {},
@@ -93,13 +344,6 @@ export default {
         pageSize: 10,
         page: 1,
       },
-      tableColumnData: [
-        {label: "卡片ID", prop: "sfId"},
-        {label: "卡片标题", prop: "cardTitle"},
-        {label: "卡片描述", prop: "describe"},
-        {label: "上次修改时间", prop: "updateTime"},
-        {width: 150, label: '操作', slotName: 'oper', fixed: 'right'}
-      ],
     };
   },
 
@@ -175,6 +419,51 @@ export default {
       }
     }
     this.tableData = res2.data.list;
+    this.tableData = [  {
+      checked: false,
+      avatar: "https://kcall-test-oss.oss-cn-beijing.aliyuncs.com/material/1/2025/8/20/ba0610ec505a489c9074e5e7001c9dc2.jpg", // 头像占位图
+      studentName: "王二麻子",
+      student: "王二麻子@微信", // 对应prop: "student"
+      wechatRemark: "该学员意向较高，计划报名家庭教育指导师课程，需重点跟进",
+      phone: "13800138000",
+      userTags: ["高意向", "家庭教育", "新客"],
+      activeBehavior: [
+        { label: "浏览课程详情", count: 5 },
+        { label: "咨询课程价格", count: 2 },
+        { label: "观看直播回放", count: 3 }
+      ],
+      latestActiveTime: "2025-12-12 19:30:00",
+      intentionScore: 95,
+      followRemark: "12.12跟进：学员表示本周内会确定报名，需提醒优惠活动截止时间",
+      wechatNickname: "王麻子-家庭教育",
+      age: 35,
+      provinceCity: "北京市朝阳区",
+      education: "本科",
+      courses: ["家庭教育三天入门训练营", "亲子沟通技巧课"],
+      mailStatus: "未邮寄",
+      chatStatus: "未聊完",
+      groupStatus: "已进群",
+      examStatus: "未确认",
+      liveAttendStatus: [
+        { type: "success", icon: "✓" }, // 已到课
+        { type: "fail", icon: "✗" }, // 未到课
+        { type: "success", icon: "✓" } // 已到课
+      ],
+      liveWatchDuration: "120分钟",
+      liveTotalDuration: "360分钟",
+      leadCount: 3,
+      repurchaseCheck: "非复购",
+      leadSource: "抖音广告",
+      assignTime: "2025-12-01 10:00:00",
+      leadType: "付费线索",
+      follower: "张三",
+      followerDept: "销售一部",
+      isWechatAdded: "已加微",
+      wechatAddTime: "2025-12-01 14:30:00",
+      currentFollower: "李四",
+      latestCall: "2025-12-11 15:20:00",
+      latestWechatAdd: "2025-12-01 14:30:00"
+    }];
     this.page.total = res2.data.total;
     this.page.pageSize = res2.data.pageSize;
     this.page.page = res2.data.page;
@@ -865,7 +1154,7 @@ export default {
               "type": "table",
               "editable": true,
               "items": [
-                {"label": "客户名", "key": "nickName", "type": "text"},
+                {"label": "学员名", "key": "nickName", "type": "text"},
                 {"label": "⼿机号", "key": "mobile", "type": "text"},
                 {"label": "年龄", "key": "age", "type": "text"},
                 {"label": "学历", "key": "edu", "type": "text"},
@@ -1099,8 +1388,24 @@ export default {
   beforeMount() {
   },
   mounted() {
+    // const info = {
+    //   [Symbol("a")]:"b"
+    // }
+    // console.log(info)
+    // console.log(Object.keys(info))
+    setTimeout(() => {
+      this.clientHeightForSearch = document.getElementsByClassName("search-area")[0].clientHeight + 'px';
+      this.clientHeightForRegion = document.getElementsByClassName("region-top-box")[0].clientHeight + 'px';
+    }, 1000)
   },
   methods: {
+    userInfo(row){
+      this.$refs.customerInfo.open();
+    },
+
+    selectClass(item) {
+      this.selectClassInfo = structuredClone(item);
+    },
     formatData(res) {
       const table = [].concat(res.data.table || []).map(item => {
         item.prop = item.key;
@@ -1110,8 +1415,10 @@ export default {
         delete item.type;
         return item
       })
+      table.unshift({type: "selection", width: 50})
       this.pageConfigJson = res.data;
       this.pageConfigJson.table = table; // 二次格式化
+      this.showRegionList = [].concat(res.data.statsRegion?.groups || []).map(item => item.key)
     },
     getPickerOptions(list) {
       const shortcuts = list?.map(item => {
@@ -1132,7 +1439,7 @@ export default {
         }
       });
       const pickerOptions = {
-        shortcuts:shortcuts || []
+        shortcuts: shortcuts || []
       };
       return pickerOptions;
     },
@@ -1153,18 +1460,398 @@ export default {
 .page-box {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: start;
+  background: linear-gradient(180deg, #FFFAF8 0%, #F9FDFF 100%);
+  background: linear-gradient(180deg, #f8dcd5 0%, #ccdde8 100%);
+  padding: 20px;
 
-  .quick-filters {
-    display: flex;
+  .search-box {
+    padding: 20px 20px 20px 0;
   }
 
-  .stats-region {
-    .group-item {
-      display: flex;
-      margin-bottom: 10px;
+  .left-class-list {
+    height: 100%;
+    background: #FFF;
+    box-shadow: 0px 6px 11px 0px rgba(230, 230, 230, 0.01);
+    border-radius: 8px;
+    padding-left: 20px;
+    margin-right: 20px;
+    position: relative;
+    transition: all 0.3s;
+
+    .class-list {
+      overflow-y: auto;
+      height: calc(100% - 72px);
 
       .item {
+        margin-bottom: 20px;
+        padding: 10px;
+        width: 190px;
+        //height: 143px;
+        background: #FFFFFF;
+        border-radius: 4px;
+        border: 1px solid #EFEFEF;
+
+        &.active {
+          background: rgba(200, 190, 255, 0.1);
+          border: 1px solid #6236FF;
+        }
+
+        .title-box {
+          display: flex;
+          align-items: start;
+          margin-bottom: 12px;
+
+
+          .title {
+            width: 132px;
+            height: 32px;
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 500;
+            font-size: 12px;
+            color: #1A2B3E;
+            line-height: 16px;
+            text-align: left;
+            font-style: normal;
+          }
+        }
+
+        .teacher {
+          font-weight: 400;
+          font-size: 12px;
+          color: #492AFF;
+          margin-bottom: 10px;
+        }
+
+        .info-desc {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+
+          .label {
+            font-weight: 400;
+            font-size: 12px;
+            color: #A7B1BC;
+            margin-right: 6px;
+          }
+
+          .val {
+            font-weight: 500;
+            font-size: 12px;
+            color: #1A2B3E;
+          }
+        }
+
+        .bottom-btns {
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+
+          .btn {
+            font-weight: 400;
+            font-size: 14px;
+            color: #FF8A3D;
+          }
+        }
+      }
+    }
+
+    .selectItemFold {
+      margin-top: 20px;
+
+      .top {
         display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .title {
+          font-weight: 500;
+          font-size: 12px;
+          color: #1A2B3E;
+        }
+      }
+
+      .bottom-btns {
+        .btn {
+          font-weight: 400;
+          font-size: 14px;
+          color: #FF8A3D;
+        }
+      }
+    }
+
+    .tag {
+      width: 32px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 10px;
+      margin-right: 6px;
+
+      &.default {
+        background: #F2F2F2;
+      }
+
+      &.light {
+        color: #6236FF;
+        background: rgba(73, 42, 255, 0.14);
+      }
+
+      &.gray {
+        color: #A7B1BC;
+        background: #F2F2F2;
+      }
+    }
+
+    .fold {
+      position: absolute;
+      bottom: 10px;
+      right: 50%;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &.is-reverse {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .right-box {
+    flex: 1 0;
+    width: 0;
+    height: 100%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .search-area {
+      //height: 257px;
+      background: #FFF;
+      box-shadow: 0px 6px 11px 0px rgba(230, 230, 230, 0.01);
+      border-radius: 8px;
+      margin-bottom: 20px;
+
+      ::v-deep .top {
+        border-bottom: 1px solid #F0F1F2;
+      }
+
+      .quick-filters {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        height: 60px;
+      }
+
+      ::v-deep .bottom {
+        flex: 1 0;
+      }
+
+      .search-form {
+        //background: pink;
+        padding: 20px;
+
+        .el-form {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+
+        .el-form-item {
+          width: 24%;
+          display: flex;
+          margin-bottom: 10px;
+
+          ::v-deep .el-form-item__label {
+            width: 60px;
+            font-weight: 400;
+            font-size: 12px;
+            color: #737780;
+          }
+
+          .el-form-item__content {
+            width: 100%;
+
+            & > div {
+              width: calc(100% - 120px);
+              width: 100%;
+              width: 160px;
+            }
+          }
+        }
+      }
+    }
+
+    .region-top-box {
+      background: #FFF;
+      box-shadow: 0px 6px 11px 0px rgba(230, 230, 230, 0.01);
+      border-radius: 8px;
+      margin-bottom: 20px;
+
+      ::v-deep .top {
+        background: #F4F5F8;
+
+        .region-top-config {
+          display: flex;
+          align-items: center;
+          padding: 20px;
+          border-radius: 4px 4px 0px 0px;
+
+          .label {
+            font-weight: 400;
+            font-size: 14px;
+            color: #737780;
+            margin: 0 20px;
+          }
+        }
+      }
+
+      .stats-region {
+        .group-item {
+          display: flex;
+          margin-bottom: 10px;
+
+          .item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+
+            &.highlight {
+              &:after {
+                content: " ";
+                display: flex;
+                width: 1px;
+                height: 80%;
+                background: #F0F1F2;
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+              }
+            }
+
+            .label {
+              font-weight: 400;
+              font-size: 14px;
+              color: #737780;
+            }
+          }
+        }
+      }
+    }
+
+    .handle-box {
+      margin-bottom: 20px;
+    }
+
+    .table-box {
+      width: 100%;
+      background: #fff;
+      border-radius: 8px;
+
+      // 学员插槽样式
+      .student-slot {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        .student-checkbox {
+          width: 16px;
+          height: 16px;
+        }
+        .student-avatar {
+          width: 32px;
+          height: 32px;
+          border-radius: 4px;
+        }
+        .student-name {
+          white-space: nowrap;
+          .wechat-tag {
+            color: #00C800;
+            margin-left: 4px;
+          }
+        }
+        .edit-btn {
+          padding: 0;
+          color: #666;
+        }
+      }
+
+      // 备注类插槽样式
+      .remark-slot, .follow-remark-slot {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        .remark-text {
+          flex: 1;
+          white-space: normal;
+          word-break: break-all;
+        }
+        .edit-btn {
+          padding: 0;
+          color: #666;
+        }
+      }
+
+      // 手机号插槽样式
+      .phone-slot {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        .phone-icon {
+          padding: 0;
+          color: #FF7D00;
+        }
+      }
+
+      // 标签类插槽样式
+      .tags-slot, .behavior-slot, .courses-slot {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        .el-tag {
+          margin-bottom: 4px;
+        }
+        .count {
+          margin-left: 2px;
+        }
+      }
+
+      // 直播状态插槽样式
+      .live-status-slot {
+        display: flex;
+        gap: 4px;
+        .status-icon {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border-radius: 2px;
+          // 可根据type定义不同样式（示例）
+          &.success {
+            background: #00C800;
+            color: #fff;
+          }
+          &.fail {
+            background: #FF4D4F;
+            color: #fff;
+          }
+        }
+      }
+
+      // 查看按钮类插槽样式
+      .call-slot, .wechat-add-slot {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        .view-btn {
+          padding: 0;
+          color: #1890FF;
+        }
       }
     }
   }

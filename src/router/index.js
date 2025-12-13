@@ -67,6 +67,7 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/MotionKit/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/iframe/index.vue"), // optimization // testSelect fontClass
     component: () => import(/* webpackChunkName: "about" */ "../views/saiyoudemo/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "about" */ "../views/ReportBuilder/index.vue"), // optimization // testSelect fontClass
 
   },
   // {

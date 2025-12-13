@@ -43,7 +43,7 @@ export default {
     },
     isFixed: {
       type: Boolean,
-      default: true
+      default: !true
     }
   },
   data() {
@@ -64,10 +64,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .pagination {
-  position: absolute;
-  bottom: 52px;
-  width: calc(100% - 216px);
-  margin: 0 !important;
   text-align: right;
 
   .el-pagination {
@@ -75,17 +71,5 @@ export default {
   }
 }
 
-.fixed-foot {
-  position: fixed;
-  width: calc(100% - 216px);
-  right: 10px;
-  bottom: 0;
-  margin: 0 !important;
-  text-align: right;
-
-  .el-pagination {
-    padding: 10px 10px 10px 0 !important;
-  }
-}
 
 </style>

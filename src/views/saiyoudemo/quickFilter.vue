@@ -13,10 +13,10 @@
         {{ config.label }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item v-for="item in config.props.options" :command="item.value">{{ item.label }}</el-dropdown-item>
+        <el-dropdown-item v-for="item in config.props.options" :command="item.value" :key="item.value">{{ item.label }}</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <div class="value-box">{{selectValue.label}}</div>
+<!--    <div class="value-box">{{selectValue.label}}</div>-->
   </div>
 </template>
 
@@ -71,7 +71,8 @@ export default {
 </script>
 <style lang='scss' scoped>
 .quick-filter-item {
-  min-width: 180px;
+  //min-width: 180px;
   display: flex;
+  margin-right: 25px;
 }
 </style>
