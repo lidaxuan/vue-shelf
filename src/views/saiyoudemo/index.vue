@@ -220,10 +220,10 @@
 <script>
 import Pagination from "./pagination.vue";
 import Profile from "./profile.vue";
-import TableSp from "./table/main.vue";
+import TableSp from "./components/table/main.vue";
 import QuickFilter from "./quickFilter.vue";
 import CustomerInfo from "./customerInfo/index.vue";
-import Collapse from "./Collapse.vue";
+import Collapse from "./components/Collapse.vue";
 import BatchWechatRemark from "./BatchWechatRemark.vue";
 import LiveRoom from "./LiveRoom.vue";
 import ClueFollowRemark from "./ClueFollowRemark.vue";
@@ -1481,8 +1481,11 @@ export default {
     transition: all 0.3s;
 
     .class-list {
-      overflow-y: auto;
       height: calc(100% - 72px);
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       .item {
         margin-bottom: 20px;

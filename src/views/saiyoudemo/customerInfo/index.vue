@@ -1,27 +1,29 @@
 <template>
   <EDrawerSp title="学员信息" :visible.sync="drawerVisible" class="student-info-drawer" :wrapperClosable="false" :confirm-loading="submitLoading" :size="1080" @confirm="confirm" @cancel="close">
-    <div class="flex">
+    <div class="flex" style="align-items: start">
 
-    <VisitorInfo :visitorData="visitorData"></VisitorInfo>
-    <!-- 右侧Tab页：el-tabs -->
+      <VisitorInfo :visitorData="visitorData"></VisitorInfo>
+      <!-- 右侧Tab页：el-tabs -->
+      <div class="left">
+        <Tabs class="mb-20"></Tabs>
 
-    <el-tabs v-model="activeTab" type="card" class="student-tabs">
-      <el-tab-pane v-for="(tabConfig, tabKey) in pageConfigJson" :key="tabKey" :label="getTabLabel(tabKey)" :name="tabKey">
-        <!-- 遍历Tab下的sections渲染区块 -->
-        <div class="tab-section" v-for="(section, secIndex) in tabConfig.sections" :key="secIndex">
-          <!-- 区块标题 -->
-          <div class="section-title">
-            <span class="title-text">{{ section.label }}</span>
-            <el-button v-if="section.editable" type="text" size="mini" class="edit-btn">
-              编辑
-            </el-button>
-          </div>
 
-          <!-- 根据section.type渲染不同区块 -->
-          <!--          <component :is="getSectionComponent(section.type)" :section="section" :data="tabData[tabKey][section.key]"/>-->
-        </div>
-      </el-tab-pane>
-    </el-tabs>
+        <PeriodLeads :orderData="orderData" :leadsData="leadsData"></PeriodLeads>
+      </div>
+      <!--    <el-tabs v-model="activeTab" type="card" class="student-tabs">
+            <el-tab-pane v-for="(tabConfig, tabKey) in pageConfigJson" :key="tabKey" :label="getTabLabel(tabKey)" :name="tabKey">
+              <div class="tab-section" v-for="(section, secIndex) in tabConfig.sections" :key="secIndex">
+                <div class="section-title">
+                  <span class="title-text">{{ section.label }}</span>
+                  <el-button v-if="section.editable" type="text" size="mini" class="edit-btn">
+                    编辑
+                  </el-button>
+                </div>
+
+                          <component :is="getSectionComponent(section.type)" :section="section" :data="tabData[tabKey][section.key]"/>
+              </div>
+            </el-tab-pane>
+          </el-tabs>-->
     </div>
 
   </EDrawerSp>
@@ -29,9 +31,11 @@
 
 
 <script>
-import EDrawerSp from "../drawer.vue"
+import EDrawerSp from "../components/Drawer.vue"
 import VisitorInfo from "./VisitorInfo.vue"
-
+import Tabs from "../Tabs.vue";
+import TableSp from "../components/table/main.vue";
+import PeriodLeads from "./periodLeads.vue";
 export default {
   name: "StudentInfoDrawer",
   props: {
@@ -40,9 +44,51 @@ export default {
       default: () => ({})
     }
   },
-
   data() {
     return {
+      personalInfoColumns: [
+        {label: "学员名", prop: "studentName"},
+        {label: "手机号", prop: "phone", slotName: "phone", align: "center", width: 140},
+        {label: "年龄", prop: "age", align: "center"},
+        {label: "学历", prop: "edu", align: "center"},
+        {label: "省市", prop: "city", align: "center"}
+      ],
+      orderData: [
+        {
+          period: "250908",
+          goodsName: "商品名称商品名称商品商品名称商品商品商品名称商品商品商",
+          orderStatus: "已支付",
+          orderStatusTagType: "success",
+          refundBtn: "去退费",
+          orderId: "672367823478234897",
+          examStatus: "考期未确认",
+          examBtn: "去填写",
+          originalPrice: "199.0",
+          discount: "199.0",
+          paidPrice: "199.0",
+          payBtn: "(去支付)",
+          type: "代金券",
+          typeBtn: "使用信息",
+          channel: "企微发送"
+        },
+        {
+          period: "250908",
+          goodsName: "商品名称商品名称商品商品名称商品商品商品名称商品商品商",
+          orderStatus: "未支付",
+          orderStatusTagType: "danger",
+          refundBtn: "",
+          orderId: "672367823478234897",
+          examStatus: "考期已确认",
+          examBtn: "查看填写",
+          originalPrice: "199.0",
+          discount: "199.0",
+          paidPrice: "-",
+          payBtn: "",
+          type: "代金券",
+          typeBtn: "可用商品",
+          channel: "企微发送"
+        }
+      ],
       pageConfigJson: {},
       activeTab: '',
       drawerVisible: false,
@@ -61,13 +107,48 @@ export default {
         follower: "宋世杰",
         wechatStatus: "2/8 观",
         groupStatus: "2/8 观"
+      },
+      leadsData: {
+        clueId: "672367823478234897",
+        personalInfo: {
+          studentName: "解秀轩",
+          phone: "13366054407",
+          age: 26,
+          edu: "本科",
+          city: "河北省邯郸市"
+        },
+        activeBehaviors: [
+          {icon: "el-icon-s-tools", label: "视频小店退订单", type: "info"},
+          {icon: "el-icon-s-order", label: "抖店订单", type: "primary"},
+          {icon: "el-icon-user", label: "添加企微", type: "default"},
+          {icon: "el-icon-document", label: "表单提交", type: "warning", count: 2},
+          {icon: "el-icon-s-order", label: "抖店订单", type: "primary"},
+          {icon: "el-icon-user", label: "添加企微", type: "default"}
+        ],
+        sopList: [
+          {icon: "el-icon-s-shop", title: "客留订单", statusText: "已付款", action: "查看", status: "done", badge: {value: "2", color: "#FF7D00"}},
+          {icon: "el-icon-user", title: "陈浩", statusText: "未加微", action: "", badge: {value: "1", color: "#FF4D4F"}},
+          {icon: "el-icon-s-tools", title: "未邮寄", statusText: "", action: "编辑"},
+          {icon: "el-icon-s-tools", title: "未进群", statusText: "", action: "编辑"},
+          {icon: "el-icon-s-tools", title: "未聊完", statusText: "", action: "编辑"},
+          {icon: "el-icon-s-tools", title: "课程开通", statusText: "未开通", action: "编辑"},
+          {icon: "el-icon-s-tools", title: "课验验证", statusText: "未登录", action: ""},
+          {icon: "el-icon-s-tools", title: "预报名", statusText: "", action: "查看"},
+          {icon: "el-icon-s-tools", title: "代金券", statusText: "", action: ""},
+          {icon: "el-icon-s-tools", title: "正价课", statusText: "", action: ""},
+          {icon: "el-icon-s-tools", title: "Day1", statusText: "未开课", action: "发送"},
+          {icon: "el-icon-s-tools", title: "Day2", statusText: "未到课", action: "发送"},
+          {icon: "el-icon-s-tools", title: "Day3", statusText: "78m", action: "查看", badge: {value: "2", color: "#1890FF"}}
+        ]
       }
     };
   },
-  watch: {  },
+  watch: {},
   methods: {
-    confirm(){},
-    close(){},
+    confirm() {
+    },
+    close() {
+    },
     open() {
       this.drawerVisible = true;
       const res7 = {
@@ -338,132 +419,33 @@ export default {
       this.pageConfigJson = res7.tabs;
       this.activeTab = res7.tabs['tab_customer_info']
     },
-    // TabKey转中文标签（如tab_customer_info → 客户资料）
-    getTabLabel(tabKey) {
-      const labelMap = {
-        tab_customer_info: "客户资料",
-        tab_period_leads: "期次线索",
-        tab_customer_behavior_trace: "行为轨迹"
-      };
-      return labelMap[tabKey] || tabKey;
-    },
-    // section.type映射到组件名
-    getSectionComponent(type) {
-      const componentMap = {
-        table: "SectionTable",
-        desc_panel: "SectionDescPanel",
-        tags: "SectionTags",
-        sop_table: "SectionSopTable"
-        // 可扩展其他类型（如timeline）
-      };
-      return componentMap[type] || "SectionDefault";
-    }
+
   },
   components: {
+    TableSp,
+    PeriodLeads,
     EDrawerSp,
-    VisitorInfo,
-    // 1. table类型区块（一行多列）
-    SectionTable: {
-      props: ["section", "data"],
-      template: `
-        <el-form inline class="section-table">
-        <el-form-item
-                v-for="(item, idx) in section.items"
-                :key="idx"
-                :label="item.label"
-                class="table-item"
-        >
-          <span class="item-value">{{ data[item.key] }}</span>
-          <!-- 操作按钮（如copy/call） -->
-          <div class="item-actions" v-if="item.props?.actions">
-            <el-button
-                    v-for="action in item.props.actions"
-                    :key="action"
-                    type="text"
-                    icon="el-icon-{{action === 'copy' ? 'copy-document' : 'phone'}}"
-                    size="mini"
-            />
-          </div>
-        </el-form-item>
-        </el-form>
-      `
-    },
-    // 2. desc_panel类型区块（一行两列）
-    SectionDescPanel: {
-      props: ["section", "data"],
-      template: `
-        <el-descriptions class="section-desc" :column="2">
-        <el-descriptions-item
-                v-for="(item, idx) in section.items"
-                :key="idx"
-                :label="item.label"
-        >
-          {{ data[item.key] }}
-        </el-descriptions-item>
-        </el-descriptions>
-      `
-    },
-    // 3. tags类型区块（标签组）
-    SectionTags: {
-      props: ["section", "data"],
-      template: `
-        <div class="section-tags">
-        <el-tag
-                v-for="(tag, idx) in data[section.items[0].key]"
-                :key="idx"
-                size="mini"
-        >
-          {{ tag }}
-        </el-tag>
-        </div>
-      `
-    },
-    // 4. sop_table类型区块（SOP流程）
-    SectionSopTable: {
-      props: ["section", "data"],
-      template: `
-        <div class="section-sop">
-        <div class="sop-item" v-for="(sop, idx) in data[section.items.key]">
-          <div class="sop-icon">
-            <<i :class="sop.icon"></</i>
-            <span class="badge top" v-if="sop.topBadge.value" :style="{background: sop.topBadge.color}">
-                {{ sop.topBadge.value }}
-              </span>
-            <span class="badge bottom" v-if="sop.bottomBadge.value" :style="{background: sop.bottomBadge.color}">
-                {{ sop.bottomBadge.value }}
-              </span>
-          </div>
-          <div class="sop-text">
-            <div>{{ sop.sopText.value }}</div>
-            <div class="sop-bottom-text">{{ sop.bottomText.value }}</div>
-          </div>
-          <el-button
-                  v-if="sop.actionBtn"
-                  :type="sop.actionBtn.type === 'edit' ? 'primary' : 'default'"
-                  size="mini"
-          >
-            {{ sop.actionBtn.value }}
-          </el-button>
-        </div>
-        </div>
-      `
-    },
-    // 默认兜底组件
-    SectionDefault: {
-      props: ["section"],
-      template: `
-        <div>未实现的区块类型：{{ section.type }}</div>`
-    }
+    VisitorInfo, Tabs,
+
   }
 };
 </script>
 <style lang="scss" scoped>
-.student-info-drawer {
-  ::v-deep .el-drawer__body  .e-drawer-sp-content {
+.mb-20 {
+  margin-bottom: 20px;
+}
 
-    background: linear-gradient( 180deg, #FFFAF8 0%, #F9FDFF 100%);
-    background: linear-gradient( 180deg, #cec4bf 0%, #b4c3cb 100%);
+.student-info-drawer {
+  ::v-deep .el-drawer__body .e-drawer-sp-content {
+    background: linear-gradient(180deg, #FFFAF8 0%, #F9FDFF 100%);
+    background: linear-gradient(180deg, #cec4bf 0%, #b4c3cb 100%);
     padding: 0;
+  }
+
+  .left {
+    width: 0;
+    flex: 1;
+    padding: 16px 16px 16px 0;
   }
 
   .student-tabs {
@@ -503,13 +485,16 @@ export default {
 
     .table-item {
       margin-bottom: 0;
+
       .el-form-item__label {
         min-width: 80px;
         color: #666;
       }
+
       .item-value {
         margin-right: 8px;
       }
+
       .item-actions {
         display: inline-block;
       }
@@ -519,6 +504,7 @@ export default {
   // DescPanel类型区块
   .section-desc {
     padding: 16px;
+
     ::v-deep .el-descriptions__label {
       color: #666;
     }
@@ -535,6 +521,7 @@ export default {
   // SOP类型区块
   .section-sop {
     padding: 16px;
+
     .sop-item {
       display: flex;
       align-items: center;
