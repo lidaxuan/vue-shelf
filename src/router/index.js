@@ -68,8 +68,15 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/iframe/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/saiyoudemo/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "about" */ "../views/ReportBuilder/index.vue"), // optimization // testSelect fontClass
-    component: () => import(/* webpackChunkName: "about" */ "../views/scrollTableHeader/index.vue"), // optimization // testSelect fontClass
-
+    // component: () => import(/* webpackChunkName: "about" */ "../views/scrollTableHeader/index.vue"), // optimization // testSelect fontClass
+    // component: () => import(/* webpackChunkName: "boringMaterials" */ "../views/boringMaterials/index.vue")
+    // component: () => import(/* webpackChunkName: "boringMaterials" */ "../views/formAccess/index.vue")
+    component: () => import(/* webpackChunkName: "boringMaterials" */ "../views/login")
+  },
+  {
+    path: "/viewLeads",
+    name: "viewLeads",
+    component: () => import(/* webpackChunkName: "about" */ "../views/formAccess/viewLeads.vue"), // optimization // testSelect fontClass
   },
   // {
   //   path: "/game-role",

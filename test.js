@@ -15,7 +15,7 @@ var timer = setInterval(() => {
   if (new Date - start > 1000) {
     clearInterval(timer);
     console.log(fireCount);
-    return
+    return;
   }
   fireCount++;
 }, 0);
@@ -109,7 +109,7 @@ console.log(getDay(-37));
 
 
 //返回最近七天的日期
-function getday2(days =1) {
+function getday2(days = 1) {
   let daysArr = [];
   var currentDate = new Date();
   for (let i = 0; i <= 24 * days; i += 24) { //今天加上前6天

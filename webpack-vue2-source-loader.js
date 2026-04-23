@@ -14,7 +14,7 @@ module.exports = function(source) {
   }
 
 
-// 在 template 的根标签后注入 data 属性
+  // 在 template 的根标签后注入 data 属性
   const template = sfc.template.content;
   const injected = template.replace(
     /(\<\w+)/, // 匹配根元素开始标签
@@ -22,7 +22,7 @@ module.exports = function(source) {
   );
 
 
-// 替换 template 部分
+  // 替换 template 部分
   const newSource = source.replace(sfc.template.content, injected);
   callback(null, newSource);
 };
