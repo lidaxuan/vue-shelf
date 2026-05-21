@@ -71,7 +71,8 @@ const routes = [
     // component: () => import(/* webpackChunkName: "about" */ "../views/scrollTableHeader/index.vue"), // optimization // testSelect fontClass
     // component: () => import(/* webpackChunkName: "boringMaterials" */ "../views/boringMaterials/index.vue")
     // component: () => import(/* webpackChunkName: "boringMaterials" */ "../views/formAccess/index.vue")
-    component: () => import(/* webpackChunkName: "boringMaterials" */ "../views/login")
+    // component: () => import(/* webpackChunkName: "boringMaterials" */ "../views/login"),
+    component: () => import(/* webpackChunkName: "boringMaterials" */ "../views/crud/SmartCrudDemo.vue")
   },
   {
     path: "/viewLeads",
