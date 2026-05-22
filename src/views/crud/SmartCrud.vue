@@ -273,10 +273,10 @@ export default {
       this.refresh()
     },
 
-    // 根据 prop 从本地字典表匹配完整配置，可传入额外配置覆盖
+    // 根据 prop 从本地字典表匹配完整配置，可传入额外配置覆盖（对象结构查找效率 O(1)）
     getFieldConfig(prop, extraConfig = {}) {
-      const localConfig = fieldDict.find(f => f.prop === prop)
-      const base = localConfig ? {...localConfig} : {prop, label: prop, type: 'input', search: false, width: 120}
+      const localConfig = fieldDict[prop]
+      const base = localConfig ? {...localConfig, prop} : {prop, label: prop, type: 'input', search: false, width: 120}
       return {...base, ...extraConfig}
     },
     hasSlot(prop) {

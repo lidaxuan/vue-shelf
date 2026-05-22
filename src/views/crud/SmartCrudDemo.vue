@@ -2,12 +2,17 @@
   <div class="demo-container">
     <h2>SmartCrud 组件示例</h2>
     <el-tabs v-model="activeTab" type="border-card">
+      <el-tab-pane label="字段配置演示" name="config">
+        <smart-crud-config-demo />
+      </el-tab-pane>
       <el-tab-pane label="自动生成抽屉" name="drawer">
         <div style="margin-bottom:10px;">
           <el-button type="warning" @click="demoClearSelection">清空表格选中</el-button>
           <el-button type="primary" @click="demoOpenAdd">新增用户</el-button>
         </div>
-        <smart-crud ref="crudRef" url="/api/user/page" :columns="simpleColumns" :show-selection="true" :drawer-size="'50%'" @save-form="handleSaveForm" @open-add="handleOpenAdd" @open-edit="handleOpenEdit" @open-view="handleOpenView">
+
+        <smart-crud ref="crudRef" url="/api/user/page" :columns="simpleColumns" :show-selection="true" :drawer-size="'50%'" @save-form="handleSaveForm" @open-add="handleOpenAdd"
+                    @open-edit="handleOpenEdit" @open-view="handleOpenView">
           <template #status="{ row }">
             <el-tag :type="row.status === 1 ? 'success' : 'info'" size="small">{{ row.status === 1 ? '启用' : '禁用' }}</el-tag>
           </template>
@@ -176,13 +181,14 @@
 
 <script>
 import SmartCrud from './SmartCrud.vue'
+import SmartCrudConfigDemo from './SmartCrudConfigDemo.vue'
 
 export default {
   name: 'SmartCrudDemo',
-  components: {SmartCrud},
+  components: {SmartCrud, SmartCrudConfigDemo},
   data() {
     return {
-      activeTab: 'drawer',
+      activeTab: 'config',
       // ① 简单配置：直接写prop，自动从字典表匹配
       simpleColumns: [
         {prop: 'userName'},
@@ -240,18 +246,36 @@ export default {
   },
   methods: {
     /* ========== 抽屉演示 ========== */
-    getProp(col) { return typeof col === 'string' ? col : col.prop },
-    getLabel(col) { return typeof col === 'string' ? col : col.label || col.prop },
-    
+    getProp(col) {
+      return typeof col === 'string' ? col : col.prop
+    },
+    getLabel(col) {
+      return typeof col === 'string' ? col : col.label || col.prop
+    },
+
     // 第一个 demo
-    openView(row) { this.$refs.crudRef.openViewDrawer(row) },
-    openEdit(row) { this.$refs.crudRef.openEditDrawer(row) },
-    demoClearSelection() { this.$refs.crudRef.clearSelection() },
-    demoOpenAdd() { this.$refs.crudRef.openAddDrawer() },
-    handleOpenAdd() { console.log('打开新增抽屉') },
-    handleOpenEdit(row) { console.log('打开编辑抽屉', row) },
-    handleOpenView(row) { console.log('打开查看抽屉', row) },
-    handleSaveForm(type, formData) { 
+    openView(row) {
+      this.$refs.crudRef.openViewDrawer(row)
+    },
+    openEdit(row) {
+      this.$refs.crudRef.openEditDrawer(row)
+    },
+    demoClearSelection() {
+      this.$refs.crudRef.clearSelection()
+    },
+    demoOpenAdd() {
+      this.$refs.crudRef.openAddDrawer()
+    },
+    handleOpenAdd() {
+      console.log('打开新增抽屉')
+    },
+    handleOpenEdit(row) {
+      console.log('打开编辑抽屉', row)
+    },
+    handleOpenView(row) {
+      console.log('打开查看抽屉', row)
+    },
+    handleSaveForm(type, formData) {
       console.log('保存表单', type, formData)
       // 这里模拟保存请求
       return new Promise((resolve) => {
@@ -260,11 +284,17 @@ export default {
         }, 500)
       })
     },
-    
+
     // 第二个 demo
-    openView2(row) { this.$refs.crudRef2.openViewDrawer(row) },
-    openEdit2(row) { this.$refs.crudRef2.openEditDrawer(row) },
-    openAdd2() { this.$refs.crudRef2.openAddDrawer() },
+    openView2(row) {
+      this.$refs.crudRef2.openViewDrawer(row)
+    },
+    openEdit2(row) {
+      this.$refs.crudRef2.openEditDrawer(row)
+    },
+    openAdd2() {
+      this.$refs.crudRef2.openAddDrawer()
+    },
 
     handleAdd() {
       this.$message.info('点击了新增')
