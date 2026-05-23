@@ -3,9 +3,9 @@
     <h2>SmartCrud 字段配置演示</h2>
     <el-row :gutter="20">
       <!-- 左侧配置区 -->
-      <el-col :span="6">
+      <el-col :span="10">
         <div class="config-panel">
-          <div class="panel-title">字段配置</div>
+          <div class="panel-title">基础配置</div>
 
           <!-- 基础配置 -->
           <el-form label-width="100px" style="margin-bottom: 20px;">
@@ -34,23 +34,33 @@
             <el-button size="small" @click="deselectAll">全不选</el-button>
             <el-button size="small" @click="selectDefault">常用字段</el-button>
           </el-button-group>
-          <div class="divider">选择要展示的字段（可拖拽排序）</div>
+
+          <div class="divider">字段配置</div>
 
           <!-- 字段列表 -->
-          <el-checkbox-group v-model="selectedFields">
-            <el-checkbox v-for="field in availableFields" :key="field.prop" :label="field.prop" style="display: block; margin-bottom: 8px;">
-              <span class="field-label">{{ field.label }}</span>
-              <el-tag v-if="field.search" size="mini" type="primary" style="margin-left: 8px;">可搜索</el-tag>
-            </el-checkbox>
-          </el-checkbox-group>
+          <div class="field-list">
+            <div v-for="field in availableFields" :key="field.prop" class="field-item flex" :class="{ active: selectedFieldProps.includes(field.prop) }">
+              <div class="field-main">
+                <el-checkbox v-model="field.selected" :label="field.prop">
+                  <span class="field-label">{{ field.label }}</span>
+                </el-checkbox>
+              </div>
+              <div class="field-options" v-if="field.selected">
+                <el-checkbox v-model="field.canSearch" size="mini">搜索</el-checkbox>
+                <el-checkbox v-model="field.canAdd" size="mini">新增</el-checkbox>
+                <el-checkbox v-model="field.canEdit" size="mini">编辑</el-checkbox>
+              </div>
+            </div>
+          </div>
 
         </div>
       </el-col>
-
+      <!--<pre>{{availableFields}}</pre>-->
       <!-- 右侧预览区 -->
-      <el-col :span="18">
+      <el-col :span="14">
         <div class="preview-panel">
           <div class="panel-title">实时预览</div>
+
 
           <smart-crud
                   ref="crudRef"
@@ -60,7 +70,7 @@
                   :show-selection="showSelection"
                   :drawer-size="drawerSize"
                   @save-form="handleSave"
-                  @add="handleOpenAdd"
+                  @open-add="handleOpenAdd"
                   @open-edit="handleOpenEdit"
                   @open-view="handleOpenView"
           >
@@ -79,7 +89,7 @@
 
           <!-- 配置代码预览 -->
           <div class="divider">配置代码</div>
-          <pre class="code-preview">{{ codePreview }}</pre>
+          <pre class="code-preview">{{ columns }}</pre>
         </div>
       </el-col>
     </el-row>
@@ -96,14 +106,23 @@ export default {
   data() {
     const availableFields = Object.keys(fieldDict).map(key => ({
       prop: key,
-      ...fieldDict[key]
+      ...fieldDict[key],
+      selected: false,
+      canSearch: fieldDict[key].search || false,
+      canAdd: true,
+      canEdit: true
     }))
 
-    const defaultFields = ['userName', 'realName', 'email', 'phone', 'status', 'createTime']
+    // 默认选择常用字段
+    const defaultFieldProps = ['userName', 'realName', 'email', 'phone', 'status', 'createTime']
+    availableFields.forEach(field => {
+      if (defaultFieldProps.includes(field.prop)) {
+        field.selected = true
+      }
+    })
 
     return {
       availableFields,
-      selectedFields: [...defaultFields],
       isPaginated: true,
       showIndex: true,
       showSelection: false,
@@ -111,29 +130,68 @@ export default {
     }
   },
   computed: {
+    selectedFieldProps() {
+      return this.availableFields.filter(f => f.selected).map(f => f.prop)
+    },
     columns() {
-      return this.selectedFields.map(prop => ({prop}))
+      return this.availableFields
+              .filter(f => f.selected)
+              .map(field => ({
+                prop: field.prop,
+                search: field.canSearch,
+                canAdd: field.canAdd,
+                canEdit: field.canEdit
+              }))
     },
     codePreview() {
+      // 简化代码预览，只展示有差异的配置
+      const simplifiedColumns = this.availableFields
+              .filter(f => f.selected)
+              .map(field => {
+                const config = {prop: field.prop}
+                if (field.canSearch !== fieldDict[field.prop]?.search) config.search = field.canSearch
+                if (field.canAdd !== true) config.canAdd = field.canAdd
+                if (field.canEdit !== true) config.canEdit = field.canEdit
+                return Object.keys(config).length === 1 ? field.prop : config
+              })
+
       const code = `<smart-crud
   url="${this.isPaginated ? '/api/user/page' : '/api/user/list'}"
   :show-index="${this.showIndex}"
   :show-selection="${this.showSelection}"
   :drawer-size="'${this.drawerSize}'"
-  :columns="${JSON.stringify(this.columns, null, 2)}"
+  :columns="${JSON.stringify(simplifiedColumns, null, 2)}"
 />`
       return code
     }
   },
   methods: {
+    aaaa() {
+      return this.columns.map(item => {
+        return {
+          label: item.label,
+          prop: item.prop,
+          canSearch: item.canSearch,
+          canAdd: item.canAdd,
+          canEdit: item.canEdit
+        }
+      })
+    },
     selectAll() {
-      this.selectedFields = this.availableFields.map(f => f.prop)
+      this.availableFields.forEach(field => {
+        field.selected = true
+      })
     },
     deselectAll() {
-      this.selectedFields = []
+      this.availableFields.forEach(field => {
+        field.selected = false
+      })
     },
     selectDefault() {
-      this.selectedFields = ['userName', 'realName', 'email', 'phone', 'status', 'createTime']
+      const defaultFieldProps = ['userName', 'realName', 'email', 'phone', 'status', 'createTime']
+      this.availableFields.forEach(field => {
+        field.selected = defaultFieldProps.includes(field.prop)
+      })
     },
     openView(row) {
       this.$refs.crudRef.openViewDrawer(row)
@@ -142,8 +200,8 @@ export default {
       this.$refs.crudRef.openEditDrawer(row)
     },
     handleOpenAdd() {
+      this.$refs.crudRef.openAddDrawer()
       console.log('打开新增抽屉')
-      this.$refs.crudRef.openEditDrawer({})
     },
     handleOpenEdit(row) {
       console.log('打开编辑抽屉', row)
@@ -193,8 +251,40 @@ export default {
   margin: 16px 0 12px;
 }
 
+.field-list {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.field-item {
+  padding: 10px 12px;
+  margin-bottom: 4px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+  align-items: center;
+}
+
+.field-item.active {
+  background: #f5f7fa;
+  border-color: #e4e7ed;
+}
+
+.field-main {
+  display: flex;
+  align-items: center;
+}
+
 .field-label {
   color: #606266;
+  font-weight: 500;
+}
+
+.field-options {
+  margin-top: 8px;
+  padding-left: 22px;
+  display: flex;
+  gap: 16px;
 }
 
 .code-preview {

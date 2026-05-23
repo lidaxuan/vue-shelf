@@ -17,7 +17,7 @@
 
     <slot name="toolbar">
       <div v-if="showToolbar" class="default-toolbar">
-        <el-button type="primary" icon="el-icon-plus" @click="handleAdd">新增</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="openAddDrawer">新增</el-button>
       </div>
     </slot>
 
@@ -25,7 +25,6 @@
       <el-table-column v-if="showSelection" type="selection" width="55" fixed="left"/>
       <el-table-column v-if="showIndex" type="index" label="序号" width="70" fixed="left"/>
       <template v-for="field in tableFields">
-        <!--        :width="field.width"-->
         <el-table-column v-if="hasSlot(field.prop)" :key="'slot-' + field.prop" :prop="field.prop" :label="field.label" :min-width="field.minWidth" :align="field.align"
                          :sortable="field.sortable ? 'custom' : false" :show-overflow-tooltip="field.showOverflowTooltip !== false">
           <template slot-scope="scope">
@@ -64,7 +63,6 @@
       </template>
       <!-- 自动生成详情展示 -->
       <template v-else-if="drawerType === 'view'">
-
         <div :column="1" border style="margin: 20px;">
           <div v-for="field in tableFields" class="flex mb20" :key="'desc-' + field.prop">
             <div class="label mr20 w100">{{ field.label }}:</div>
@@ -86,20 +84,24 @@
       <template v-else>
         <el-form :model="editForm" ref="drawerForm" label-width="100px" style="padding: 20px;">
           <div v-for="field in tableFields" :key="'form-' + field.prop">
-            <el-form-item v-if="hasSlot('form-' + field.prop)" :label="field.label">
-              <slot :name="'form-' + field.prop" :edit-form="editForm" :field="field"/>
-            </el-form-item>
-            <el-form-item v-else :label="field.label">
-              <!-- select 类型 -->
-              <el-select v-if="field.type === 'select'" v-model="editForm[field.prop]" :placeholder="'请选择' + field.label" clearable style="width: 100%;">
-                <el-option v-for="opt in field.options" :key="opt.value" :label="opt.label" :value="opt.value"/>
-              </el-select>
-              <!-- date 类型 -->
-              <el-date-picker v-else-if="field.type === 'date'" v-model="editForm[field.prop]" :type="field.dateType || 'datetime'" :placeholder="'请选择' + field.label" :format="field.format"
-                              :value-format="field.valueFormat || 'yyyy-MM-dd HH:mm:ss'" style="width: 100%;" clearable/>
-              <!-- 默认 input -->
-              <el-input v-else v-model="editForm[field.prop]" :placeholder="'请输入' + field.label" clearable/>
-            </el-form-item>
+            <!-- 判断是否显示该字段：新增时检查 canAdd，编辑时检查 canEdit -->
+            <template v-if="(drawerType === 'add' && field.canAdd !== false) || (drawerType === 'edit' && field.canEdit !== false)">
+              <el-form-item v-if="hasSlot('form-' + field.prop)" :label="field.label">
+                <slot :name="'form-' + field.prop" :edit-form="editForm" :field="field"/>
+              </el-form-item>
+              <el-form-item v-else :label="field.label">
+                <!-- select 类型 -->
+                <el-select v-if="field.type === 'select'" v-model="editForm[field.prop]" :placeholder="'请选择' + field.label" clearable style="width: 100%;"
+                           :disabled="drawerType === 'edit' && field.canEdit === false">
+                  <el-option v-for="opt in field.options" :key="opt.value" :label="opt.label" :value="opt.value"/>
+                </el-select>
+                <!-- date 类型 -->
+                <el-date-picker v-else-if="field.type === 'date'" v-model="editForm[field.prop]" :type="field.dateType || 'datetime'" :placeholder="'请选择' + field.label" :format="field.format"
+                                :value-format="field.valueFormat || 'yyyy-MM-dd HH:mm:ss'" style="width: 100%;" clearable :disabled="drawerType === 'edit' && field.canEdit === false"/>
+                <!-- 默认 input -->
+                <el-input v-else v-model="editForm[field.prop]" :placeholder="'请输入' + field.label" clearable :disabled="drawerType === 'edit' && field.canEdit === false"/>
+              </el-form-item>
+            </template>
           </div>
         </el-form>
       </template>
@@ -227,8 +229,11 @@ export default {
       this.drawer.title = '新增'
       this.drawer.size = this.drawerSize
       this.currentRow = {}
-      this.initEditForm(null)
-      this.drawer.visible = true
+      // 确保先设置 drawerType 再初始化表单
+      this.$nextTick(() => {
+        this.initEditForm(null)
+        this.drawer.visible = true
+      })
       this.$emit('open-add')
     },
     // 打开编辑抽屉
@@ -237,8 +242,11 @@ export default {
       this.drawer.title = '编辑'
       this.drawer.size = this.drawerSize
       this.currentRow = {...row}
-      this.initEditForm(row)
-      this.drawer.visible = true
+      // 确保先设置 drawerType 再初始化表单
+      this.$nextTick(() => {
+        this.initEditForm(row)
+        this.drawer.visible = true
+      })
       this.$emit('open-edit', row)
     },
     // 打开详情抽屉
@@ -277,7 +285,11 @@ export default {
     getFieldConfig(prop, extraConfig = {}) {
       const localConfig = fieldDict[prop]
       const base = localConfig ? {...localConfig, prop} : {prop, label: prop, type: 'input', search: false, width: 120}
-      return {...base, ...extraConfig}
+      // 设置默认值：canAdd 和 canEdit 默认为 true
+      const merged = {...base, ...extraConfig}
+      if (merged.canAdd === undefined) merged.canAdd = true
+      if (merged.canEdit === undefined) merged.canEdit = true
+      return merged
     },
     hasSlot(prop) {
       return !!this.$scopedSlots[prop]
@@ -404,9 +416,6 @@ export default {
     handleSelectionChange(selection) {
       this.$emit('selection-change', selection)
     },
-    handleAdd() {
-      this.$emit('add')
-    },
     refresh() {
       this.loadData()
     },
@@ -445,5 +454,27 @@ export default {
 
 .el-table {
   margin-bottom: 20px;
+}
+
+.flex {
+  display: flex;
+}
+
+.mb20 {
+  margin-bottom: 20px;
+}
+
+.mr20 {
+  margin-right: 20px;
+}
+
+.w100 {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.label {
+  font-weight: bold;
+  color: #909399;
 }
 </style>
